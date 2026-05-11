@@ -41,6 +41,7 @@ body {
     padding: 10px 20px;
     position: sticky;
     top: 0;
+    z-index: 1000;
 }
 
 .logo img {
