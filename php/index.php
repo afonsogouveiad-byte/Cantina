@@ -43,51 +43,30 @@
             text-decoration: none;
         }
 
-        .hero {
-            min-height: 48vh;
-            display: grid;
-            place-items: center;
-            position: relative;
-            overflow: hidden;
-            padding: 44px 24px;
-            background-color: #0d4c9d;
-            background-image: linear-gradient(135deg, rgba(13, 76, 157, 0.82), rgba(0, 162, 255, 0.4)), url('images/cantina.png');
-            background-position: center;
-            background-size: cover;
-            background-repeat: no-repeat;
-            color: #fff;
-        }
+        .hero{
+    height:320px;
+    background:url('images/cantina.png') center/cover;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    position:relative;
+}
 
-        .hero::before {
-            content: "";
-            position: absolute;
-            inset: 0;
-            background: radial-gradient(circle at top right, rgba(255,255,255,0.18), transparent 32%);
-            pointer-events: none;
-        }
+.hero::before{
+    content:"";
+    position:absolute;
+    inset:0;
+    background:rgba(13, 76, 157, 0.5);
+}
 
-        .hero-content {
-            position: relative;
-            z-index: 1;
-            max-width: 760px;
-            text-align: center;
-            animation: fadeInUp 0.9s ease both;
-        }
-
-        .hero h1 {
-            font-size: clamp(2.8rem, 6vw, 4.2rem);
-            line-height: 0.95;
-            letter-spacing: -0.05em;
-            margin-bottom: 1rem;
-        }
-
-        .hero p {
-            max-width: 640px;
-            margin: 0 auto;
-            font-size: 1.05rem;
-            line-height: 1.8;
-            color: rgba(255,255,255,0.88);
-        }
+.hero h1{
+    position:relative;
+    z-index:2;
+    color:white;
+    font-size:52px;
+    text-align:center;
+    letter-spacing:1px;
+}
 
         .main {
             display: grid;
