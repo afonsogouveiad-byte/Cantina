@@ -1,0 +1,509 @@
+<?php
+session_start();
+require_once 'connexio.php';
+
+$result = $conn->query("SELECT * FROM menus2 ORDER BY week, id");
+
+if (!$result) {
+    die("Error a la consulta: " . $conn->error);
+}
+
+$menus = [];
+
+while($row = $result->fetch_assoc()) {
+
+    $week = $row['week'] ?? '';
+    $day = $row['day'] ?? '';
+
+    if($week === '' || $day === '') {
+        continue;
+    }
+
+    $menus[$week][$day][] = $row;
+}
+
+$dias = [
+    'dilluns'   => 'DILLUNS',
+    'dimarts'   => 'DIMARTS',
+    'dimecres'  => 'DIMECRES',
+    'dijous'    => 'DIJOUS',
+    'divendres' => 'DIVENDRES'
+];
+
+$semanas = [
+    1 => 'SETMANA 1',
+    2 => 'SETMANA 2',
+    3 => 'SETMANA 3',
+    4 => 'SETMANA 4'
+];
+?>
+
+<!DOCTYPE html>
+<html lang="ca">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Menú Grandes</title>
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial, sans-serif;
+}
+
+body{
+    background:#f4f6f9;
+    color:#222;
+}
+
+/* NAVBAR */
+
+.nav{
+    background:#111;
+    display:grid;
+    grid-template-columns:1fr auto 1fr;
+    align-items:center;
+    padding:12px 25px;
+    position:sticky;
+    top:0;
+    z-index:100;
+    box-shadow:0 2px 10px rgba(0,0,0,0.15);
+}
+
+.logo img{
+    height:45px;
+    border-radius:8px;
+}
+
+.nav-links{
+    display:flex;
+    justify-content:center;
+    gap:12px;
+}
+
+.nav a{
+    color:#ddd;
+    text-decoration:none;
+    padding:10px 18px;
+    border-radius:10px;
+    font-weight:bold;
+    transition:0.25s;
+}
+
+.nav a:hover{
+    background:#1abc9c;
+    color:white;
+}
+
+.nav a.active{
+    background:#1abc9c;
+    color:white;
+}
+
+/* HERO */
+
+.hero{
+    height:320px;
+    background:url('images/cantina.png') center/cover;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    position:relative;
+}
+
+.hero::before{
+    content:"";
+    position:absolute;
+    inset:0;
+    background:rgba(0,0,0,0.55);
+}
+
+.hero h1{
+    position:relative;
+    z-index:2;
+    color:white;
+    font-size:52px;
+    text-align:center;
+    letter-spacing:1px;
+}
+
+/* CONTAINER */
+
+.menu-container{
+    max-width:1300px;
+    margin:50px auto;
+    padding:20px;
+}
+
+/* SETMANES */
+
+.setmana{
+    margin-bottom:60px;
+}
+
+.setmana-title{
+    font-size:34px;
+    margin-bottom:25px;
+    color:#111;
+    border-left:6px solid #1abc9c;
+    padding-left:15px;
+}
+
+/* GRID */
+
+.dies-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit, minmax(220px, 1fr));
+    gap:20px;
+}
+
+/* CARD */
+
+.dia-card{
+    background:white;
+    border-radius:16px;
+    overflow:hidden;
+    box-shadow:0 8px 25px rgba(0,0,0,0.08);
+    transition:0.25s;
+}
+
+.dia-card:hover{
+    transform:translateY(-5px);
+}
+
+.dia-header{
+    background:#1abc9c;
+    color:white;
+    text-align:center;
+    padding:16px;
+    font-size:18px;
+    font-weight:bold;
+}
+
+.dia-content{
+    padding:18px;
+}
+
+/* MENUS */
+
+.prato{
+    background:#f8f9fb;
+    border-radius:12px;
+    padding:14px;
+    margin-bottom:14px;
+    border:1px solid #ececec;
+    transition:0.2s;
+}
+
+.prato:hover{
+    transform:translateY(-2px);
+    box-shadow:0 4px 12px rgba(0,0,0,0.06);
+}
+
+.prato:last-child{
+    margin-bottom:0;
+}
+
+.nome{
+    font-size:16px;
+    font-weight:bold;
+    margin-bottom:8px;
+    color:#222;
+}
+
+.preco{
+    color:#1abc9c;
+    font-weight:bold;
+    margin-bottom:10px;
+    font-size:15px;
+}
+
+.buit{
+    text-align:center;
+    color:#888;
+    padding:20px 0;
+}
+
+/* BOTÕES */
+
+.actions{
+    margin-top:12px;
+}
+
+.actions a{
+    display:inline-block;
+    text-decoration:none;
+    padding:7px 12px;
+    border-radius:8px;
+    font-size:13px;
+    margin-right:6px;
+    color:white;
+    font-weight:bold;
+    transition:0.2s;
+}
+
+.actions a:hover{
+    opacity:0.9;
+    transform:scale(1.03);
+}
+
+.actions a:first-child{
+    background:#3498db;
+}
+
+.actions a:last-child{
+    background:#e74c3c;
+}
+
+/* FOOTER */
+
+.footer{
+    background:#111;
+    color:white;
+    margin-top:60px;
+}
+
+.footer-container{
+    max-width:1200px;
+    margin:auto;
+    padding:40px 20px;
+
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:30px;
+}
+
+.footer-section h3,
+.footer-section h4{
+    margin-bottom:14px;
+}
+
+.footer-section p,
+.footer-section a{
+    font-size:14px;
+    line-height:1.8;
+}
+
+.footer-section a{
+    color:#1abc9c;
+    text-decoration:none;
+}
+
+.footer-section a:hover{
+    text-decoration:underline;
+}
+
+.footer-bottom{
+    text-align:center;
+    padding:18px;
+    border-top:1px solid #333;
+    font-size:13px;
+}
+
+/* RESPONSIVE */
+
+@media(max-width:1000px){
+
+    .footer-container{
+        grid-template-columns:1fr 1fr;
+    }
+}
+
+@media(max-width:700px){
+
+    .nav{
+        grid-template-columns:1fr;
+        gap:15px;
+    }
+
+    .nav-links{
+        flex-wrap:wrap;
+    }
+
+    .hero h1{
+        font-size:36px;
+    }
+
+    .footer-container{
+        grid-template-columns:1fr;
+    }
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+
+<div class="nav">
+
+    <div class="logo">
+        <img src="images/inspedr.jpg" alt="Institut Pedralbes">
+    </div>
+
+    <div class="nav-links">
+        <a href="index.php">Inici</a>
+        <a href="llistar.php">Productes</a>
+        <a href="menu.php">Menú Petits</a>
+        <a class="active" href="menu2.php">Menú Grandes</a>
+    </div>
+
+    <div></div>
+
+</div>
+
+<!-- HERO -->
+
+<div class="hero">
+    <h1>Menú de los Grandes</h1>
+</div>
+
+<!-- MENUS -->
+
+<div class="menu-container">
+
+<?php foreach($semanas as $weekKey => $weekName): ?>
+
+    <div class="setmana">
+
+        <h2 class="setmana-title">
+            <?= $weekName ?>
+        </h2>
+
+        <div class="dies-grid">
+
+        <?php foreach($dias as $dayKey => $dayName): ?>
+
+            <div class="dia-card">
+
+                <div class="dia-header">
+                    <?= $dayName ?>
+                </div>
+
+                <div class="dia-content">
+
+                <?php
+                if(isset($menus[$weekKey][$dayKey])):
+
+                    foreach($menus[$weekKey][$dayKey] as $menu):
+                ?>
+
+                    <div class="prato">
+
+                        <div class="nome">
+                            <?= htmlspecialchars($menu['name']) ?>
+                        </div>
+
+                        <div class="preco">
+                            <?= number_format($menu['price'], 2) ?> €
+                        </div>
+
+                        <?php if(isset($_SESSION['user'])): ?>
+
+                            <div class="actions">
+
+                                <a href="edit_menu2.php?id=<?= $menu['id'] ?>">
+                                    Editar
+                                </a>
+
+                                <a href="delete_menu2.php?id=<?= $menu['id'] ?>">
+                                    Eliminar
+                                </a>
+
+                            </div>
+
+                        <?php endif; ?>
+
+                    </div>
+
+                <?php
+                    endforeach;
+
+                else:
+                ?>
+
+                    <p class="buit">
+                        Sense menú
+                    </p>
+
+                <?php endif; ?>
+
+                </div>
+
+            </div>
+
+        <?php endforeach; ?>
+
+        </div>
+
+    </div>
+
+<?php endforeach; ?>
+
+</div>
+
+<!-- FOOTER -->
+
+<footer class="footer">
+
+    <div class="footer-container">
+
+        <div class="footer-section">
+
+            <h3>El centre</h3>
+
+            <p>
+                Institut públic del districte de Les Corts,
+                amb oferta d’ESO, Batxillerat,
+                CFGM i CFGS d’Informàtica,
+                Imatge i So, i PFI.
+            </p>
+
+        </div>
+
+        <div class="footer-section">
+
+            <h4>Contacte</h4>
+
+            <p>93 203 33 32</p>
+            <p>inspedralbes@xtec.cat</p>
+
+        </div>
+
+        <div class="footer-section">
+
+            <h4>Adreça</h4>
+
+            <p>Av. Esplugues, 36-42</p>
+            <p>08034 Barcelona</p>
+
+        </div>
+
+        <div class="footer-section">
+
+            <h4>Legal</h4>
+
+            <a href="#">Cookies</a>
+            <br>
+            <a href="#">Avís legal</a>
+            <br>
+            <a href="#">Protecció de dades</a>
+
+        </div>
+
+    </div>
+
+    <div class="footer-bottom">
+        &copy; <?= date("Y") ?> Institut Pedralbes - Cantina
+    </div>
+
+</footer>
+
+</body>
+</html>
