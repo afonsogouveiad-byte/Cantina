@@ -49,6 +49,16 @@ $semanas = [
 
 <style>
 
+:root {
+    --primary: #0d4c9d;
+    --accent: #00a2ff;
+    --primary-soft: #3f7be6;
+    --text: #172c45;
+    --muted: #5f6f86;
+    --surface: #ffffff;
+    --shadow: 0 24px 60px rgba(15, 41, 78, 0.08);
+}
+
 *{
     margin:0;
     padding:0;
@@ -57,14 +67,14 @@ $semanas = [
 }
 
 body{
-    background:#f4f6f9;
+    background:#eef4fc;
     color:#222;
 }
 
 /* NAVBAR */
 
 .nav{
-    background:#111;
+    background:var(--primary);
     display:grid;
     grid-template-columns:1fr auto 1fr;
     align-items:center;
@@ -87,7 +97,7 @@ body{
 }
 
 .nav a{
-    color:#ddd;
+    color:white;
     text-decoration:none;
     padding:10px 18px;
     border-radius:10px;
@@ -96,12 +106,12 @@ body{
 }
 
 .nav a:hover{
-    background:#1abc9c;
+    background:var(--accent);
     color:white;
 }
 
 .nav a.active{
-    background:#1abc9c;
+    background:var(--accent);
     color:white;
 }
 
@@ -120,7 +130,7 @@ body{
     content:"";
     position:absolute;
     inset:0;
-    background:rgba(0,0,0,0.55);
+    background:rgba(13, 76, 157, 0.5);
 }
 
 .hero h1{
@@ -150,7 +160,7 @@ body{
     font-size:34px;
     margin-bottom:25px;
     color:#111;
-    border-left:6px solid #1abc9c;
+    border-left:6px solid var(--accent);
     padding-left:15px;
 }
 
@@ -170,6 +180,7 @@ body{
     overflow:hidden;
     box-shadow:0 8px 25px rgba(0,0,0,0.08);
     transition:0.25s;
+    animation: fadeInUp 0.85s ease both;
 }
 
 .dia-card:hover{
@@ -177,7 +188,7 @@ body{
 }
 
 .dia-header{
-    background:#1abc9c;
+    background:var(--primary);
     color:white;
     text-align:center;
     padding:16px;
@@ -217,7 +228,7 @@ body{
 }
 
 .preco{
-    color:#1abc9c;
+    color:var(--accent);
     font-weight:bold;
     margin-bottom:10px;
     font-size:15px;
@@ -253,7 +264,7 @@ body{
 }
 
 .actions a:first-child{
-    background:#3498db;
+    background:var(--primary-soft);
 }
 
 .actions a:last-child{
@@ -263,7 +274,7 @@ body{
 /* FOOTER */
 
 .footer{
-    background:#111;
+    background:var(--primary);
     color:white;
     margin-top:60px;
 }
@@ -290,7 +301,7 @@ body{
 }
 
 .footer-section a{
-    color:#1abc9c;
+    color:var(--accent);
     text-decoration:none;
 }
 
@@ -331,6 +342,17 @@ body{
 
     .footer-container{
         grid-template-columns:1fr;
+    }
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
     }
 }
 

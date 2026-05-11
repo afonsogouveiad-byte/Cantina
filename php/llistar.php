@@ -17,6 +17,16 @@ $result = $conn->query("SELECT * FROM products");
 <title>Productes de menjador</title>
 
 <style>
+:root {
+    --primary: #0d4c9d;
+    --accent: #00a2ff;
+    --primary-soft: #3f7be6;
+    --text: #172c45;
+    --muted: #5f6f86;
+    --surface: #ffffff;
+    --shadow: 0 24px 60px rgba(15, 41, 78, 0.08);
+}
+
     .hero {
     width: 100%;
     height: 420px;
@@ -33,7 +43,7 @@ $result = $conn->query("SELECT * FROM products");
     position: absolute;
     width: 100%;
     height: 100%;
-    background: rgba(0,0,0,0.45);
+    background: rgba(13, 76, 157, 0.5);
 }
 
 .hero h1 {
@@ -45,11 +55,11 @@ $result = $conn->query("SELECT * FROM products");
 body {
     font-family: Arial;
     margin: 0;
-    background: #f4f6f8;
+    background: #eef4fc;
 }
 
 .nav {
-    background: #111;
+    background: var(--primary);
     display: grid;
     grid-template-columns: 1fr auto 1fr;
     align-items: center;
@@ -69,7 +79,7 @@ body {
 }
 
 .nav a {
-    color: #ddd;
+    color: white;
     text-decoration: none;
     padding: 10px 16px;
     border-radius: 8px;
@@ -78,12 +88,12 @@ body {
 }
 
 .nav a:hover {
-    background: #1abc9c;
+    background: var(--accent);
     color: white;
 }
 
 .nav a.active {
-    background: #1abc9c;
+    background: var(--accent);
     color: white;
 }
 
@@ -122,11 +132,12 @@ h1 {
 }
 
 .card {
-    background: white;
+    background: var(--surface);
     border-radius: 12px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+    box-shadow: var(--shadow);
     overflow: hidden;
     transition: 0.3s;
+    animation: fadeInUp 0.85s ease both;
 }
 
 .card:hover {
@@ -150,7 +161,7 @@ h1 {
 }
 
 .price {
-    color: #1abc9c;
+    color: var(--accent);
     font-weight: bold;
 }
 
@@ -159,7 +170,7 @@ h1 {
 }
 
 .footer {
-            background: #111;
+            background: var(--primary);
             color: white;
             margin-top: 40px;
         }
@@ -186,7 +197,7 @@ h1 {
         }
 
         .footer-section a {
-            color: #1abc9c;
+            color: var(--accent);
             text-decoration: none;
         }
 
@@ -215,6 +226,17 @@ h1 {
                 font-size: 28px;
             }
         }
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(18px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
 </style>
 </head>
 

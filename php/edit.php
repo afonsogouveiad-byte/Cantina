@@ -36,11 +36,21 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <meta charset="UTF-8">
 <title>Editar Produto</title>
 
-<style>
+    <style>
+:root {
+    --primary: #0d4c9d;
+    --accent: #00a2ff;
+    --primary-soft: #3f7be6;
+    --text: #172c45;
+    --muted: #5f6f86;
+    --surface: #ffffff;
+    --shadow: 0 24px 60px rgba(15, 41, 78, 0.08);
+}
+
 body {
     margin: 0;
     font-family: Arial;
-    background: #f4f6f8;
+    background: #eef4fc;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -53,6 +63,7 @@ body {
     border-radius: 14px;
     box-shadow: 0 10px 30px rgba(0,0,0,0.1);
     width: 350px;
+    animation: fadeInUp 0.9s ease both;
 }
 
 h2 {
@@ -71,14 +82,14 @@ input {
 }
 
 input:focus {
-    border-color: #1abc9c;
-    box-shadow: 0 0 5px rgba(26,188,156,0.4);
+    border-color: var(--accent);
+    box-shadow: 0 0 5px rgba(0, 162, 255, 0.4);
 }
 
 button {
     width: 100%;
     padding: 12px;
-    background: #1abc9c;
+    background: var(--accent);
     color: white;
     border: none;
     border-radius: 8px;
@@ -89,7 +100,7 @@ button {
 }
 
 button:hover {
-    background: #16a085;
+    background: var(--primary-soft);
     transform: translateY(-2px);
 }
 
@@ -102,7 +113,18 @@ button:hover {
 }
 
 .back:hover {
-    color: #1abc9c;
+    color: var(--accent);
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(18px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 </style>
 </head>
