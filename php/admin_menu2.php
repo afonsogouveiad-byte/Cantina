@@ -117,7 +117,7 @@ $result = $conn->query("SELECT * FROM menus2 ORDER BY week, day, id");
         <?php endforeach; ?>
 
     <?php else: ?>
-        <div class="empty">Nenhum menú encontrado. Adicione um novo item.</div>
+        <div class="empty">No s'ha trobat cap menú. Afegeix un element nou.</div>
     <?php endif; ?>
 </div>
 <footer class="footer">
