@@ -83,6 +83,12 @@ body {
     color: var(--text);
 }
 
+form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
 input {
     width: 100%;
     padding: 14px 16px;
@@ -102,7 +108,7 @@ input:focus {
 }
 
 button {
-    width: 100%;
+    width: 240px;
     padding: 14px 16px;
     background: linear-gradient(135deg, var(--accent), var(--primary-soft));
     color: #fff;
@@ -113,6 +119,7 @@ button {
     cursor: pointer;
     transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
     box-shadow: 0 4px 12px rgba(0, 162, 255, 0.3);
+    margin: 0 auto 24px;
 }
 
 button:hover {
@@ -138,12 +145,6 @@ button:hover {
         transform: translateY(0);
     }
 }
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
 </style>
 </head>
 <body>
@@ -156,6 +157,8 @@ button:hover {
 <input type="password" name="password" placeholder="Pass">
 <button>Entrar</button>
 </form>
+
+<p style="text-align:center; margin-bottom: 24px;"><a href="index.php" style="color:#0d4c9d; text-decoration:none; font-weight:700;">Tornar</a></p>
 
 <p style="color:red"><?= $error ?></p>
 </div>
