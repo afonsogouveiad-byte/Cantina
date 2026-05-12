@@ -451,22 +451,6 @@ footer {
                             <?= number_format($menu['price'], 2) ?> €
                         </div>
 
-                        <?php if(isset($_SESSION['user'])): ?>
-
-                            <div class="actions">
-
-                                <a href="edit_menu.php?id=<?= $menu['id'] ?>">
-                                    Editar
-                                </a>
-
-                                <a href="delete_menu.php?id=<?= $menu['id'] ?>">
-                                    Eliminar
-                                </a>
-
-                            </div>
-
-                        <?php endif; ?>
-
                     </div>
 
                 <?php
