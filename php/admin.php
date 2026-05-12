@@ -332,12 +332,12 @@ footer {
 
         <a href="admin_menu.php" class="button-card">
             <div class="button-icon">🍽️</div>
-            <div class="button-title">Menú Petits</div>
+            <div class="button-title">Menú Infantil</div>
         </a>
 
         <a href="admin_menu2.php" class="button-card">
             <div class="button-icon">🍽️</div>
-            <div class="button-title">Menú Grans</div>
+            <div class="button-title">Menú General</div>
         </a>
 
     

@@ -344,8 +344,8 @@ h1 {
     <div class="nav-links">
         <a href="index.php">Inici</a>
         <a class="active" href="llistar.php">Productes</a>
-        <a href="menu.php">Menú Petits</a>
-        <a href="menu2.php">Menú Grans</a>
+        <a href="menu.php">Menú Infantil</a>
+        <a href="menu2.php">Menú General</a>
     </div>
 
     <div class="nav-right"></div>

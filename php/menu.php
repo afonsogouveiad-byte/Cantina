@@ -397,8 +397,8 @@ footer {
     <div class="nav-links">
         <a href="index.php">Inici</a>
         <a href="llistar.php">Productes</a>
-        <a class="active" href="menu.php">Menú Petits</a>
-        <a href="menu2.php">Menú Grans</a>
+        <a class="active" href="menu.php">Menú Infantil</a>
+        <a href="menu2.php">Menú General</a>
     </div>
 
     <div></div>
@@ -408,7 +408,7 @@ footer {
 <!-- HERO -->
 
 <div class="hero">
-    <h1>Menú dels petits</h1>
+    <h1>Menú Infantil</h1>
 </div>
 
 <!-- MENUS -->

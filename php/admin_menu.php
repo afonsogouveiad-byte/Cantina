@@ -90,15 +90,15 @@ footer{background:var(--primary);color:white;margin-top:40px;position:relative;}
     <div class="nav-links">
         <a href="admin.php">Panell</a>
         <a href="admin_products.php">Productes</a>
-        <a class="active" href="admin_menu.php">Menú Petits</a>
-        <a href="admin_menu2.php">Menú Grans</a>
+        <a class="active" href="admin_menu.php">Menú Infantil</a>
+        <a href="admin_menu2.php">Menú General</a>
     </div>
     <div class="nav-right"><a class="logout" href="logout.php">Tanca sessió</a></div>
 </div>
-<div class="hero"><h1>Admin Menú Petits</h1></div>
+<div class="hero"><h1>Admin Menú Infantil</h1></div>
 <div class="admin-container">
     <div class="action-bar">
-        <h2>Gestió del menú petit</h2>
+        <h2>Gestió del menú infantil</h2>
         <a href="add_menu.php" class="button">Afegir menú</a>
     </div>
     <?php if ($result && $result->num_rows > 0): ?>

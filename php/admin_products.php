@@ -245,8 +245,8 @@ footer {
     <div class="nav-links">
         <a href="admin.php">Panell</a>
         <a class="active" href="admin_products.php">Productes</a>
-        <a href="admin_menu.php">Menú Petits</a>
-        <a href="admin_menu2.php">Menú Grans</a>
+        <a href="admin_menu.php">Menú Infantil</a>
+        <a href="admin_menu2.php">Menú General</a>
     </div>
     <div class="nav-right"><a class="logout" href="logout.php">Tanca sessió</a></div>
 </div>
