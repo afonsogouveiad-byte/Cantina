@@ -17,10 +17,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $name = $_POST['name'];
     $price = $_POST['price'];
     $category = $_POST['category'];
-    $image = $_POST['image'];
 
     $sql = "UPDATE products 
-            SET name='$name', price='$price', category='$category', images='$image'
+            SET name='$name', price='$price', category='$category'
             WHERE id=$id";
 
     $conn->query($sql);
@@ -190,17 +189,17 @@ button:hover {
 
     <form method="POST">
 
-        <input type="text" name="name"
-               value="<?= $product['name'] ?>" required>
+        <label for="name">Nome</label>
+        <input type="text" id="name" name="name"
+               value="<?= htmlspecialchars($product['name']) ?>" required>
 
-        <input type="number" step="0.01" name="price"
-               value="<?= $product['price'] ?>" required>
+        <label for="price">Preço</label>
+        <input type="number" id="price" step="0.01" name="price"
+               value="<?= htmlspecialchars($product['price']) ?>" required>
 
-        <input type="number" name="category"
-               value="<?= $product['category'] ?>" required>
-
-        <input type="text" name="image"
-               value="<?= $product['images'] ?>" required>
+        <label for="category">Categoria</label>
+        <input type="text" id="category" name="category"
+               value="<?= htmlspecialchars($product['category']) ?>" required>
 
         <button type="submit">Atualizar</button>
 

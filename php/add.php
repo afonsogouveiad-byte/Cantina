@@ -10,11 +10,10 @@ if (!isset($_SESSION['user'])) {
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $name = $_POST['name'];
     $price = $_POST['price'];
-    $stock = $_POST['stock'];
-    $image = $_POST['image'];
+    $category = $_POST['category'];
 
-    $sql = "INSERT INTO products (name, price, stock, images)
-            VALUES ('$name', '$price', '$stock', '$image')";
+    $sql = "INSERT INTO products (name, price, category)
+            VALUES ('$name', '$price', '$category')";
 
     $conn->query($sql);
 
@@ -172,9 +171,7 @@ button:hover {
 
         <input type="number" step="0.01" name="price" placeholder="Preço" required>
 
-        <input type="number" name="stock" placeholder="Stock" required>
-
-        <input type="text" name="image" placeholder="nome_da_imagem.jpg" required>
+        <input type="text" name="category" placeholder="Categoria" required>
 
         <button type="submit">Guardar</button>
 

@@ -6,47 +6,42 @@ if (!isset($_SESSION['user'])) {
     header("Location: login.php");
     exit();
 }
-
-$result = $conn->query("SELECT * FROM products");
 ?>
 
 <!DOCTYPE html>
 <html lang="ca">
+
 <head>
 <meta charset="UTF-8">
-<title>Admin - Cantina</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Painel Admin - Cantina</title>
 
 <style>
+
 :root {
-    --bg: #f4f8fd;
-    --surface: #ffffff;
-    --surface-soft: #eef3fb;
     --primary: #0d4c9d;
-    --primary-soft: #3f7be6;
     --accent: #00a2ff;
+    --primary-soft: #3f7be6;
     --text: #172c45;
     --muted: #5f6f86;
-    --border: rgba(13, 76, 157, 0.14);
+    --surface: #ffffff;
     --shadow: 0 24px 60px rgba(15, 41, 78, 0.08);
 }
 
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial, sans-serif;
 }
 
-html {
-    font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-    scroll-behavior: smooth;
+body{
+    background:#eef4fc;
+    color:#222;
 }
 
-body {
-    min-height: 100vh;
-    background: radial-gradient(circle at top left, rgba(0, 162, 255, 0.14), transparent 26%),
-        linear-gradient(180deg, #f5f8ff 0%, #eef4fc 100%);
-    color: var(--text);
-}
+/* NAVBAR */
 
 .nav {
     background: var(--primary);
@@ -67,8 +62,8 @@ body {
 
 .nav-links {
     display: flex;
-    justify-content: center;
     gap: 8px;
+    justify-content: center;
 }
 
 .nav a {
@@ -93,178 +88,203 @@ body {
     box-shadow: 0 4px 12px rgba(0, 162, 255, 0.3);
 }
 
-.logout {
-    text-align: right;
+.nav-right {
+    display: flex;
 }
 
-.logout a {
+/* HERO */
+
+.hero{
+    height:320px;
+    background:url('images/cantina.png') center/cover;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    position:relative;
+}
+
+.hero::before{
+    content:"";
+    position:absolute;
+    inset:0;
+    background:rgba(13, 76, 157, 0.5);
+}
+
+.hero h1{
+    position:relative;
+    z-index:2;
+    color:white;
+    font-size:52px;
+    text-align:center;
+    letter-spacing:1px;
+}
+
+/* CONTAINER */
+
+.admin-container{
+    max-width:1000px;
+    margin:60px auto;
+    padding:20px;
+}
+
+/* GRID DE BOTÕES */
+
+.buttons-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit, minmax(220px, 1fr));
+    gap:30px;
+    margin-bottom:60px;
+}
+
+/* CARD DE BOTÃO */
+
+.button-card{
+    background:white;
+    border-radius:16px;
+    overflow:hidden;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+    transition:0.25s;
+    animation: fadeInUp 0.85s ease both;
+    text-decoration:none;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    padding:40px 30px;
+    cursor:pointer;
+}
+
+.button-card:hover{
+    transform:translateY(-8px);
+    box-shadow: 0 12px 35px rgba(0,0,0,0.15);
+}
+
+.button-icon{
+    font-size:60px;
+    margin-bottom:20px;
+}
+
+.button-title{
+    font-size:20px;
+    font-weight:bold;
+    color:#222;
+    text-align:center;
+}
+
+.button-card.logout {
     background: linear-gradient(135deg, #e74c3c, #c0392b);
+}
+
+.button-card.logout .button-title {
     color: white;
-    padding: 10px 16px;
-    border-radius: 10px;
-    text-decoration: none;
-    font-weight: 600;
-    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-    box-shadow: 0 4px 12px rgba(231, 76, 60, 0.3);
 }
 
-.logout a:hover {
-    background: linear-gradient(135deg, #c0392b, #a93226);
-    transform: translateY(-1px);
-    box-shadow: 0 6px 16px rgba(231, 76, 60, 0.4);
+.button-card.logout:hover {
+    box-shadow: 0 12px 35px rgba(231, 76, 60, 0.3);
 }
 
-.grid {
+/* FOOTER */
+
+footer {
+    background: var(--primary);
+    color: white;
+    margin-top: 60px;
+    position: relative;
+}
+
+.footer::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--accent), var(--primary-soft));
+}
+
+.footer-container {
     max-width: 1180px;
     margin: 0 auto;
+    padding: 40px 24px;
+
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 24px;
-    padding: 28px 24px 40px;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 32px;
 }
 
-.card {
-    background: var(--surface);
-    border-radius: 16px;
-    box-shadow: var(--shadow);
-    overflow: hidden;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    animation: fadeInUp 0.85s ease both;
-    border: 1px solid var(--border);
-}
-
-.card:hover {
-    transform: translateY(-8px);
-    box-shadow: 0 32px 64px rgba(15, 41, 78, 0.12);
-}
-
-.card img {
-    width: 100%;
-    height: 180px;
-    object-fit: cover;
-}
-
-.info {
-    padding: 20px;
-}
-
-.name {
+.footer-section h3,
+.footer-section h4 {
+    margin-bottom: 16px;
     font-weight: 600;
-    font-size: 1.1rem;
-    margin-bottom: 8px;
-    color: var(--text);
+    color: white;
 }
 
-.price {
+.footer-section p,
+.footer-section a {
+    font-size: 0.95rem;
+    line-height: 1.7;
+    color: rgba(255,255,255,0.9);
+}
+
+.footer-section a {
     color: var(--accent);
-    font-weight: 600;
-    font-size: 1.2rem;
-    margin-bottom: 12px;
-}
-
-.actions {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 16px;
-    gap: 8px;
-}
-
-.actions a {
     text-decoration: none;
-    padding: 8px 12px;
-    border-radius: 8px;
-    font-weight: 600;
-    font-size: 0.9rem;
-    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-    flex: 1;
+    transition: all 0.25s ease;
+}
+
+.footer-section a:hover {
+    color: white;
+    text-decoration: none;
+    transform: translateX(2px);
+}
+
+.footer-bottom {
     text-align: center;
+    padding: 20px 24px;
+    border-top: 1px solid rgba(255,255,255,0.1);
+    font-size: 0.9rem;
+    color: rgba(255,255,255,0.7);
 }
 
-.actions a:first-child {
-    background: var(--primary-soft);
-    color: white;
-}
+/* RESPONSIVE */
 
-.actions a:first-child:hover {
-    background: var(--primary);
-    transform: translateY(-1px);
-}
+@media(max-width:1000px){
 
-.actions a:last-child {
-    background: linear-gradient(135deg, #e74c3c, #c0392b);
-    color: white;
-}
-
-.actions a:last-child:hover {
-    background: linear-gradient(135deg, #c0392b, #a93226);
-    transform: translateY(-1px);
-}
-    padding: 6px 10px;
-    border-radius: 6px;
-    font-size: 14px;
-}
-
-.edit {
-    background: var(--primary-soft);
-    color: white;
-@media (max-width: 1024px) {
-    .grid {
-        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-        gap: 20px;
-        padding: 24px 20px 32px;
+    .footer-container{
+        grid-template-columns:1fr 1fr;
     }
 }
 
-@media (max-width: 768px) {
-    .grid {
-        grid-template-columns: 1fr;
-        gap: 16px;
-        padding: 20px 16px 28px;
+@media(max-width:700px){
+
+    .nav{
+        grid-template-columns:1fr;
+        gap:15px;
     }
 
-    .nav {
-        grid-template-columns: 1fr;
-        text-align: center;
-        padding: 10px 16px;
+    .nav-links{
+        flex-wrap:wrap;
     }
 
-    .nav-links {
-        flex-direction: column;
-        gap: 6px;
-        margin-top: 12px;
+    .hero h1{
+        font-size:36px;
     }
 
-    .nav a {
-        padding: 8px 16px;
-        font-size: 0.9rem;
+    .footer-container{
+        grid-template-columns:1fr;
     }
 
-    .logout {
-        text-align: center;
-        margin-top: 8px;
+    .button-card{
+        padding:30px 20px;
     }
 
-    .actions {
-        flex-direction: column;
-        gap: 6px;
+    .button-icon{
+        font-size:50px;
+        margin-bottom:15px;
     }
 
-    .actions a {
-        padding: 10px 12px;
-    }
-}
-
-@media (max-width: 480px) {
-    .grid {
-        padding: 16px 12px 24px;
-    }
-
-    .card {
-        border-radius: 12px;
-    }
-
-    .info {
-        padding: 16px;
+    .button-title{
+        font-size:18px;
     }
 }
 
@@ -278,60 +298,121 @@ body {
         transform: translateY(0);
     }
 }
+
 </style>
 </head>
 
 <body>
 
-<<div class="nav">
+<!-- NAVBAR -->
+
+<div class="nav">
 
     <div class="logo">
-        <a href="index.php">
-            <img src="images/logo.png" alt="Institut Pedralbes">
-        </a>
+        <img src="images/inspedr.jpg" alt="Institut Pedralbes">
     </div>
 
     <div class="nav-links">
-        <a href="index.php">Início</a>
-        <a href="llistar.php">Produtos</a>
-        <a href="menus.php">Menu</a>
 
-        <?php if (isset($_SESSION['user'])): ?>
-            <a href="admin.php">Admin</a>
-        <?php endif; ?>
+        <a class="active" href="admin.php">Admin</a>
     </div>
 
-    <div class="right">
-        <?php if (isset($_SESSION['user'])): ?>
-            <a class="logout" href="logout.php">Logout</a>
-        <?php endif; ?>
+    <div></div>
+
+</div>
+
+<!-- HERO -->
+
+<div class="hero">
+    <h1>Painel de Administração</h1>
+</div>
+
+<!-- ADMIN PANEL -->
+
+<div class="admin-container">
+
+    <div class="buttons-grid">
+
+        <a href="admin_products.php" class="button-card">
+            <div class="button-icon">📦</div>
+            <div class="button-title">Produtos</div>
+        </a>
+
+        <a href="admin_menu.php" class="button-card">
+            <div class="button-icon">🍽️</div>
+            <div class="button-title">Menú Petits</div>
+        </a>
+
+        <a href="admin_menu2.php" class="button-card">
+            <div class="button-icon">🍴</div>
+            <div class="button-title">Menú Grandes</div>
+        </a>
+
+        <a href="logout.php" class="button-card logout">
+            <div class="button-icon">🚪</div>
+            <div class="button-title">Logout</div>
+        </a>
+
     </div>
 
 </div>
 
-<h1 style="text-align:center; margin:20px 0;">Painel Admin</h1>
+<!-- FOOTER -->
 
-<div class="grid">
+<footer class="footer">
 
-<?php while($row = $result->fetch_assoc()): ?>
-    <div class="card">
+    <div class="footer-container">
 
-        <img src="images/<?= $row['images'] ?>">
+        <div class="footer-section">
 
-        <div class="info">
-            <div class="name"><?= $row['name'] ?></div>
-            <div class="price"><?= $row['price'] ?> €</div>
+            <h3>El centre</h3>
 
-            <div class="actions">
-                <a class="edit" href="edit.php?id=<?= $row['id'] ?>">Editar</a>
-                <a class="delete" href="delete.php?id=<?= $row['id'] ?>" onclick="return confirm('Apagar?')">Apagar</a>
-            </div>
+            <p>
+                Institut públic del districte de Les Corts,
+                amb oferta d'ESO, Batxillerat,
+                CFGM i CFGS d'Informàtica,
+                Imatge i So, i PFI.
+            </p>
+
+        </div>
+
+        <div class="footer-section">
+
+            <h4>Contacte</h4>
+
+            <p>93 203 33 32</p>
+            <p>inspedralbes@xtec.cat</p>
+
+        </div>
+
+        <div class="footer-section">
+
+            <h4>Adreça</h4>
+
+            <p>Av. Esplugues, 36-42</p>
+            <p>08034 Barcelona</p>
+
+        </div>
+
+        <div class="footer-section">
+
+            <h4>Legal</h4>
+
+            <a href="#">Cookies</a>
+            <br>
+            <a href="#">Avís legal</a>
+            <br>
+            <a href="#">Protecció de dades</a>
+
         </div>
 
     </div>
-<?php endwhile; ?>
 
-</div>
+    <div class="footer-bottom">
+        &copy; <?= date("Y") ?> Institut Pedralbes - Cantina
+    </div>
+
+</footer>
 
 </body>
 </html>
