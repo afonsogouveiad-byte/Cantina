@@ -16,7 +16,7 @@ $result = $conn->query("SELECT * FROM products ORDER BY category ASC, name ASC")
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Admin Produtos - Cantina</title>
+<title>Admin Productes - Cantina</title>
 <style>
 :root {
     --primary: #0d4c9d;
@@ -243,24 +243,24 @@ footer {
 <div class="nav">
     <div class="logo"><img src="images/inspedr.jpg" alt="Institut Pedralbes"></div>
     <div class="nav-links">
-        <a href="admin.php">Painel</a>
-        <a class="active" href="admin_products.php">Produtos</a>
+        <a href="admin.php">Panell</a>
+        <a class="active" href="admin_products.php">Productes</a>
         <a href="admin_menu.php">Menú Petits</a>
-        <a href="admin_menu2.php">Menú Grandes</a>
+        <a href="admin_menu2.php">Menú Grans</a>
     </div>
-    <div class="nav-right"><a class="logout" href="logout.php">Logout</a></div>
+    <div class="nav-right"><a class="logout" href="logout.php">Tanca sessió</a></div>
 </div>
-<div class="hero"><h1>Produtos Admin</h1></div>
+<div class="hero"><h1>Productes Admin</h1></div>
 <div class="admin-container">
     <div class="action-bar">
-        <h2>Gestão de produtos</h2>
-        <a href="add.php" class="button">Adicionar Produto</a>
+        <h2>Gestió de productes</h2>
+        <a href="add.php" class="button">Afegir producte</a>
     </div>
     <?php if ($result && $result->num_rows > 0): ?>
     <?php $currentCategory = null; ?>
     <div class="grid">
         <?php while($row = $result->fetch_assoc()): ?>
-            <?php $categoryLabel = !empty($row['category']) ? htmlspecialchars($row['category']) : 'Sem categoria'; ?>
+            <?php $categoryLabel = !empty($row['category']) ? htmlspecialchars($row['category']) : 'Sense categoria'; ?>
             <?php if ($currentCategory !== $categoryLabel): ?>
                 <?php $currentCategory = $categoryLabel; ?>
                 <div class="category-heading"><?= $currentCategory ?></div>
@@ -268,18 +268,18 @@ footer {
         <div class="card">
             <div class="card-body">
                 <h3><?= htmlspecialchars($row['name']) ?></h3>
-                <p class="meta">Preço: <?= number_format($row['price'], 2) ?> €</p>
+                <p class="meta">Preu: <?= number_format($row['price'], 2) ?> €</p>
                 <?php if (!empty($row['category'])): ?><p class="meta">Categoria: <?= htmlspecialchars($row['category']) ?></p><?php endif; ?>
                 <div class="actions">
                     <a class="edit" href="edit.php?id=<?= $row['id'] ?>">Editar</a>
-                    <a class="delete" href="delete.php?id=<?= $row['id'] ?>" onclick="return confirm('Tem a certeza que deseja apagar este produto?')">Apagar</a>
+                    <a class="delete" href="delete.php?id=<?= $row['id'] ?>" onclick="return confirm('Estàs segur que vols eliminar aquest producte?')">Eliminar</a>
                 </div>
             </div>
         </div>
         <?php endwhile; ?>
     </div>
     <?php else: ?>
-    <div class="empty">Nenhum produto encontrado. Adicione um novo produto para começar.</div>
+    <div class="empty">Cap producte trobat. Afegeix un producte nou per començar.</div>
     <?php endif; ?>
 </div>
 <footer class="footer">

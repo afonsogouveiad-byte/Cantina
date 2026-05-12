@@ -33,7 +33,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <html lang="ca">
 <head>
 <meta charset="UTF-8">
-<title>Editar Produto</title>
+<title>Editar Producte</title>
 
     <style>
 :root {
@@ -185,15 +185,15 @@ button:hover {
 
 <div class="box">
 
-    <h2>Editar Produto</h2>
+    <h2>Editar Producte</h2>
 
     <form method="POST">
 
-        <label for="name">Nome</label>
+        <label for="name">Nom</label>
         <input type="text" id="name" name="name"
                value="<?= htmlspecialchars($product['name']) ?>" required>
 
-        <label for="price">Preço</label>
+        <label for="price">Preu</label>
         <input type="number" id="price" step="0.01" name="price"
                value="<?= htmlspecialchars($product['price']) ?>" required>
 
@@ -201,11 +201,11 @@ button:hover {
         <input type="text" id="category" name="category"
                value="<?= htmlspecialchars($product['category']) ?>" required>
 
-        <button type="submit">Atualizar</button>
+        <button type="submit">Actualitza</button>
 
     </form>
 
-    <a class="back" href="admin.php">← Voltar</a>
+    <a class="back" href="admin.php">← Tornar</a>
 
 </div>
 

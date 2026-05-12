@@ -15,7 +15,7 @@ if (!isset($_SESSION['user'])) {
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Painel Admin - Cantina</title>
+<title>Panell Admin - Cantina</title>
 
 <style>
 
@@ -54,18 +54,15 @@ body{
     z-index: 1000;
     box-shadow: 0 4px 20px rgba(13, 76, 157, 0.15);
 }
-
 .logo img {
     height: 45px;
     border-radius: 8px;
 }
-
 .nav-links {
     display: flex;
     gap: 8px;
     justify-content: center;
 }
-
 .nav a {
     color: white;
     text-decoration: none;
@@ -75,21 +72,15 @@ body{
     transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
     font-size: 0.95rem;
 }
-
-.nav a:hover {
+.nav a:hover,
+.nav a.active {
     background: var(--accent);
     color: white;
     transform: translateY(-1px);
 }
-
-.nav a.active {
-    background: var(--accent);
-    color: white;
-    box-shadow: 0 4px 12px rgba(0, 162, 255, 0.3);
-}
-
 .nav-right {
     display: flex;
+    justify-content: flex-end;
 }
 
 /* HERO */
@@ -316,6 +307,7 @@ footer {
 
         <a class="active" href="admin.php">Admin</a>
     </div>
+    <div class="nav-right"><a class="logout" href="logout.php">Tanca sessió</a></div>
 
     <div></div>
 
@@ -324,7 +316,7 @@ footer {
 <!-- HERO -->
 
 <div class="hero">
-    <h1>Painel de Administração</h1>
+    <h1>Panell d'administració</h1>
 </div>
 
 <!-- ADMIN PANEL -->
@@ -334,8 +326,8 @@ footer {
     <div class="buttons-grid">
 
         <a href="admin_products.php" class="button-card">
-            <div class="button-icon">📦</div>
-            <div class="button-title">Produtos</div>
+            <div class="button-icon">🥪</div>
+            <div class="button-title">Productes</div>
         </a>
 
         <a href="admin_menu.php" class="button-card">
@@ -344,14 +336,11 @@ footer {
         </a>
 
         <a href="admin_menu2.php" class="button-card">
-            <div class="button-icon">🍴</div>
-            <div class="button-title">Menú Grandes</div>
+            <div class="button-icon">🍽️</div>
+            <div class="button-title">Menú Grans</div>
         </a>
 
-        <a href="logout.php" class="button-card logout">
-            <div class="button-icon">🚪</div>
-            <div class="button-title">Logout</div>
-        </a>
+    
 
     </div>
 

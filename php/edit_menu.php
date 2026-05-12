@@ -34,13 +34,13 @@ if ($_SERVER["REQUEST_METHOD"] === 'POST') {
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Editar Menú Petit</title>
+<title>Editar menú petit</title>
 <style>
 :root {--primary:#0d4c9d;--accent:#00a2ff;--primary-soft:#3f7be6;--text:#172c45;--surface:#ffffff;--border:rgba(13,76,157,0.14);--shadow:0 24px 60px rgba(15,41,78,0.08);}*{margin:0;padding:0;box-sizing:border-box;font-family:Arial,sans-serif;}body{min-height:100vh;background:#eef4fc;color:#222;display:flex;justify-content:center;align-items:center;padding:20px;} .box{background:#fff;padding:36px;border-radius:20px;max-width:460px;width:100%;box-shadow:var(--shadow);border:1px solid var(--border);} h2{text-align:center;margin-bottom:24px;font-size:1.9rem;color:#111;} label{display:block;margin:14px 0 6px;color:#444;font-weight:600;} input, select{width:100%;padding:14px 16px;border:2px solid var(--border);border-radius:12px;background:#fff;color:#172c45;font-size:1rem;transition:all 0.25s ease;} input:focus, select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(0,162,255,0.12);} button{width:100%;padding:14px 16px;background:linear-gradient(135deg,var(--accent),var(--primary-soft));color:#fff;border:none;border-radius:12px;font-size:1rem;font-weight:700;cursor:pointer;margin-top:22px;transition:transform 0.2s ease,box-shadow 0.2s ease;} button:hover{transform:translateY(-2px);box-shadow:0 8px 20px rgba(0,162,255,0.2);} .back{display:block;text-align:center;margin-top:18px;color:#444;text-decoration:none;} .back:hover{color:var(--accent);} </style>
 </head>
 <body>
 <div class="box">
-    <h2>Editar Menú Petit</h2>
+    <h2>Editar menú petit</h2>
     <form method="POST">
         <label for="week">Setmana</label>
         <select id="week" name="week" required>
@@ -59,9 +59,9 @@ if ($_SERVER["REQUEST_METHOD"] === 'POST') {
         <input type="text" id="name" name="name" value="<?= htmlspecialchars($menu['name']) ?>" required>
         <label for="price">Preu</label>
         <input type="number" step="0.01" id="price" name="price" value="<?= htmlspecialchars($menu['price']) ?>" required>
-        <button type="submit">Guardar canvis</button>
+        <button type="submit">Desa canvis</button>
     </form>
-    <a class="back" href="admin_menu.php">← Tornar al paneI</a>
+    <a class="back" href="admin_menu.php">← Tornar al panell</a>
 </div>
 </body>
 </html>

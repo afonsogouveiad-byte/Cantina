@@ -45,7 +45,7 @@ $semanas = [
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Menú Grandes</title>
+<title>Menú Grans</title>
 
 <style>
 
@@ -399,7 +399,7 @@ footer {
         <a href="index.php">Inici</a>
         <a href="llistar.php">Productes</a>
         <a href="menu.php">Menú Petits</a>
-        <a class="active" href="menu2.php">Menú Grandes</a>
+        <a class="active" href="menu2.php">Menú Grans</a>
     </div>
 
     <div></div>
@@ -409,7 +409,7 @@ footer {
 <!-- HERO -->
 
 <div class="hero">
-    <h1>Menú de los Grandes</h1>
+    <h1>Menú dels grans</h1>
 </div>
 
 <!-- MENUS -->

@@ -254,7 +254,7 @@ footer {
     <div class="left">
         <a class="btn" href="llistar.php">Productes</a>
         <a class="btn" href="menu.php">Menú Petits</a>
-        <a class="btn" href="menu2.php">Menú Grandes</a>
+        <a class="btn" href="menu2.php">Menú Grans</a>
         <a class="btn" href="login.php">Admin</a>
     </div>
 

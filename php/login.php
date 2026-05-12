@@ -27,7 +27,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <!DOCTYPE html>
 <html>
 <head>
-<title>Login</title>
+<title>inici de sessió</title>
 <style>
 :root {
     --bg: #f4f8fd;
@@ -149,7 +149,7 @@ button:hover {
 <body>
 
 <div class="box">
-<h2>Login</h2>
+<h2>inici de sessió</h2>
 
 <form method="POST">
 <input name="username" placeholder="User">

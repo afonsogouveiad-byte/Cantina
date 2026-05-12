@@ -88,18 +88,18 @@ footer{background:var(--primary);color:white;margin-top:40px;position:relative;}
 <div class="nav">
     <div class="logo"><img src="images/inspedr.jpg" alt="Institut Pedralbes"></div>
     <div class="nav-links">
-        <a href="admin.php">Painel</a>
-        <a href="admin_products.php">Produtos</a>
+        <a href="admin.php">Panell</a>
+        <a href="admin_products.php">Productes</a>
         <a class="active" href="admin_menu.php">Menú Petits</a>
-        <a href="admin_menu2.php">Menú Grandes</a>
+        <a href="admin_menu2.php">Menú Grans</a>
     </div>
-    <div class="nav-right"><a class="logout" href="logout.php">Logout</a></div>
+    <div class="nav-right"><a class="logout" href="logout.php">Tanca sessió</a></div>
 </div>
 <div class="hero"><h1>Admin Menú Petits</h1></div>
 <div class="admin-container">
     <div class="action-bar">
-        <h2>Gestão do menú petit</h2>
-        <a href="add_menu.php" class="button">Adicionar Menú</a>
+        <h2>Gestió del menú petit</h2>
+        <a href="add_menu.php" class="button">Afegir menú</a>
     </div>
     <?php if ($result && $result->num_rows > 0): ?>
         <?php
@@ -142,7 +142,7 @@ footer{background:var(--primary);color:white;margin-top:40px;position:relative;}
                                             <div class="preco"><?= number_format($menu['price'], 2) ?> €</div>
                                             <div class="actions">
                                                 <a href="edit_menu.php?id=<?= $menu['id'] ?>">Editar</a>
-                                                <a href="delete_menu.php?id=<?= $menu['id'] ?>" onclick="return confirm('Tem a certeza que deseja eliminar este menú?')">Eliminar</a>
+                                                <a href="delete_menu.php?id=<?= $menu['id'] ?>" onclick="return confirm('Estàs segur que vols eliminar aquest menú?')">Eliminar</a>
                                             </div>
                                         </div>
                                     <?php endforeach; ?>

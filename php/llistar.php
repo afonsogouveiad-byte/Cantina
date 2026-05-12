@@ -6,7 +6,7 @@ $result = $conn->query("SELECT * FROM products");
 <?php if(isset($_SESSION['user'])): ?>
     <div class="actions">
         <a class="edit" href="edit.php?id=<?= $row['id'] ?>">Editar</a>
-        <a class="delete" href="delete.php?id=<?= $row['id'] ?>">Apagar</a>
+        <a class="delete" href="delete.php?id=<?= $row['id'] ?>">Eliminar</a>
     </div>
 <?php endif; ?>
 
@@ -345,7 +345,7 @@ h1 {
         <a href="index.php">Inici</a>
         <a class="active" href="llistar.php">Productes</a>
         <a href="menu.php">Menú Petits</a>
-        <a href="menu2.php">Menú Grandes</a>
+        <a href="menu2.php">Menú Grans</a>
     </div>
 
     <div class="nav-right"></div>

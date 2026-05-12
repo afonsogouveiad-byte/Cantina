@@ -26,7 +26,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <html lang="ca">
 <head>
 <meta charset="UTF-8">
-<title>Adicionar Produto</title>
+<title>Afegir producte</title>
 
     <style>
 :root {
@@ -163,21 +163,21 @@ button:hover {
 <body>
 
 <div class="box">
-    <h2>Adicionar Produto</h2>
+    <h2>Afegir producte</h2>
 
     <form method="POST">
 
-        <input type="text" name="name" placeholder="Nome do produto" required>
+        <input type="text" name="name" placeholder="Nom do produto" required>
 
-        <input type="number" step="0.01" name="price" placeholder="Preço" required>
+        <input type="number" step="0.01" name="price" placeholder="Preu" required>
 
         <input type="text" name="category" placeholder="Categoria" required>
 
-        <button type="submit">Guardar</button>
+        <button type="submit">Desa</button>
 
     </form>
 
-    <a class="back" href="admin.php">← Voltar ao painel</a>
+    <a class="back" href="admin.php">← Tornar al panell</a>
 </div>
 
 </body>

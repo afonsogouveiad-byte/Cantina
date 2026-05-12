@@ -16,7 +16,7 @@ $result = $conn->query("SELECT * FROM menus2 ORDER BY week, day, id");
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Admin Menú Grandes - Cantina</title>
+<title>Admin Menú Grans - Cantina</title>
 <style>
 :root {--primary:#0d4c9d;--accent:#00a2ff;--primary-soft:#3f7be6;--text:#172c45;--surface:#ffffff;--shadow:0 24px 60px rgba(15,41,78,0.08);}*{margin:0;padding:0;box-sizing:border-box;font-family:Arial,sans-serif;}body{background:#eef4fc;color:#222;} .nav{background:var(--primary);display:grid;grid-template-columns:1fr auto 1fr;align-items:center;padding:12px 24px;position:sticky;top:0;z-index:1000;box-shadow:0 4px 20px rgba(13,76,157,0.15);} .logo img{height:45px;border-radius:8px;} .nav-links{display:flex;gap:8px;justify-content:center;} .nav a{color:white;text-decoration:none;padding:10px 18px;border-radius:10px;font-weight:600;transition:all 0.25s cubic-bezier(0.4,0,0.2,1);font-size:0.95rem;} .nav a:hover,.nav a.active{background:var(--accent);color:white;transform:translateY(-1px);} .nav-right{display:flex;justify-content:flex-end;} .logout a{background:linear-gradient(135deg,#e74c3c,#c0392b);color:white;padding:10px 16px;border-radius:10px;text-decoration:none;font-weight:600;} .hero{height:240px;background:url('images/cantina.png')center/cover;display:flex;justify-content:center;align-items:center;position:relative;} .hero::before{content:'';position:absolute;inset:0;background:rgba(13,76,157,0.55);} .hero h1{position:relative;z-index:2;color:white;font-size:42px;text-align:center;letter-spacing:1px;} .admin-container{max-width:1200px;margin:40px auto;padding:20px;} .action-bar{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;margin-bottom:24px;} .action-bar h2{font-size:28px;color:#111;} .action-bar a.button{background:var(--accent);color:white;padding:12px 20px;border-radius:12px;text-decoration:none;font-weight:700;transition:transform 0.2s ease,box-shadow 0.2s ease;} .action-bar a.button:hover{transform:translateY(-2px);box-shadow:0 12px 20px rgba(0,162,255,0.2);} .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:24px;} .card{background:white;border-radius:16px;box-shadow:0 8px 25px rgba(0,0,0,0.08);overflow:hidden;transition:transform 0.25s ease,box-shadow 0.25s ease;} .card:hover{transform:translateY(-5px);box-shadow:0 16px 32px rgba(0,0,0,0.1);} .card-body{padding:18px;} .card-body h3{font-size:20px;margin-bottom:10px;} .meta{color:#5f6f86;margin-bottom:10px;} .actions{display:flex;gap:10px;flex-wrap:wrap;} .actions a{display:inline-block;text-decoration:none;padding:10px 14px;border-radius:10px;font-weight:700;color:white;} .actions a.edit{background:var(--primary-soft);} .actions a.delete{background:#e74c3c;} .actions a.edit:hover{background:var(--primary);} .actions a.delete:hover{background:#c0392b;}
 
@@ -48,18 +48,18 @@ $result = $conn->query("SELECT * FROM menus2 ORDER BY week, day, id");
 <div class="nav">
     <div class="logo"><img src="images/inspedr.jpg" alt="Institut Pedralbes"></div>
     <div class="nav-links">
-        <a href="admin.php">Painel</a>
-        <a href="admin_products.php">Produtos</a>
+        <a href="admin.php">Panell</a>
+        <a href="admin_products.php">Productes</a>
         <a href="admin_menu.php">Menú Petits</a>
-        <a class="active" href="admin_menu2.php">Menú Grandes</a>
+        <a class="active" href="admin_menu2.php">Menú Grans</a>
     </div>
-    <div class="nav-right"><a class="logout" href="logout.php">Logout</a></div>
+    <div class="nav-right"><a class="logout" href="logout.php">Tanca sessió</a></div>
 </div>
-<div class="hero"><h1>Admin Menú Grandes</h1></div>
+<div class="hero"><h1>Admin Menú Grans</h1></div>
 <div class="admin-container">
     <div class="action-bar">
-        <h2>Gestão do menú grandes</h2>
-        <a href="add_menu2.php" class="button">Adicionar Menú</a>
+        <h2>Gestió del menú gran</h2>
+        <a href="add_menu2.php" class="button">Afegir menú</a>
     </div>
     <?php if ($result && $result->num_rows > 0): ?>
         <?php
@@ -102,7 +102,7 @@ $result = $conn->query("SELECT * FROM menus2 ORDER BY week, day, id");
                                             <div class="preco"><?= number_format($menu['price'], 2) ?> €</div>
                                             <div class="actions">
                                                 <a href="edit_menu2.php?id=<?= $menu['id'] ?>">Editar</a>
-                                                <a href="delete_menu2.php?id=<?= $menu['id'] ?>" onclick="return confirm('Tem a certeza que deseja eliminar este menú?')">Eliminar</a>
+                                                <a href="delete_menu2.php?id=<?= $menu['id'] ?>" onclick="return confirm('Estàs segur que vols eliminar aquest menú?')">Eliminar</a>
                                             </div>
                                         </div>
                                     <?php endforeach; ?>
