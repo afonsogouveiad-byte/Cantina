@@ -146,53 +146,66 @@
             margin-bottom: 12px;
         }
 
-        .footer {
-            margin-top: 0;
-            padding-top: 40px;
-            background: #eef4fc;
-        }
+footer {
+    background: var(--primary);
+    color: white;
+    margin-top: 60px;
+    position: relative;
+}
 
-        .footer-container {
-            max-width: 1180px;
-            margin: auto;
-            padding: 30px 24px 18px;
-            display: grid;
-            grid-template-columns: repeat(4, minmax(180px, 1fr));
-            gap: 22px;
-        }
+.footer::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--accent), var(--primary-soft));
+}
 
-        .footer-section h3,
-        .footer-section h4 {
-            margin-bottom: 12px;
-            color: #11223d;
-        }
+.footer-container {
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 40px 24px;
 
-        .footer-section p,
-        .footer-section a {
-            font-size: 0.95rem;
-            line-height: 1.8;
-            color: var(--muted);
-        }
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 32px;
+}
 
-        .footer-section a {
-            color: var(--primary);
-        }
+.footer-section h3,
+.footer-section h4 {
+    margin-bottom: 16px;
+    font-weight: 600;
+    color: white;
+}
 
-        .footer-section a:hover {
-            text-decoration: underline;
-        }
+.footer-section p,
+.footer-section a {
+    font-size: 0.95rem;
+    line-height: 1.7;
+    color: rgba(255,255,255,0.9);
+}
 
-        .footer-bottom {
-            text-align: center;
-            padding: 18px 20px 28px;
-            border-top: 1px solid rgba(13, 76, 157, 0.12);
-            font-size: 0.92rem;
-            color: var(--muted);
-        }
+.footer-section a {
+    color: var(--accent);
+    text-decoration: none;
+    transition: all 0.25s ease;
+}
 
-        .footer-bottom p {
-            margin: 0;
-        }
+.footer-section a:hover {
+    color: white;
+    text-decoration: none;
+    transform: translateX(2px);
+}
+
+.footer-bottom {
+    text-align: center;
+    padding: 20px 24px;
+    border-top: 1px solid rgba(255,255,255,0.1);
+    font-size: 0.9rem;
+    color: rgba(255,255,255,0.7);
+}
 
         @media (max-width: 1024px) {
             .main {
@@ -233,7 +246,6 @@
 <div class="hero">
     <div class="hero-content">
         <h1>Cantina</h1>
-        <p>Institut Pedralbes</p>
     </div>
 </div>
 
@@ -249,7 +261,7 @@
     <div>
 
         <div class="card">
-            <h3>Informació de l’institut</h3>
+            <h3>Informació de l'Institut Pedralbes</h3>
             <p>
                 L’Institut Pedralbes és un centre d’educació secundària públic situat a Barcelona.
                 Ofereix ESO, Batxillerat i cicles formatius amb aposta per la innovació i tecnologia.
