@@ -104,6 +104,19 @@ body {
     height: 45px;
     border-radius: 8px;
 }
+.logo a {
+    display: inline-block;
+    padding: 0 !important;
+    border-radius: 0 !important;
+    background: transparent !important;
+    color: inherit !important;
+    text-decoration: none !important;
+    transition: none !important;
+}
+.logo a:hover {
+    background: transparent !important;
+    transform: none !important;
+}
 
 .nav-links {
     display: flex;
@@ -403,7 +416,7 @@ h1 {
 <div class="nav">
 
     <div class="logo">
-        <img src="images/inspedr.jpg" alt="Institut Pedralbes">
+        <a href="index.php"><img src="images/inspedr.jpg" alt="Institut Pedralbes"></a>
     </div>
 
     <div class="nav-links">

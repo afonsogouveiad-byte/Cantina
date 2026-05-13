@@ -71,6 +71,19 @@ body{
     height: 45px;
     border-radius: 8px;
 }
+.logo a {
+    display: inline-block;
+    padding: 0 !important;
+    border-radius: 0 !important;
+    background: transparent !important;
+    color: inherit !important;
+    text-decoration: none !important;
+    transition: none !important;
+}
+.logo a:hover {
+    background: transparent !important;
+    transform: none;
+}
 .nav-links {
     display: flex;
     gap: 8px;
@@ -295,7 +308,7 @@ footer {
 
 <body>
 <div class="nav">
-    <div class="logo"><img src="images/inspedr.jpg" alt="Institut Pedralbes"></div>
+    <div class="logo"><a href="admin.php"><img src="images/inspedr.jpg" alt="Institut Pedralbes"></a></div>
     <div class="nav-links">
         <a href="admin.php">Panell</a>
         <a class="active" href="admin_products.php">Productes</a>

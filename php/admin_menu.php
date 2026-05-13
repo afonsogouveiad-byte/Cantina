@@ -31,6 +31,8 @@ $result = $conn->query("SELECT * FROM menus ORDER BY week, day, id");
 body{background:#eef4fc;color:#222;}
 .nav{background: var(--primary);display:grid;grid-template-columns:1fr auto 1fr;align-items:center;padding:12px 24px;position:sticky;top:0;z-index:1000;box-shadow:0 4px 20px rgba(13,76,157,0.15);}
 .logo img{height:45px;border-radius:8px;}
+.logo a{display:inline-block;padding:0 !important;border-radius:0 !important;background:transparent !important;color:inherit !important;text-decoration:none !important;transition:none !important;}
+.logo a:hover{background:transparent !important;transform:none !important;}
 .nav-links{display:flex;gap:8px;justify-content:center;}
 .nav a{color:white;text-decoration:none;padding:10px 18px;border-radius:10px;font-weight:600;transition:all 0.25s cubic-bezier(0.4,0,0.2,1);font-size:0.95rem;}
 .nav a:hover,.nav a.active{background:var(--accent);color:white;transform:translateY(-1px);}
@@ -88,7 +90,7 @@ footer{background:var(--primary);color:white;margin-top:40px;position:relative;}
 
 <body>
 <div class="nav">
-    <div class="logo"><img src="images/inspedr.jpg" alt="Institut Pedralbes"></div>
+    <div class="logo"><a href="admin.php"><img src="images/inspedr.jpg" alt="Institut Pedralbes"></a></div>
     <div class="nav-links">
         <a href="admin.php">Panell</a>
         <a href="admin_products.php">Productes</a>
