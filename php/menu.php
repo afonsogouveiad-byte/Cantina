@@ -396,7 +396,7 @@ footer {
 
     <div class="nav-links">
         <a href="index.php">Inici</a>
-        <a href="llistar.php">Productes</a>
+        <a href="products.php">Productes</a>
         <a class="active" href="menu.php">Menú Infantil</a>
         <a href="menu2.php">Menú General</a>
     </div>

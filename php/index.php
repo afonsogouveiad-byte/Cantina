@@ -252,7 +252,7 @@ footer {
 <div class="main">
 
     <div class="left">
-        <a class="btn" href="llistar.php">Productes</a>
+        <a class="btn" href="products.php">Productes</a>
         <a class="btn" href="menu.php">Menú Infantil</a>
         <a class="btn" href="menu2.php">Menú General</a>
         <a class="btn" href="login.php">Admin</a>

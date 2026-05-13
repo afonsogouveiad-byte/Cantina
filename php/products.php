@@ -407,7 +407,7 @@ h1 {
 
     <div class="nav-links">
         <a href="index.php">Inici</a>
-        <a class="active" href="llistar.php">Productes</a>
+        <a class="active" href="products.php">Productes</a>
         <a href="menu.php">Menú Infantil</a>
         <a href="menu2.php">Menú General</a>
     </div>
@@ -423,7 +423,7 @@ h1 {
 </div>
 
 <div class="search-wrapper">
-    <form class="search-form" method="get" action="llistar.php">
+    <form class="search-form" method="get" action="products.php">
         <label for="search-input" class="sr-only">Cerca productes</label>
         <input id="search-input" name="search" type="search" class="search-input" placeholder="Cerca per nom, categoria o preu" value="<?= htmlspecialchars($search) ?>">
     </form>
