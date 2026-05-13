@@ -1,14 +1,28 @@
 <?php
+session_start();
 require_once 'connexio.php';
-$result = $conn->query("SELECT * FROM products");
-?>
 
-<?php if(isset($_SESSION['user'])): ?>
-    <div class="actions">
-        <a class="edit" href="edit.php?id=<?= $row['id'] ?>">Editar</a>
-        <a class="delete" href="delete.php?id=<?= $row['id'] ?>">Eliminar</a>
-    </div>
-<?php endif; ?>
+$search = isset($_GET['search']) ? trim($_GET['search']) : '';
+$searchNormalized = str_replace(',', '.', $search);
+
+if ($search !== '') {
+    $searchLike = "%{$search}%";
+
+    if (is_numeric($searchNormalized)) {
+        $price = (float) $searchNormalized;
+        $stmt = $conn->prepare("SELECT * FROM products WHERE name LIKE ? OR category LIKE ? OR price = ? ORDER BY category ASC, name ASC");
+        $stmt->bind_param("ssd", $searchLike, $searchLike, $price);
+    } else {
+        $stmt = $conn->prepare("SELECT * FROM products WHERE name LIKE ? OR category LIKE ? ORDER BY category ASC, name ASC");
+        $stmt->bind_param("ss", $searchLike, $searchLike);
+    }
+
+    $stmt->execute();
+    $result = $stmt->get_result();
+} else {
+    $result = $conn->query("SELECT * FROM products ORDER BY category ASC, name ASC");
+}
+?>
 
 <!DOCTYPE html>
 <html lang="ca">
@@ -120,6 +134,56 @@ body {
 
 .nav-right {
     display: flex;
+}
+
+.search-wrapper {
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 24px 24px 0;
+}
+
+.search-form {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.search-input {
+    flex: 1;
+    min-width: 220px;
+    padding: 12px 16px;
+    border: 1px solid #d3dce6;
+    border-radius: 12px;
+    background: #fff;
+    color: #172c45;
+}
+
+.search-input:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 4px rgba(0, 162, 255, 0.12);
+}
+
+
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+.category-heading {
+    grid-column: 1 / -1;
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--primary);
+    margin: 24px 0 12px;
 }
 
 h1 {
@@ -358,22 +422,40 @@ h1 {
     </div>
 </div>
 
-<div class="grid">
-
-<?php while($row = $result->fetch_assoc()): ?>
-    <div class="card">
-
-
-        <div class="info">
-            <div class="name"><?= $row['name'] ?></div>
-            <div class="price"><?= $row['price'] ?> €</div>
-            <div class="category"><?= $row['category']?></div>
-        </div>
-
-    </div>
-<?php endwhile; ?>
-
+<div class="search-wrapper">
+    <form class="search-form" method="get" action="llistar.php">
+        <label for="search-input" class="sr-only">Cerca productes</label>
+        <input id="search-input" name="search" type="search" class="search-input" placeholder="Cerca per nom, categoria o preu" value="<?= htmlspecialchars($search) ?>">
+    </form>
 </div>
+
+<?php if ($result && $result->num_rows > 0): ?>
+<div class="grid">
+    <?php $currentCategory = null; ?>
+    <?php while($row = $result->fetch_assoc()): ?>
+        <?php $categoryLabel = !empty($row['category']) ? htmlspecialchars($row['category']) : 'Sense categoria'; ?>
+        <?php if ($currentCategory !== $categoryLabel): ?>
+            <?php $currentCategory = $categoryLabel; ?>
+            <div class="category-heading"><?= $currentCategory ?></div>
+        <?php endif; ?>
+    <div class="card">
+        <div class="info">
+            <div class="name"><?= htmlspecialchars($row['name']) ?></div>
+            <div class="price"><?= number_format($row['price'], 2) ?> €</div>
+            <div class="category"><?= htmlspecialchars($row['category']) ?></div>
+            <?php if(isset($_SESSION['user'])): ?>
+            <div class="actions">
+                <a class="edit" href="edit.php?id=<?= $row['id'] ?>">Editar</a>
+                <a class="delete" href="delete.php?id=<?= $row['id'] ?>" onclick="return confirm('Estàs segur que vols eliminar aquest producte?')">Eliminar</a>
+            </div>
+            <?php endif; ?>
+        </div>
+    </div>
+    <?php endwhile; ?>
+</div>
+<?php else: ?>
+    <div class="empty">Cap producte trobat. Prova amb una altra cerca o afegeix productes.</div>
+<?php endif; ?>
 <footer class="footer">
 
     <div class="footer-container">
@@ -415,5 +497,23 @@ h1 {
     </div>
 
 </footer>
+<script>
+    (function() {
+        const input = document.getElementById('search-input');
+        const form = document.querySelector('.search-form');
+        let timeoutId = null;
+
+        if (!input || !form) {
+            return;
+        }
+
+        input.addEventListener('input', function() {
+            clearTimeout(timeoutId);
+            timeoutId = setTimeout(function() {
+                form.submit();
+            }, 350);
+        });
+    })();
+</script>
 </body>
 </html>
