@@ -129,6 +129,7 @@ body {
     text-decoration: none;
     padding: 10px 18px;
     border-radius: 10px;
+    font-family: Arial, sans-serif;
     font-weight: 600;
     transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
     font-size: 0.95rem;
