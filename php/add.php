@@ -27,6 +27,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <head>
 <meta charset="UTF-8">
 <title>Afegir producte</title>
+<link rel="icon" href="images/inspedr.jpg" type="image/jpeg">
 
     <style>
 :root {

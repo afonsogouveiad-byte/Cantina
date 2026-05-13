@@ -16,6 +16,7 @@ if (!isset($_SESSION['user'])) {
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>Panell Admin - Cantina</title>
+<link rel="icon" href="images/inspedr.jpg" type="image/jpeg">
 
 <style>
 

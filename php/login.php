@@ -28,6 +28,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <html>
 <head>
 <title>inici de sessió</title>
+<link rel="icon" href="images/inspedr.jpg" type="image/jpeg">
 <style>
 :root {
     --bg: #f4f8fd;

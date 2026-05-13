@@ -17,6 +17,7 @@ $result = $conn->query("SELECT * FROM menus ORDER BY week, day, id");
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Menú Infantil</title>
+<link rel="icon" href="images/inspedr.jpg" type="image/jpeg">
 <style>
 :root {
     --primary: #0d4c9d;
@@ -81,7 +82,8 @@ footer{background:var(--primary);color:white;margin-top:40px;position:relative;}
 .footer-section p,.footer-section a{font-size:0.95rem;line-height:1.7;color:rgba(255,255,255,0.9);}
 .footer-section a{color:var(--accent);text-decoration:none;}
 .footer-bottom{text-align:center;padding:20px 24px;border-top:1px solid rgba(255,255,255,0.1);font-size:0.9rem;color:rgba(255,255,255,0.7);}
-@media(max-width:700px){.nav{grid-template-columns:1fr;gap:15px;}.nav-links{flex-wrap:wrap;justify-content:center;}.hero h1{font-size:32px;}.action-bar{flex-direction:column;align-items:flex-start;}.footer-container{grid-template-columns:1fr;}}    @keyframes fadeInUp {from {opacity:0;transform:translateY(30px);}to {opacity:1;transform:translateY(0);}}</style>
+@media(max-width:700px){.nav{grid-template-columns:1fr;gap:15px;}.nav-links{flex-wrap:wrap;justify-content:center;}.hero h1{font-size:32px;}.action-bar{flex-direction:column;align-items:flex-start;}.footer-container{grid-template-columns:1fr;}}    @keyframes fadeInUp {from {opacity:0;transform:translateY(30px);}to {opacity:1;transform:translateY(0);}}
+</style>
 </head>
 
 <body>

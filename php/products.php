@@ -29,6 +29,7 @@ if ($search !== '') {
 <head>
 <meta charset="UTF-8">
 <title>Productes de menjador</title>
+<link rel="icon" href="images/inspedr.jpg" type="image/jpeg">
 
 <style>
 :root {

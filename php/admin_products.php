@@ -36,6 +36,7 @@ if ($search !== '') {
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Admin Productes - Cantina</title>
+<link rel="icon" href="images/inspedr.jpg" type="image/jpeg">
 <style>
 :root {
     --primary: #0d4c9d;

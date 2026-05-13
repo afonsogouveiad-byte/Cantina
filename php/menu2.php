@@ -46,6 +46,7 @@ $semanas = [
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>Menú General</title>
+<link rel="icon" href="images/inspedr.jpg" type="image/jpeg">
 
 <style>
 
