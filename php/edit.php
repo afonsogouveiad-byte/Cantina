@@ -17,9 +17,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $name = $_POST['name'];
     $price = $_POST['price'];
     $category = $_POST['category'];
+    $image = $product['image'];
+
+    if (isset($_FILES['image']) && $_FILES['image']['error'] == 0) {
+        $image = basename($_FILES['image']['name']);
+        $uploadPath = __DIR__ . '/images/' . $image;
+        if (!move_uploaded_file($_FILES['image']['tmp_name'], $uploadPath)) {
+            $image = $product['image'];
+        }
+    }
 
     $sql = "UPDATE products 
-            SET name='$name', price='$price', category='$category'
+            SET name='$name', price='$price', category='$category', image='$image'
             WHERE id=$id";
 
     $conn->query($sql);
@@ -187,7 +196,7 @@ button:hover {
 
     <h2>Editar Producte</h2>
 
-    <form method="POST">
+    <form method="POST" enctype="multipart/form-data">
 
         <label for="name">Nom</label>
         <input type="text" id="name" name="name"
@@ -200,6 +209,12 @@ button:hover {
         <label for="category">Categoria</label>
         <input type="text" id="category" name="category"
                value="<?= htmlspecialchars($product['category']) ?>" required>
+
+        <label for="image">Imatge</label>
+        <input type="file" id="image" name="image" accept="image/*">
+        <?php if ($product['image']): ?>
+            <p>Imatge actual: <img src="images/<?= htmlspecialchars($product['image']) ?>" alt="Imatge actual" style="max-width: 100px;"></p>
+        <?php endif; ?>
 
         <button type="submit">Actualitza</button>
 

@@ -20,8 +20,28 @@ if ($_SERVER["REQUEST_METHOD"] === 'POST') {
     $day = $conn->real_escape_string($_POST['day']);
     $name = $conn->real_escape_string($_POST['name']);
     $price = floatval($_POST['price']);
+    $image = $menu['image'];
 
-    $sql = "UPDATE menus2 SET week=$week, day='$day', name='$name', price=$price WHERE id=$id";
+    if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
+        $image = basename($_FILES['image']['name']);
+        $uploadDir = __DIR__ . '/images';
+        $uploadPath = $uploadDir . '/' . $image;
+
+        if (!is_dir($uploadDir)) {
+            @mkdir($uploadDir, 0777, true);
+        }
+
+        if (file_exists($uploadPath)) {
+            @chmod($uploadPath, 0666);
+            @unlink($uploadPath);
+        }
+
+        if (!is_uploaded_file($_FILES['image']['tmp_name']) || !move_uploaded_file($_FILES['image']['tmp_name'], $uploadPath)) {
+            $image = $menu['image'];
+        }
+    }
+
+    $sql = "UPDATE menus2 SET week=$week, day='$day', name='$name', price=$price, image='$image' WHERE id=$id";
     $conn->query($sql);
 
     header("Location: admin_menu2.php");
@@ -42,7 +62,7 @@ if ($_SERVER["REQUEST_METHOD"] === 'POST') {
 <body>
 <div class="box">
     <h2>Editar menú gran</h2>
-    <form method="POST">
+    <form method="POST" enctype="multipart/form-data">
         <label for="week">Setmana</label>
         <select id="week" name="week" required>
             <?php for ($i=1; $i<=4; $i++): ?>
@@ -60,6 +80,11 @@ if ($_SERVER["REQUEST_METHOD"] === 'POST') {
         <input type="text" id="name" name="name" value="<?= htmlspecialchars($menu['name']) ?>" required>
         <label for="price">Preu</label>
         <input type="number" step="0.01" id="price" name="price" value="<?= htmlspecialchars($menu['price']) ?>" required>
+        <label for="image">Imatge</label>
+        <input type="file" id="image" name="image" accept="image/*">
+        <?php if ($menu['image']): ?>
+            <p>Imatge actual: <img src="images/<?= htmlspecialchars($menu['image']) ?>" alt="Imatge actual" style="max-width: 100px;"></p>
+        <?php endif; ?>
         <button type="submit">Desa canvis</button>
     </form>
     <a class="back" href="admin_menu2.php">← Tornar al panell</a>

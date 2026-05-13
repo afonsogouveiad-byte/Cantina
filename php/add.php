@@ -11,9 +11,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $name = $_POST['name'];
     $price = $_POST['price'];
     $category = $_POST['category'];
+    $image = '';
 
-    $sql = "INSERT INTO products (name, price, category)
-            VALUES ('$name', '$price', '$category')";
+    if (isset($_FILES['image']) && $_FILES['image']['error'] == 0) {
+        $image = basename($_FILES['image']['name']);
+        $uploadPath = __DIR__ . '/images/' . $image;
+        if (!move_uploaded_file($_FILES['image']['tmp_name'], $uploadPath)) {
+            $image = '';
+        }
+    }
+
+    $sql = "INSERT INTO products (name, price, category, image)
+            VALUES ('$name', '$price', '$category', '$image')";
 
     $conn->query($sql);
 
@@ -165,13 +174,15 @@ button:hover {
 <div class="box">
     <h2>Afegir producte</h2>
 
-    <form method="POST">
+    <form method="POST" enctype="multipart/form-data">
 
         <input type="text" name="name" placeholder="Nom do produto" required>
 
         <input type="number" step="0.01" name="price" placeholder="Preu" required>
 
         <input type="text" name="category" placeholder="Categoria" required>
+
+        <input type="file" name="image" accept="image/*">
 
         <button type="submit">Desa</button>
 

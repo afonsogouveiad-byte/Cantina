@@ -458,6 +458,10 @@ footer {
 
                     <div class="prato">
 
+                        <?php if ($menu['image']): ?>
+                            <img src="images/<?= htmlspecialchars($menu['image']) ?>" alt="<?= htmlspecialchars($menu['name']) ?>" style="max-width: 100%; height: auto; margin-bottom: 10px;">
+                        <?php endif; ?>
+
                         <div class="nome">
                             <?= htmlspecialchars($menu['name']) ?>
                         </div>

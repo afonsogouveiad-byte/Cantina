@@ -455,6 +455,9 @@ h1 {
         <?php endif; ?>
     <div class="card">
         <div class="info">
+            <?php if ($row['image']): ?>
+                <img src="images/<?= htmlspecialchars($row['image']) ?>" alt="<?= htmlspecialchars($row['name']) ?>" style="max-width: 100%; height: auto; margin-bottom: 10px;">
+            <?php endif; ?>
             <div class="name"><?= htmlspecialchars($row['name']) ?></div>
             <div class="price"><?= number_format($row['price'], 2) ?> €</div>
             <div class="category"><?= htmlspecialchars($row['category']) ?></div>

@@ -34,6 +34,7 @@ CREATE TABLE `menus` (
   `price` decimal(5,2) DEFAULT NULL,
   `day` text COLLATE utf8mb4_unicode_ci,
   `week` int DEFAULT NULL,
+  `image` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -45,6 +46,7 @@ CREATE TABLE `menus2` (
   `price` decimal(10,0) DEFAULT NULL,
   `day` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   `week` int DEFAULT NULL,
+  `image` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -55,6 +57,7 @@ CREATE TABLE `products` (
   `name` text COLLATE utf8mb4_unicode_ci NOT NULL,
   `price` decimal(65,0) NOT NULL,
   `category` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `image` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 

@@ -337,6 +337,9 @@ footer {
             <?php endif; ?>
         <div class="card">
             <div class="card-body">
+                <?php if ($row['image']): ?>
+                    <img src="images/<?= htmlspecialchars($row['image']) ?>" alt="<?= htmlspecialchars($row['name']) ?>" style="max-width: 100%; height: auto; margin-bottom: 10px;">
+                <?php endif; ?>
                 <h3><?= htmlspecialchars($row['name']) ?></h3>
                 <p class="meta">Preu: <?= number_format($row['price'], 2) ?> €</p>
                 <?php if (!empty($row['category'])): ?><p class="meta">Categoria: <?= htmlspecialchars($row['category']) ?></p><?php endif; ?>

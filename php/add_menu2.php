@@ -12,8 +12,17 @@ if ($_SERVER["REQUEST_METHOD"] === 'POST') {
     $day = $_POST['day'];
     $name = $conn->real_escape_string($_POST['name']);
     $price = floatval($_POST['price']);
+    $image = '';
 
-    $sql = "INSERT INTO menus2 (week, day, name, price) VALUES ($week, '" . $conn->real_escape_string($day) . "', '$name', $price)";
+    if (isset($_FILES['image']) && $_FILES['image']['error'] == 0) {
+        $image = basename($_FILES['image']['name']);
+        $uploadPath = __DIR__ . '/images/' . $image;
+        if (!move_uploaded_file($_FILES['image']['tmp_name'], $uploadPath)) {
+            $image = '';
+        }
+    }
+
+    $sql = "INSERT INTO menus2 (week, day, name, price, image) VALUES ($week, '" . $conn->real_escape_string($day) . "', '$name', $price, '$image')";
     $conn->query($sql);
 
     header("Location: admin_menu2.php");
@@ -34,7 +43,7 @@ if ($_SERVER["REQUEST_METHOD"] === 'POST') {
 <body>
 <div class="box">
     <h2>Afegir menú gran</h2>
-    <form method="POST">
+    <form method="POST" enctype="multipart/form-data">
         <label for="week">Setmana</label>
         <select id="week" name="week" required>
             <option value="1">1</option>
@@ -54,6 +63,8 @@ if ($_SERVER["REQUEST_METHOD"] === 'POST') {
         <input type="text" id="name" name="name" required>
         <label for="price">Preu</label>
         <input type="number" step="0.01" id="price" name="price" required>
+        <label for="image">Imatge</label>
+        <input type="file" id="image" name="image" accept="image/*">
         <button type="submit">Desa</button>
     </form>
     <a class="back" href="admin_menu2.php">← Tornar al panell</a>
