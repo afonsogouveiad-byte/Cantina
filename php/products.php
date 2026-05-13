@@ -106,16 +106,16 @@ body {
 }
 .logo a {
     display: inline-block;
-    padding: 0;
-    border-radius: 0;
-    background: transparent;
-    color: inherit;
-    text-decoration: none;
-    transition: none;
+    padding: 0 !important;
+    border-radius: 0 !important;
+    background: transparent !important;
+    color: inherit !important;
+    text-decoration: none !important;
+    transition: none !important;
 }
 .logo a:hover {
-    background: transparent;
-    transform: none;
+    background: transparent !important;
+    transform: none !important;
 }
 
 .nav-links {
