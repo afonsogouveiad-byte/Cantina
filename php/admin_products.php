@@ -7,7 +7,26 @@ if (!isset($_SESSION['user'])) {
     exit();
 }
 
-$result = $conn->query("SELECT * FROM products ORDER BY category ASC, name ASC");
+$search = isset($_GET['search']) ? trim($_GET['search']) : '';
+$searchNormalized = str_replace(',', '.', $search);
+
+if ($search !== '') {
+    $searchLike = "%{$search}%";
+
+    if (is_numeric($searchNormalized)) {
+        $price = (float) $searchNormalized;
+        $stmt = $conn->prepare("SELECT * FROM products WHERE name LIKE ? OR category LIKE ? OR price = ? ORDER BY category ASC, name ASC");
+        $stmt->bind_param("ssd", $searchLike, $searchLike, $price);
+    } else {
+        $stmt = $conn->prepare("SELECT * FROM products WHERE name LIKE ? OR category LIKE ? ORDER BY category ASC, name ASC");
+        $stmt->bind_param("ss", $searchLike, $searchLike);
+    }
+
+    $stmt->execute();
+    $result = $stmt->get_result();
+} else {
+    $result = $conn->query("SELECT * FROM products ORDER BY category ASC, name ASC");
+}
 ?>
 
 <!DOCTYPE html>
@@ -121,6 +140,40 @@ body{
 .action-bar h2{
     font-size:28px;
     color:#111;
+}
+.search-form{
+    display:flex;
+    gap:10px;
+    align-items:center;
+    flex-wrap:wrap;
+    width:min(100%,480px);
+}
+.search-input{
+    flex:1;
+    min-width:220px;
+    padding:12px 16px;
+    border:1px solid #d3dce6;
+    border-radius:12px;
+    font-size:1rem;
+    color:#172c45;
+    background:white;
+}
+.search-input:focus{
+    outline:none;
+    border-color:var(--accent);
+    box-shadow:0 0 0 4px rgba(0,162,255,0.12);
+}
+
+.sr-only{
+    position:absolute;
+    width:1px;
+    height:1px;
+    padding:0;
+    margin:-1px;
+    overflow:hidden;
+    clip:rect(0,0,0,0);
+    white-space:nowrap;
+    border:0;
 }
 .action-bar a.button{
     background: var(--accent);
@@ -254,6 +307,10 @@ footer {
 <div class="admin-container">
     <div class="action-bar">
         <h2>Gestió de productes</h2>
+        <form class="search-form" method="get" action="admin_products.php">
+            <label for="search-input" class="sr-only">Cerca productes</label>
+            <input id="search-input" name="search" type="search" class="search-input" placeholder="Cerca per nom, categoria o preu" value="<?= htmlspecialchars($search) ?>">
+        </form>
         <a href="add.php" class="button">Afegir producte</a>
     </div>
     <?php if ($result && $result->num_rows > 0): ?>
@@ -291,5 +348,23 @@ footer {
     </div>
     <div class="footer-bottom">&copy; <?= date("Y") ?> Institut Pedralbes - Cantina</div>
 </footer>
+<script>
+    (function() {
+        const input = document.getElementById('search-input');
+        const form = document.querySelector('.search-form');
+        let timeoutId = null;
+
+        if (!input || !form) {
+            return;
+        }
+
+        input.addEventListener('input', function() {
+            clearTimeout(timeoutId);
+            timeoutId = setTimeout(function() {
+                form.submit();
+            }, 350);
+        });
+    })();
+</script>
 </body>
 </html>
