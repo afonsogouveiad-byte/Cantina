@@ -119,8 +119,7 @@ button {
 button:hover {
     transform: translateY(-2px);
     box-shadow: 0 8px 20px rgba(0, 162, 255, 0.4);
-}
-    background: var(--accent);
+    background: var(--accent);  
     color: white;
     border: none;
     border-radius: 8px;
