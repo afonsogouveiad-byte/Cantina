@@ -126,7 +126,6 @@ button {
 button:hover {
     transform: translateY(-2px);
     box-shadow: 0 8px 20px rgba(0, 162, 255, 0.4);
-}
     border: 1px solid #ddd;
     border-radius: 8px;
     outline: none;
