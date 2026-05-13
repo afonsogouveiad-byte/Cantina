@@ -424,7 +424,7 @@ h1 {
 
 <div class="search-wrapper">
     <form class="search-form" method="get" action="products.php">
-        <label for="search-input" class="sr-only">Cerca productes</label>
+  
         <input id="search-input" name="search" type="search" class="search-input" placeholder="Cerca per nom, categoria o preu" value="<?= htmlspecialchars($search) ?>">
     </form>
 </div>

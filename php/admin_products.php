@@ -308,7 +308,6 @@ footer {
     <div class="action-bar">
         <h2>Gestió de productes</h2>
         <form class="search-form" method="get" action="admin_products.php">
-            <label for="search-input" class="sr-only">Cerca productes</label>
             <input id="search-input" name="search" type="search" class="search-input" placeholder="Cerca per nom, categoria o preu" value="<?= htmlspecialchars($search) ?>">
         </form>
         <a href="add.php" class="button">Afegir producte</a>
