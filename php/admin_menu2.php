@@ -134,4 +134,4 @@ $result = $conn->query("SELECT * FROM menus2 ORDER BY week, day, id");
     <div class="footer-bottom">&copy; <?= date("Y") ?> Institut Pedralbes - Cantina</div>
 </footer>
 </body>
-</html>a
+</html>

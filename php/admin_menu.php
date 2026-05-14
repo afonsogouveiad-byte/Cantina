@@ -177,4 +177,4 @@ footer{background:var(--primary);color:white;margin-top:40px;position:relative;}
     <div class="footer-bottom">&copy; <?= date("Y") ?> Institut Pedralbes - Cantina</div>
 </footer>
 </body>
-</html>a
+</html>
