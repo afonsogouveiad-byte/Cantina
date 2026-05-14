@@ -79,4 +79,4 @@ if ($_SERVER["REQUEST_METHOD"] === 'POST') {
     <a class="back" href="admin_menu.php">← Tornar al panell</a>
 </div>
 </body>
-</html>
+</html>a
