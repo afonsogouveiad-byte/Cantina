@@ -8,18 +8,22 @@ if (!isset($_SESSION['user'])) {
 }
 
 $id = intval($_GET['id'] ?? 0);
+
 $result = $conn->query("SELECT * FROM menus2 WHERE id=$id");
 $menu = $result ? $result->fetch_assoc() : null;
+
 if (!$menu) {
     header("Location: admin_menu2.php");
     exit();
 }
 
 if ($_SERVER["REQUEST_METHOD"] === 'POST') {
-    $week = intval($_POST['week']);
-    $day = $conn->real_escape_string($_POST['day']);
-    $name = $conn->real_escape_string($_POST['name']);
-    $price = floatval($_POST['price']);
+
+    $week = isset($_POST['week']) ? (int)$_POST['week'] : $menu['week'];
+    $day  = isset($_POST['day']) ? $conn->real_escape_string($_POST['day']) : $menu['day'];
+    $name = isset($_POST['name']) ? $conn->real_escape_string($_POST['name']) : $menu['name'];
+    $price = isset($_POST['price']) ? (float)$_POST['price'] : $menu['price'];
+
     $image = $menu['image'];
 
     if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
@@ -28,20 +32,23 @@ if ($_SERVER["REQUEST_METHOD"] === 'POST') {
         $uploadPath = $uploadDir . '/' . $image;
 
         if (!is_dir($uploadDir)) {
-            @mkdir($uploadDir, 0777, true);
+            mkdir($uploadDir, 0777, true);
         }
 
         if (file_exists($uploadPath)) {
-            @chmod($uploadPath, 0666);
-            @unlink($uploadPath);
+            chmod($uploadPath, 0666);
+            unlink($uploadPath);
         }
 
-        if (!is_uploaded_file($_FILES['image']['tmp_name']) || !move_uploaded_file($_FILES['image']['tmp_name'], $uploadPath)) {
-            $image = $menu['image'];
+        if (is_uploaded_file($_FILES['image']['tmp_name'])) {
+            move_uploaded_file($_FILES['image']['tmp_name'], $uploadPath);
         }
     }
 
-    $sql = "UPDATE menus2 SET week=$week, day='$day', name='$name', price=$price, image='$image' WHERE id=$id";
+    $sql = "UPDATE menus2 
+            SET week=$week, day='$day', name='$name', price=$price, image='$image' 
+            WHERE id=$id";
+
     $conn->query($sql);
 
     header("Location: admin_menu2.php");
