@@ -440,7 +440,7 @@ h1 {
 <div class="search-wrapper">
     <form class="search-form" method="get" action="products.php">
   
-        <input id="search-input" name="search" type="search" class="search-input" placeholder="Cerca per nom, categoria o preu" value="<?= htmlspecialchars($search) ?>">
+        <input id="search-input" name="search" type="search" class="search-input" placeholder="Cerca per nom o categoria" value="<?= htmlspecialchars($search) ?>">
     </form>
 </div>
 
