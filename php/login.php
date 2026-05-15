@@ -5,18 +5,16 @@ require_once 'connexio.php';
 $error = "";
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-
     $user = $_POST['username'];
     $pass = $_POST['password'];
 
-    $stmt = $conn->prepare("SELECT * FROM users WHERE username = ?");
-    $stmt->bind_param("s", $user);
+    $stmt = $conn->prepare("SELECT * FROM users WHERE username=? AND password=?");
+    $stmt->bind_param("ss", $user, $pass);
     $stmt->execute();
 
     $result = $stmt->get_result();
-    $row = $result->fetch_assoc();
 
-    if ($row && password_verify($pass, $row['password'])) {
+    if ($result->num_rows == 1) {
         $_SESSION['user'] = $user;
         header("Location: admin.php");
         exit();
