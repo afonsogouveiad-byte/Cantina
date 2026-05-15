@@ -49,7 +49,7 @@ if ($_SERVER["REQUEST_METHOD"] === 'POST') {
 
     $conn->query($sql);
 
-    header("Location: admin_menu2.php");
+    header("Location: admin_menu.php");
     exit();
 }
 ?>
