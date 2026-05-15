@@ -7,33 +7,50 @@ if (!isset($_SESSION['user'])) {
     exit();
 }
 
-$id = $_GET['id'];
+$id = isset($_GET['id']) ? (int)$_GET['id'] : 0;
 
-$result = $conn->query("SELECT * FROM products WHERE id=$id");
-$product = $result->fetch_assoc();
+/* SELECT seguro */
+$stmt = $conn->prepare("SELECT * FROM products WHERE id = ?");
+$stmt->bind_param("i", $id);
+$stmt->execute();
+
+$result = $stmt->get_result();
+$product = $result ? $result->fetch_assoc() : null;
+
+if (!$product) {
+    header("Location: admin_products.php");
+    exit();
+}
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     $name = $_POST['name'];
-    $price = $_POST['price'];
+    $price = (float)$_POST['price'];
     $category = $_POST['category'];
+
     $image = $product['image'];
 
+    /* upload imagem */
     if (isset($_FILES['image']) && $_FILES['image']['error'] == 0) {
+
         $image = basename($_FILES['image']['name']);
         $uploadPath = __DIR__ . '/images/' . $image;
-        if (!move_uploaded_file($_FILES['image']['tmp_name'], $uploadPath)) {
-            $image = $product['image'];
-        }
+
+        move_uploaded_file($_FILES['image']['tmp_name'], $uploadPath);
     }
 
-    $sql = "UPDATE products 
-            SET name='$name', price='$price', category='$category', image='$image'
-            WHERE id=$id";
+    /* UPDATE seguro */
+    $stmt = $conn->prepare("
+        UPDATE products 
+        SET name = ?, price = ?, category = ?, image = ?
+        WHERE id = ?
+    ");
 
-    $conn->query($sql);
+    $stmt->bind_param("sdssi", $name, $price, $category, $image, $id);
 
-    header("Location: admin.php");
+    $stmt->execute();
+
+    header("Location: admin_products.php");
     exit();
 }
 ?>

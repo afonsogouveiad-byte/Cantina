@@ -7,9 +7,14 @@ if (!isset($_SESSION['user'])) {
     exit();
 }
 
-$id = intval($_GET['id'] ?? 0);
+$id = isset($_GET['id']) ? (int)$_GET['id'] : 0;
 
-$result = $conn->query("SELECT * FROM menus2 WHERE id=$id");
+/* SELECT seguro */
+$stmt = $conn->prepare("SELECT * FROM menus2 WHERE id = ?");
+$stmt->bind_param("i", $id);
+$stmt->execute();
+
+$result = $stmt->get_result();
 $menu = $result ? $result->fetch_assoc() : null;
 
 if (!$menu) {
@@ -19,14 +24,16 @@ if (!$menu) {
 
 if ($_SERVER["REQUEST_METHOD"] === 'POST') {
 
-    $week = isset($_POST['week']) ? (int)$_POST['week'] : $menu['week'];
-    $day  = isset($_POST['day']) ? $conn->real_escape_string($_POST['day']) : $menu['day'];
-    $name = isset($_POST['name']) ? $conn->real_escape_string($_POST['name']) : $menu['name'];
-    $price = isset($_POST['price']) ? (float)$_POST['price'] : $menu['price'];
+    $week = (int)$_POST['week'];
+    $day  = $_POST['day'];
+    $name = $_POST['name'];
+    $price = (float)$_POST['price'];
 
     $image = $menu['image'];
 
+    /* upload simples (mantido igual lógica tua) */
     if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
+
         $image = basename($_FILES['image']['name']);
         $uploadDir = __DIR__ . '/images';
         $uploadPath = $uploadDir . '/' . $image;
@@ -36,20 +43,22 @@ if ($_SERVER["REQUEST_METHOD"] === 'POST') {
         }
 
         if (file_exists($uploadPath)) {
-            chmod($uploadPath, 0666);
             unlink($uploadPath);
         }
 
-        if (is_uploaded_file($_FILES['image']['tmp_name'])) {
-            move_uploaded_file($_FILES['image']['tmp_name'], $uploadPath);
-        }
+        move_uploaded_file($_FILES['image']['tmp_name'], $uploadPath);
     }
 
-    $sql = "UPDATE menus2 
-            SET week=$week, day='$day', name='$name', price=$price, image='$image' 
-            WHERE id=$id";
+    /* UPDATE seguro */
+    $stmt = $conn->prepare("
+        UPDATE menus2 
+        SET week = ?, day = ?, name = ?, price = ?, image = ?
+        WHERE id = ?
+    ");
 
-    $conn->query($sql);
+    $stmt->bind_param("issdsi", $week, $day, $name, $price, $image, $id);
+
+    $stmt->execute();
 
     header("Location: admin_menu2.php");
     exit();

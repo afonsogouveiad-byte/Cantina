@@ -8,23 +8,32 @@ if (!isset($_SESSION['user'])) {
 }
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
+
     $name = $_POST['name'];
-    $price = $_POST['price'];
+    $price = floatval($_POST['price']);
     $category = $_POST['category'];
     $image = '';
 
+    // Upload de imagem
     if (isset($_FILES['image']) && $_FILES['image']['error'] == 0) {
+
         $image = basename($_FILES['image']['name']);
         $uploadPath = __DIR__ . '/images/' . $image;
+
         if (!move_uploaded_file($_FILES['image']['tmp_name'], $uploadPath)) {
             $image = '';
         }
     }
 
-    $sql = "INSERT INTO products (name, price, category, image)
-            VALUES ('$name', '$price', '$category', '$image')";
+    // PREPARED STATEMENT (seguro contra SQL injection)
+    $stmt = $conn->prepare("
+        INSERT INTO products (name, price, category, image)
+        VALUES (?, ?, ?, ?)
+    ");
 
-    $conn->query($sql);
+    $stmt->bind_param("sdss", $name, $price, $category, $image);
+
+    $stmt->execute();
 
     header("Location: admin.php");
     exit();
@@ -38,16 +47,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <title>Afegir producte</title>
 <link rel="icon" href="images/inspedr.jpg" type="image/jpeg">
 
-    <style>
+<style>
 :root {
     --bg: #f4f8fd;
     --surface: #ffffff;
-    --surface-soft: #eef3fb;
     --primary: #0d4c9d;
     --primary-soft: #3f7be6;
     --accent: #00a2ff;
     --text: #172c45;
-    --muted: #5f6f86;
     --border: rgba(13, 76, 157, 0.14);
     --shadow: 0 24px 60px rgba(15, 41, 78, 0.08);
 }
@@ -58,20 +65,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     box-sizing: border-box;
 }
 
-html {
-    font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-    scroll-behavior: smooth;
-}
-
 body {
     min-height: 100vh;
-    background: radial-gradient(circle at top left, rgba(0, 162, 255, 0.14), transparent 26%),
-        linear-gradient(180deg, #f5f8ff 0%, #eef4fc 100%);
-    color: var(--text);
+    background: #f5f8ff;
     display: flex;
     justify-content: center;
     align-items: center;
     padding: 20px;
+    font-family: Arial, sans-serif;
+    color: var(--text);
 }
 
 .box {
@@ -82,27 +84,20 @@ body {
     width: 100%;
     max-width: 400px;
     border: 1px solid var(--border);
-    animation: fadeInUp 0.9s ease both;
 }
 
-.box h2 {
+h2 {
     text-align: center;
-    margin-bottom: 24px;
-    font-size: 1.8rem;
-    font-weight: 600;
-    color: var(--text);
+    margin-bottom: 20px;
 }
 
 input {
     width: 100%;
-    padding: 14px 16px;
+    padding: 14px;
     margin: 8px 0 16px 0;
     border: 2px solid var(--border);
     border-radius: 12px;
     font-size: 1rem;
-    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-    background: var(--surface);
-    color: var(--text);
 }
 
 input:focus {
@@ -113,35 +108,18 @@ input:focus {
 
 button {
     width: 100%;
-    padding: 14px 16px;
+    padding: 14px;
     background: linear-gradient(135deg, var(--accent), var(--primary-soft));
-    color: #fff;
-    border: none;
-    border-radius: 12px;
-    font-size: 1rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-    box-shadow: 0 4px 12px rgba(0, 162, 255, 0.3);
-    margin-top: 8px;
-}
-
-button:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 20px rgba(0, 162, 255, 0.4);
-    background: var(--accent);  
     color: white;
     border: none;
-    border-radius: 8px;
+    border-radius: 12px;
     font-weight: bold;
     cursor: pointer;
-    margin-top: 10px;
-    transition: 0.2s;
 }
 
 button:hover {
-    background: var(--primary-soft);
     transform: translateY(-2px);
+    background: var(--primary-soft);
 }
 
 .back {
@@ -155,18 +133,8 @@ button:hover {
 .back:hover {
     color: var(--accent);
 }
-
-@keyframes fadeInUp {
-    from {
-        opacity: 0;
-        transform: translateY(30px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
 </style>
+
 </head>
 
 <body>
@@ -188,7 +156,7 @@ button:hover {
 
     </form>
 
-    <a class="back" href="admin.php">← Tornar al panell</a>
+    <a class="back" href="admin.php">← Tornar ao panell</a>
 </div>
 
 </body>
