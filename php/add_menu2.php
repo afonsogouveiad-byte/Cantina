@@ -15,13 +15,24 @@ if ($_SERVER["REQUEST_METHOD"] === 'POST') {
     $price = floatval($_POST['price']);
     $image = '';
 
-    // Upload da imagem
-    if (isset($_FILES['image']) && $_FILES['image']['error'] == 0) {
-        $image = basename($_FILES['image']['name']);
-        $uploadPath = __DIR__ . '/images/' . $image;
+    if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
+        $check = getimagesize($_FILES['image']['tmp_name']);
+        $allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
+
+        if ($check === false || !in_array($check['mime'], $allowedTypes, true)) {
+            die('Erro: ficheiro não é uma imagem válida.');
+        }
+
+        $uploadDir = __DIR__ . '/images/';
+        if (!is_dir($uploadDir)) {
+            mkdir($uploadDir, 0777, true);
+        }
+
+        $image = uniqid() . '_' . preg_replace('/[^A-Za-z0-9._-]/', '_', basename($_FILES['image']['name']));
+        $uploadPath = $uploadDir . $image;
 
         if (!move_uploaded_file($_FILES['image']['tmp_name'], $uploadPath)) {
-            $image = '';
+            die('Erro: não foi possível carregar a imagem.');
         }
     }
 

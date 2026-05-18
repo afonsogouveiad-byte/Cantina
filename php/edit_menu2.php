@@ -31,22 +31,31 @@ if ($_SERVER["REQUEST_METHOD"] === 'POST') {
 
     $image = $menu['image'];
 
-    /* upload simples (mantido igual lógica tua) */
     if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
+        $check = getimagesize($_FILES['image']['tmp_name']);
+        $allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
 
-        $image = basename($_FILES['image']['name']);
+        if ($check === false || !in_array($check['mime'], $allowedTypes, true)) {
+            die('Erro: ficheiro não é uma imagem válida.');
+        }
+
         $uploadDir = __DIR__ . '/images';
-        $uploadPath = $uploadDir . '/' . $image;
-
         if (!is_dir($uploadDir)) {
             mkdir($uploadDir, 0777, true);
         }
 
-        if (file_exists($uploadPath)) {
-            unlink($uploadPath);
+        $newImage = uniqid() . '_' . preg_replace('/[^A-Za-z0-9._-]/', '_', basename($_FILES['image']['name']));
+        $uploadPath = $uploadDir . '/' . $newImage;
+
+        if (!move_uploaded_file($_FILES['image']['tmp_name'], $uploadPath)) {
+            die('Erro: não foi possível carregar a imagem.');
         }
 
-        move_uploaded_file($_FILES['image']['tmp_name'], $uploadPath);
+        if ($menu['image'] && file_exists($uploadDir . '/' . $menu['image'])) {
+            unlink($uploadDir . '/' . $menu['image']);
+        }
+
+        $image = $newImage;
     }
 
     /* UPDATE seguro */
