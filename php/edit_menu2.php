@@ -36,7 +36,7 @@ if ($_SERVER["REQUEST_METHOD"] === 'POST') {
         $allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
 
         if ($check === false || !in_array($check['mime'], $allowedTypes, true)) {
-            die('Erro: ficheiro não é uma imagem válida.');
+            die('Erro: el fitxer no és una imatge vàlida.');
         }
 
         $uploadDir = __DIR__ . '/images';
@@ -48,7 +48,7 @@ if ($_SERVER["REQUEST_METHOD"] === 'POST') {
         $uploadPath = $uploadDir . '/' . $newImage;
 
         if (!move_uploaded_file($_FILES['image']['tmp_name'], $uploadPath)) {
-            die('Erro: não foi possível carregar a imagem.');
+            die('Erro: no foi possible carregar la imatge.');
         }
 
         if ($menu['image'] && file_exists($uploadDir . '/' . $menu['image'])) {
