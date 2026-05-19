@@ -15,7 +15,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $price = $_POST['price'] ?? '';
 
     if ($week === '' || $day === '' || $name === '' || $price === '') {
-        die("Erro: campos em falta.");
+        die("Error: camps em falta.");
     }
 
     $week = (int)$week;
@@ -28,7 +28,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
 
         if ($check === false || !in_array($check['mime'], $allowedTypes, true)) {
-            die('Erro: ficheiro não é uma imagem válida.');
+            die('Error: el fitxer no és una imatge vàlida.');
         }
 
         $uploadDir = __DIR__ . "/images/";
@@ -38,7 +38,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
         $image = uniqid() . '_' . preg_replace('/[^A-Za-z0-9._-]/', '_', basename($_FILES['image']['name']));
         if (!move_uploaded_file($_FILES['image']['tmp_name'], $uploadDir . $image)) {
-            die('Erro: não foi possível carregar a imagem.');
+            die('Error: no s\'ha pogut carregar la imatge.');
         }
     }
 
