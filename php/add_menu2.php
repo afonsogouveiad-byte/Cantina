@@ -17,7 +17,7 @@ if ($_SERVER["REQUEST_METHOD"] === 'POST') {
 
     if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
         $check = getimagesize($_FILES['image']['tmp_name']);
-        $allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
+        $allowedTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/jpg'];
 
         if ($check === false || !in_array($check['mime'], $allowedTypes, true)) {
             die('Error: el fitxer no és una imatge vàlida.');
