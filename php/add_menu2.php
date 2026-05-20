@@ -56,7 +56,7 @@ if ($_SERVER["REQUEST_METHOD"] === 'POST') {
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Afegir menú gran</title>
+<title>Afegir menú general</title>
 <link rel="icon" href="images/inspedr.jpg" type="image/jpeg">
 
 <style>
@@ -112,7 +112,7 @@ button:hover{
 
 <body>
 <div class="box">
-    <h2>Afegir menú gran</h2>
+    <h2>Afegir menú general</h2>
 
     <form method="POST" enctype="multipart/form-data">
 

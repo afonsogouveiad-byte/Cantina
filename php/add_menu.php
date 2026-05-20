@@ -60,7 +60,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Afegir menú</title>
+<title>Afegir menú infantil</title>
 
 <style>
 :root {
@@ -161,7 +161,7 @@ button:hover{
 <body>
 
 <div class="box">
-    <h2>Afegir menú</h2>
+    <h2>Afegir menú infantil</h2>
 
     <form method="POST" enctype="multipart/form-data">
 
