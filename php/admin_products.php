@@ -324,7 +324,7 @@ footer {
         <form class="search-form" method="get" action="admin_products.php">
             <input id="search-input" name="search" type="search" class="search-input" placeholder="Cerca per nom o categoria" value="<?= htmlspecialchars($search) ?>">
         </form>
-        <a href="add.php" class="button">Afegir producte</a>
+        <a href="add_products.php" class="button">Afegir producte</a>
     </div>
     <?php if ($result && $result->num_rows > 0): ?>
     <?php $currentCategory = null; ?>
@@ -344,8 +344,8 @@ footer {
                 <p class="meta">Preu: <?= number_format($row['price'], 2) ?> €</p>
                 <?php if (!empty($row['category'])): ?><p class="meta">Categoria: <?= htmlspecialchars($row['category']) ?></p><?php endif; ?>
                 <div class="actions">
-                    <a class="edit" href="edit.php?id=<?= $row['id'] ?>">Editar</a>
-                    <a class="delete" href="delete.php?id=<?= $row['id'] ?>" onclick="return confirm('Estàs segur que vols eliminar aquest producte?')">Eliminar</a>
+                    <a class="edit" href="edit_products.php?id=<?= $row['id'] ?>">Editar</a>
+                    <a class="delete" href="delete_products.php?id=<?= $row['id'] ?>" onclick="return confirm('Estàs segur que vols eliminar aquest producte?')">Eliminar</a>
                 </div>
             </div>
         </div>
