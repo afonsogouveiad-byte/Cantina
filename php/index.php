@@ -57,7 +57,7 @@
     content:"";
     position:absolute;
     inset:0;
-    background:rgba(13, 76, 157, 0.5);
+    background:rgba(13, 81, 170, 0.5);
 }
 
 .hero h1{
