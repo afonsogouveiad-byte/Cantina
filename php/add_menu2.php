@@ -1,4 +1,11 @@
 <?php
+
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
+error_log('add_menu2.php accessed');
+
 session_start();
 require_once 'connexio.php';
 
@@ -7,43 +14,70 @@ if (!isset($_SESSION['user'])) {
     exit();
 }
 
+$image = '';
+
 if ($_SERVER["REQUEST_METHOD"] === 'POST') {
 
-    $week = intval($_POST['week']);
-    $day = $_POST['day'];
-    $name = $_POST['name'];
-    $price = floatval($_POST['price']);
-    $image = '';
+    $week = intval($_POST['week'] ?? 0);
+    $day = $_POST['day'] ?? '';
+    $name = $_POST['name'] ?? '';
+    $price = floatval($_POST['price'] ?? 0);
 
+    error_log("Form data: week=$week, day=$day, name=$name, price=$price");
+
+    // -------------------------
+    // UPLOAD DA IMAGEM
+    // -------------------------
     if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
-        $check = getimagesize($_FILES['image']['tmp_name']);
-        $allowedTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/jpg'];
 
-        if ($check === false || !in_array($check['mime'], $allowedTypes, true)) {
-            die('Error: el fitxer no és una imatge vàlida.');
+        error_log('File upload: ' . print_r($_FILES['image'], true));
+
+        $check = getimagesize($_FILES['image']['tmp_name']);
+
+        if ($check === false) {
+            die('Erro: ficheiro não é imagem válida.');
         }
 
-        $uploadDir = __DIR__ . '/images/';
+        $allowed = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
+
+        if (!in_array($check['mime'], $allowed, true)) {
+            die('Erro: tipo de imagem não permitido.');
+        }
+
+        $uploadDir = __DIR__ . '/uploads/';
+
         if (!is_dir($uploadDir)) {
             mkdir($uploadDir, 0777, true);
         }
 
-        $image = uniqid() . '_' . preg_replace('/[^A-Za-z0-9._-]/', '_', basename($_FILES['image']['name']));
+        $image = uniqid('img_', true) . '_' . preg_replace(
+            '/[^A-Za-z0-9._-]/',
+            '_',
+            basename($_FILES['image']['name'])
+        );
+
         $uploadPath = $uploadDir . $image;
 
         if (!move_uploaded_file($_FILES['image']['tmp_name'], $uploadPath)) {
-            die('Error: no s\'ha pogut carregar la imatge.');
+            die('Erro: não foi possível guardar a imagem.');
         }
+
+        error_log("Imagem guardada em: $uploadPath");
     }
 
-    // PREPARED STATEMENT (seguro)
+    // -------------------------
+    // INSERT BD
+    // -------------------------
     $stmt = $conn->prepare("
         INSERT INTO menus2 (week, day, name, price, image)
         VALUES (?, ?, ?, ?, ?)
     ");
 
-    $stmt->bind_param("issds", $week, $day, $name, $price, $image);
+    if (!$stmt) {
+        die("Erro SQL: " . $conn->error);
+    }
 
+    $stmt->bind_param("issds", $week, $day, $name, $price, $image);
     $stmt->execute();
 
     header("Location: admin_menu2.php");
@@ -57,95 +91,91 @@ if ($_SERVER["REQUEST_METHOD"] === 'POST') {
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Afegir menú general</title>
+
 <link rel="icon" href="images/inspedr.jpg" type="image/jpeg">
 
 <style>
-:root {--primary:#0d4c9d;--accent:#00a2ff;--primary-soft:#3f7be6;--text:#172c45;--surface:#ffffff;--border:rgba(13,76,157,0.14);--shadow:0 24px 60px rgba(15,41,78,0.08);}
-*{margin:0;padding:0;box-sizing:border-box;font-family:Arial,sans-serif;}
-body{min-height:100vh;background:#eef4fc;color:#222;display:flex;justify-content:center;align-items:center;padding:20px;}
-.box{background:#fff;padding:36px;border-radius:20px;max-width:460px;width:100%;box-shadow:var(--shadow);border:1px solid var(--border);}
-h2{text-align:center;margin-bottom:24px;font-size:1.9rem;color:#111;}
-label{display:block;margin:14px 0 6px;color:#444;font-weight:600;}
-input, select{
-    width:100%;
-    padding:14px 16px;
-    border:2px solid var(--border);
-    border-radius:12px;
-    background:#fff;
-    color:#172c45;
-    font-size:1rem;
-    transition:all 0.25s ease;
+body {
+    font-family: Arial;
+    background: #eef4fc;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
 }
-input:focus, select:focus{
-    outline:none;
-    border-color:var(--accent);
-    box-shadow:0 0 0 3px rgba(0,162,255,0.12);
+
+.box {
+    background: white;
+    padding: 30px;
+    border-radius: 16px;
+    width: 420px;
 }
-button{
-    width:100%;
-    padding:14px 16px;
-    background:linear-gradient(135deg,var(--accent),var(--primary-soft));
-    color:#fff;
-    border:none;
-    border-radius:12px;
-    font-size:1rem;
-    font-weight:700;
-    cursor:pointer;
-    margin-top:22px;
-    transition:transform 0.2s ease,box-shadow 0.2s ease;
+
+label {
+    display: block;
+    margin-top: 12px;
+    font-weight: bold;
 }
-button:hover{
-    transform:translateY(-2px);
-    box-shadow:0 8px 20px rgba(0,162,255,0.2);
+
+input, select {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
 }
-.back{
-    display:block;
-    text-align:center;
-    margin-top:18px;
-    color:#444;
-    text-decoration:none;
+
+button {
+    width: 100%;
+    margin-top: 20px;
+    padding: 12px;
+    background: #00a2ff;
+    border: none;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
 }
-.back:hover{color:var(--accent);}
 </style>
 
 </head>
 
 <body>
+
 <div class="box">
-    <h2>Afegir menú general</h2>
 
-    <form method="POST" enctype="multipart/form-data">
+<h2>Afegir menú</h2>
 
-        <label for="week">Setmana</label>
-        <select id="week" name="week" required>
-            <option value="1">1</option>
-            <option value="2">2</option>
-            <option value="3">3</option>
-            <option value="4">4</option>
-        </select>
+<form method="POST" enctype="multipart/form-data">
 
-        <label for="day">Dia</label>
-        <select id="day" name="day" required>
-            <option value="dilluns">DILLUNS</option>
-            <option value="dimarts">DIMARTS</option>
-            <option value="dimecres">DIMECRES</option>
-            <option value="dijous">DIJOUS</option>
-            <option value="divendres">DIVENDRES</option>
-        </select>
+    <label>Setmana</label>
+    <select name="week" required>
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+        <option value="4">4</option>
+    </select>
 
-        <label for="name">Nom del plat</label>
-        <input type="text" id="name" name="name" required>
+    <label>Dia</label>
+    <select name="day" required>
+        <option value="dilluns">Dilluns</option>
+        <option value="dimarts">Dimarts</option>
+        <option value="dimecres">Dimecres</option>
+        <option value="dijous">Dijous</option>
+        <option value="divendres">Divendres</option>
+    </select>
 
-        <label for="price">Preu</label>
-        <input type="number" step="0.01" id="price" name="price" required>
+    <label>Nome do prato</label>
+    <input type="text" name="name" required>
 
-        <label for="image">Imatge</label>
-        <input type="file" id="image" name="image" accept="image/*">
+    <label>Preço</label>
+    <input type="number" step="0.01" name="price" required>
 
-        <button type="submit">Desa</button>
-    </form>
+    <label>Imagem</label>
+    <input type="file" name="image" accept="image/*">
 
-    <a class="back" href="admin_menu2.php">← Tornar al panell</a>
+    <button type="submit">Guardar</button>
+
+</form>
+
 </div>
+
 </body>
 </html>
