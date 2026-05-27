@@ -4,8 +4,6 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
-error_log('add_menu2.php accessed');
-
 session_start();
 require_once 'connexio.php';
 
@@ -14,28 +12,24 @@ if (!isset($_SESSION['user'])) {
     exit();
 }
 
-$image = '';
+$image = null;
 
 if ($_SERVER["REQUEST_METHOD"] === 'POST') {
 
     $week = intval($_POST['week'] ?? 0);
-    $day = $_POST['day'] ?? '';
+    $day  = $_POST['day'] ?? '';
     $name = $_POST['name'] ?? '';
     $price = floatval($_POST['price'] ?? 0);
 
-    error_log("Form data: week=$week, day=$day, name=$name, price=$price");
-
     // -------------------------
-    // UPLOAD DA IMAGEM
+    // UPLOAD IMAGEM
     // -------------------------
     if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
-
-        error_log('File upload: ' . print_r($_FILES['image'], true));
 
         $check = getimagesize($_FILES['image']['tmp_name']);
 
         if ($check === false) {
-            die('Erro: ficheiro não é imagem válida.');
+            die('Erro: ficheiro não é uma imagem válida.');
         }
 
         $allowed = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
@@ -61,8 +55,11 @@ if ($_SERVER["REQUEST_METHOD"] === 'POST') {
         if (!move_uploaded_file($_FILES['image']['tmp_name'], $uploadPath)) {
             die('Erro: não foi possível guardar a imagem.');
         }
+    }
 
-        error_log("Imagem guardada em: $uploadPath");
+    // se não houver imagem, garante string vazia
+    if ($image === null) {
+        $image = '';
     }
 
     // -------------------------
@@ -92,46 +89,98 @@ if ($_SERVER["REQUEST_METHOD"] === 'POST') {
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Afegir menú general</title>
 
-<link rel="icon" href="images/inspedr.jpg" type="image/jpeg">
-
 <style>
-body {
-    font-family: Arial;
-    background: #eef4fc;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
+:root {
+    --primary:#0d4c9d;
+    --accent:#00a2ff;
+    --primary-soft:#3f7be6;
+    --text:#172c45;
+    --surface:#ffffff;
+    --border:rgba(13,76,157,0.14);
+    --shadow:0 24px 60px rgba(15,41,78,0.08);
 }
 
-.box {
-    background: white;
-    padding: 30px;
-    border-radius: 16px;
-    width: 420px;
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial,sans-serif;
 }
 
-label {
-    display: block;
-    margin-top: 12px;
-    font-weight: bold;
+body{
+    min-height:100vh;
+    background:#eef4fc;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    padding:20px;
 }
 
-input, select {
-    width: 100%;
-    padding: 10px;
-    margin-top: 5px;
+.box{
+    background:#fff;
+    padding:36px;
+    border-radius:20px;
+    width:100%;
+    max-width:460px;
+    box-shadow:var(--shadow);
+    border:1px solid var(--border);
 }
 
-button {
-    width: 100%;
-    margin-top: 20px;
-    padding: 12px;
-    background: #00a2ff;
-    border: none;
-    color: white;
-    font-weight: bold;
-    cursor: pointer;
+h2{
+    text-align:center;
+    margin-bottom:24px;
+    color:#111;
+}
+
+label{
+    display:block;
+    margin:12px 0 6px;
+    font-weight:600;
+    color:#444;
+}
+
+input, select{
+    width:100%;
+    padding:14px;
+    border:2px solid var(--border);
+    border-radius:12px;
+    font-size:1rem;
+}
+
+input:focus, select:focus{
+    outline:none;
+    border-color:var(--accent);
+    box-shadow:0 0 0 3px rgba(0,162,255,0.12);
+}
+
+button{
+    width:100%;
+    margin-top:20px;
+    padding:14px;
+    border:none;
+    border-radius:12px;
+    font-weight:700;
+    color:#fff;
+    background:linear-gradient(135deg,var(--accent),var(--primary-soft));
+    cursor:pointer;
+    transition:transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+button:hover{
+    transform:translateY(-2px);
+    box-shadow:0 8px 20px rgba(0,162,255,0.2);
+}
+
+.back{
+    display:block;
+    text-align:center;
+    margin-top:15px;
+    color:#555;
+    text-decoration:none;
+}
+
+.back:hover{
+    color:var(--accent);
 }
 </style>
 
@@ -140,41 +189,40 @@ button {
 <body>
 
 <div class="box">
+    <h2>Afegir menú general</h2>
 
-<h2>Afegir menú</h2>
+    <form method="POST" enctype="multipart/form-data">
 
-<form method="POST" enctype="multipart/form-data">
+        <label>Setmana</label>
+        <select name="week" required>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+        </select>
 
-    <label>Setmana</label>
-    <select name="week" required>
-        <option value="1">1</option>
-        <option value="2">2</option>
-        <option value="3">3</option>
-        <option value="4">4</option>
-    </select>
+        <label>Dia</label>
+        <select name="day" required>
+            <option value="dilluns">DILLUNS</option>
+            <option value="dimarts">DIMARTS</option>
+            <option value="dimecres">DIMECRES</option>
+            <option value="dijous">DIJOUS</option>
+            <option value="divendres">DIVENDRES</option>
+        </select>
 
-    <label>Dia</label>
-    <select name="day" required>
-        <option value="dilluns">Dilluns</option>
-        <option value="dimarts">Dimarts</option>
-        <option value="dimecres">Dimecres</option>
-        <option value="dijous">Dijous</option>
-        <option value="divendres">Divendres</option>
-    </select>
+        <label>Nome do prato</label>
+        <input type="text" name="name" required>
 
-    <label>Nome do prato</label>
-    <input type="text" name="name" required>
+        <label>Preço</label>
+        <input type="number" step="0.01" name="price" required>
 
-    <label>Preço</label>
-    <input type="number" step="0.01" name="price" required>
+        <label>Imagem</label>
+        <input type="file" name="image" accept="image/*">
 
-    <label>Imagem</label>
-    <input type="file" name="image" accept="image/*">
+        <button type="submit">Guardar</button>
+    </form>
 
-    <button type="submit">Guardar</button>
-
-</form>
-
+    <a class="back" href="admin_menu2.php">← Voltar</a>
 </div>
 
 </body>
