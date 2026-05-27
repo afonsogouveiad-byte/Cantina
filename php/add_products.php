@@ -7,32 +7,67 @@ if (!isset($_SESSION['user'])) {
     exit();
 }
 
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
+$image = '';
 
-    $name = $_POST['name'];
-    $price = floatval($_POST['price']);
-    $category = $_POST['category'];
-    $image = '';
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
-    // Upload de imagem
-    if (isset($_FILES['image']) && $_FILES['image']['error'] == 0) {
+    $name = $_POST['name'] ?? '';
+    $price = floatval($_POST['price'] ?? 0);
+    $category = $_POST['category'] ?? '';
 
-        $image = basename($_FILES['image']['name']);
-        $uploadPath = __DIR__ . '/images/' . $image;
+    if ($name === '' || $category === '' || $price <= 0) {
+        die("Error: campos inválidos.");
+    }
+
+    // -------------------------
+    // UPLOAD IMAGEM (CONSISTENTE COM OS OUTROS FICHEIROS)
+    // -------------------------
+    if (!empty($_FILES['image']['name']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
+
+        $check = getimagesize($_FILES['image']['tmp_name']);
+
+        if ($check === false) {
+            die("Erro: ficheiro não é imagem válida.");
+        }
+
+        $allowed = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
+
+        if (!in_array($check['mime'], $allowed, true)) {
+            die("Erro: tipo de imagem não permitido.");
+        }
+
+        $uploadDir = __DIR__ . '/uploads/';
+
+        if (!is_dir($uploadDir)) {
+            mkdir($uploadDir, 0777, true);
+        }
+
+        $image = uniqid('img_', true) . '_' . preg_replace(
+            '/[^A-Za-z0-9._-]/',
+            '_',
+            basename($_FILES['image']['name'])
+        );
+
+        $uploadPath = $uploadDir . $image;
 
         if (!move_uploaded_file($_FILES['image']['tmp_name'], $uploadPath)) {
-            $image = '';
+            die("Erro: não foi possível guardar a imagem.");
         }
     }
 
-    // PREPARED STATEMENT (seguro contra SQL injection)
+    // -------------------------
+    // INSERT BD
+    // -------------------------
     $stmt = $conn->prepare("
         INSERT INTO products (name, price, category, image)
         VALUES (?, ?, ?, ?)
     ");
 
-    $stmt->bind_param("sdss", $name, $price, $category, $image);
+    if (!$stmt) {
+        die("Erro SQL: " . $conn->error);
+    }
 
+    $stmt->bind_param("sdss", $name, $price, $category, $image);
     $stmt->execute();
 
     header("Location: admin.php");

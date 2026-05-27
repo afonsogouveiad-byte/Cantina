@@ -7,6 +7,8 @@ if (!isset($_SESSION['user'])) {
     exit();
 }
 
+$image = '';
+
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     $week  = $_POST['week'] ?? '';
@@ -21,31 +23,59 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $week = (int)$week;
     $price = (float)$price;
 
-    $image = '';
+    // -------------------------
+    // UPLOAD (ALINHADO COM O OUTRO FICHEIRO)
+    // -------------------------
+    if (!empty($_FILES['image']['name']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
 
-    if (!empty($_FILES['image']['name']) && $_FILES['image']['error'] === 0) {
         $check = getimagesize($_FILES['image']['tmp_name']);
-        $allowedTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/jpg'];
 
-        if ($check === false || !in_array($check['mime'], $allowedTypes, true)) {
-            die('Error: el fitxer no és una imatge vàlida.');
+        if ($check === false) {
+            die('Erro: ficheiro não é imagem válida.');
         }
 
-        $uploadDir = __DIR__ . "/images/";
+        $allowed = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
+
+        if (!in_array($check['mime'], $allowed, true)) {
+            die('Erro: tipo de imagem não permitido.');
+        }
+
+        // 👇 IMPORTANTE: igual ao outro ficheiro
+        $uploadDir = __DIR__ . '/uploads/';
+
         if (!is_dir($uploadDir)) {
             mkdir($uploadDir, 0777, true);
         }
 
-        $image = uniqid() . '_' . preg_replace('/[^A-Za-z0-9._-]/', '_', basename($_FILES['image']['name']));
-        if (!move_uploaded_file($_FILES['image']['tmp_name'], $uploadDir . $image)) {
-            die('Error: no s\'ha pogut carregar la imatge.');
+        $image = uniqid('img_', true) . '_' . preg_replace(
+            '/[^A-Za-z0-9._-]/',
+            '_',
+            basename($_FILES['image']['name'])
+        );
+
+        $uploadPath = $uploadDir . $image;
+
+        if (!move_uploaded_file($_FILES['image']['tmp_name'], $uploadPath)) {
+            die('Erro: não foi possível guardar a imagem.');
         }
     }
 
+    // garante string mesmo sem imagem
+    if ($image === '') {
+        $image = '';
+    }
+
+    // -------------------------
+    // INSERT BD
+    // -------------------------
     $stmt = $conn->prepare("
         INSERT INTO menus (week, day, name, price, image)
         VALUES (?, ?, ?, ?, ?)
     ");
+
+    if (!$stmt) {
+        die("Erro SQL: " . $conn->error);
+    }
 
     $stmt->bind_param("issds", $week, $day, $name, $price, $image);
     $stmt->execute();
@@ -136,6 +166,7 @@ button{
     color:#fff;
     background:linear-gradient(135deg,var(--accent),var(--primary-soft));
     cursor:pointer;
+    transition:transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 button:hover{

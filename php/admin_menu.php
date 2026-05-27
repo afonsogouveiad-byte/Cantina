@@ -143,7 +143,7 @@ footer{background:var(--primary);color:white;margin-top:40px;position:relative;}
                                     <?php foreach ($menus[$weekKey][$dayKey] as $menu): ?>
                                         <div class="prato">
                                             <?php if ($menu['image']): ?>
-                                                <img src="images/<?= htmlspecialchars($menu['image']) ?>" alt="<?= htmlspecialchars($menu['name']) ?>" style="max-width: 100%; height: auto; margin-bottom: 10px;">
+                                                <img src="uploads/<?= htmlspecialchars($menu['image']) ?>" alt="<?= htmlspecialchars($menu['name']) ?>" style="max-width: 100%; height: auto; margin-bottom: 10px;">
                                             <?php endif; ?>
                                             <div class="nome"><?= htmlspecialchars($menu['name']) ?></div>
                                             <div class="preco"><?= number_format($menu['price'], 2) ?> €</div>
