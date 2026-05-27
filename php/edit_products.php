@@ -9,7 +9,7 @@ if (!isset($_SESSION['user'])) {
 
 $id = isset($_GET['id']) ? (int)$_GET['id'] : 0;
 
-/* SELECT seguro */
+/* SELECT */
 $stmt = $conn->prepare("SELECT * FROM products WHERE id = ?");
 $stmt->bind_param("i", $id);
 $stmt->execute();
@@ -22,24 +22,55 @@ if (!$product) {
     exit();
 }
 
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
-    $name = $_POST['name'];
-    $price = (float)$_POST['price'];
-    $category = $_POST['category'];
+    $name = $_POST['name'] ?? '';
+    $price = (float)($_POST['price'] ?? 0);
+    $category = $_POST['category'] ?? '';
 
-    $image = $product['image'];
+    $image = $product['image']; // mantém imagem antiga
 
-    /* upload imagem */
-    if (isset($_FILES['image']) && $_FILES['image']['error'] == 0) {
+    /* ---------------- UPLOAD ---------------- */
+    if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
 
-        $image = basename($_FILES['image']['name']);
-        $uploadPath = __DIR__ . '/images/' . $image;
+        $check = getimagesize($_FILES['image']['tmp_name']);
+        if ($check === false) {
+            die("Erro: ficheiro não é imagem válida.");
+        }
 
-        move_uploaded_file($_FILES['image']['tmp_name'], $uploadPath);
+        $allowed = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
+
+        if (!in_array($check['mime'], $allowed, true)) {
+            die("Erro: tipo de imagem inválido.");
+        }
+
+        $uploadDir = __DIR__ . '/uploads/';
+
+        if (!is_dir($uploadDir)) {
+            mkdir($uploadDir, 0777, true);
+        }
+
+        $newName = uniqid('img_', true) . '_' . preg_replace(
+            '/[^A-Za-z0-9._-]/',
+            '_',
+            basename($_FILES['image']['name'])
+        );
+
+        $uploadPath = $uploadDir . $newName;
+
+        if (!move_uploaded_file($_FILES['image']['tmp_name'], $uploadPath)) {
+            die("Erro: falha ao guardar imagem.");
+        }
+
+        /* apagar antiga */
+        if (!empty($product['image']) && file_exists($uploadDir . $product['image'])) {
+            unlink($uploadDir . $product['image']);
+        }
+
+        $image = $newName;
     }
 
-    /* UPDATE seguro */
+    /* UPDATE */
     $stmt = $conn->prepare("
         UPDATE products 
         SET name = ?, price = ?, category = ?, image = ?
@@ -47,7 +78,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     ");
 
     $stmt->bind_param("sdssi", $name, $price, $category, $image, $id);
-
     $stmt->execute();
 
     header("Location: admin_products.php");
@@ -60,18 +90,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <head>
 <meta charset="UTF-8">
 <title>Editar Producte</title>
+
 <link rel="icon" href="images/inspedr.jpg" type="image/jpeg">
 
-    <style>
+<style>
 :root {
     --bg: #f4f8fd;
     --surface: #ffffff;
-    --surface-soft: #eef3fb;
     --primary: #0d4c9d;
     --primary-soft: #3f7be6;
     --accent: #00a2ff;
     --text: #172c45;
-    --muted: #5f6f86;
     --border: rgba(13, 76, 157, 0.14);
     --shadow: 0 24px 60px rgba(15, 41, 78, 0.08);
 }
@@ -80,18 +109,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-}
-
-html {
-    font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-    scroll-behavior: smooth;
+    font-family: Arial, sans-serif;
 }
 
 body {
     min-height: 100vh;
-    background: radial-gradient(circle at top left, rgba(0, 162, 255, 0.14), transparent 26%),
-        linear-gradient(180deg, #f5f8ff 0%, #eef4fc 100%);
-    color: var(--text);
+    background: #eef4fc;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -104,77 +127,37 @@ body {
     border-radius: 20px;
     box-shadow: var(--shadow);
     width: 100%;
-    max-width: 400px;
-    border: 1px solid var(--border);
-    animation: fadeInUp 0.9s ease both;
+    max-width: 420px;
 }
 
-.box h2 {
+h2 {
     text-align: center;
-    margin-bottom: 24px;
-    font-size: 1.8rem;
-    font-weight: 600;
-    color: var(--text);
+    margin-bottom: 20px;
 }
 
 input {
     width: 100%;
-    padding: 14px 16px;
+    padding: 14px;
     margin: 8px 0 16px 0;
     border: 2px solid var(--border);
     border-radius: 12px;
-    font-size: 1rem;
-    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-    background: var(--surface);
-    color: var(--text);
-}
-
-input:focus {
-    outline: none;
-    border-color: var(--accent);
-    box-shadow: 0 0 0 3px rgba(0, 162, 255, 0.1);
-}
-
-button {
-    width: 100%;
-    padding: 14px 16px;
-    background: linear-gradient(135deg, var(--accent), var(--primary-soft));
-    color: #fff;
-    border: none;
-    border-radius: 12px;
-    font-size: 1rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-    box-shadow: 0 4px 12px rgba(0, 162, 255, 0.3);
-    margin-top: 8px;
-}
-
-button:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 20px rgba(0, 162, 255, 0.4);
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    outline: none;
-    transition: 0.2s;
 }
 
 input:focus {
     border-color: var(--accent);
-    box-shadow: 0 0 5px rgba(0, 162, 255, 0.4);
+    box-shadow: 0 0 5px rgba(0,162,255,0.3);
+    outline: none;
 }
 
 button {
     width: 100%;
-    padding: 12px;
+    padding: 14px;
     background: var(--accent);
     color: white;
     border: none;
-    border-radius: 8px;
+    border-radius: 12px;
     font-weight: bold;
     cursor: pointer;
-    margin-top: 10px;
-    transition: 0.2s;
 }
 
 button:hover {
@@ -194,15 +177,9 @@ button:hover {
     color: var(--accent);
 }
 
-@keyframes fadeInUp {
-    from {
-        opacity: 0;
-        transform: translateY(30px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+img {
+    margin-top: 10px;
+    border-radius: 8px;
 }
 </style>
 </head>
@@ -211,33 +188,28 @@ button:hover {
 
 <div class="box">
 
-    <h2>Editar Producte</h2>
+<h2>Editar Producte</h2>
 
-    <form method="POST" enctype="multipart/form-data">
+<form method="POST" enctype="multipart/form-data">
 
-        <label for="name">Nom</label>
-        <input type="text" id="name" name="name"
-               value="<?= htmlspecialchars($product['name']) ?>" required>
+    <input type="text" name="name" value="<?= htmlspecialchars($product['name']) ?>" required>
 
-        <label for="price">Preu</label>
-        <input type="number" id="price" step="0.01" name="price"
-               value="<?= htmlspecialchars($product['price']) ?>" required>
+    <input type="number" step="0.01" name="price" value="<?= htmlspecialchars($product['price']) ?>" required>
 
-        <label for="category">Categoria</label>
-        <input type="text" id="category" name="category"
-               value="<?= htmlspecialchars($product['category']) ?>" required>
+    <input type="text" name="category" value="<?= htmlspecialchars($product['category']) ?>" required>
 
-        <label for="image">Imatge</label>
-        <input type="file" id="image" name="image" accept="image/*">
-        <?php if ($product['image']): ?>
-            <p>Imatge actual: <img src="images/<?= htmlspecialchars($product['image']) ?>" alt="Imatge actual" style="max-width: 100px;"></p>
-        <?php endif; ?>
+    <input type="file" name="image" accept="image/*">
 
-        <button type="submit">Actualitza</button>
+    <?php if (!empty($product['image'])): ?>
+        <p>Imagem atual:</p>
+        <img src="uploads/<?= htmlspecialchars($product['image']) ?>" width="120">
+    <?php endif; ?>
 
-    </form>
+    <button type="submit">Atualizar</button>
 
-    <a class="back" href="admin.php">← Tornar</a>
+</form>
+
+<a class="back" href="admin.php">← Voltar</a>
 
 </div>
 
