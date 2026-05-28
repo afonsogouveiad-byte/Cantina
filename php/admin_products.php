@@ -178,6 +178,7 @@ body{
     box-shadow:0 0 0 4px rgba(0,162,255,0.12);
 }
 
+
 .sr-only{
     position:absolute;
     width:1px;
@@ -322,10 +323,12 @@ footer {
     <div class="action-bar">
         <h2>Gestió de productes</h2>
         <form class="search-form" method="get" action="admin_products.php">
-            <input id="search-input" name="search" type="search" class="search-input" placeholder="Cerca per nom o categoria" value="<?= htmlspecialchars($search) ?>">
+            <label class="sr-only" for="search-input">Cerca productes</label>
+            <input id="search-input" name="search" type="search" class="search-input" placeholder="Cerca per nom o categoria" value="<?= htmlspecialchars($search) ?>" autofocus>
         </form>
         <a href="add_products.php" class="button">Afegir producte</a>
     </div>
+    <div id="search-results">
     <?php if ($result && $result->num_rows > 0): ?>
     <?php $currentCategory = null; ?>
     <div class="grid">
@@ -354,6 +357,7 @@ footer {
     <?php else: ?>
     <div class="empty">Cap producte trobat. Afegeix un producte nou per començar.</div>
     <?php endif; ?>
+        </div>
 </div>
 <footer class="footer">
     <div class="footer-container">
@@ -368,17 +372,44 @@ footer {
     (function() {
         const input = document.getElementById('search-input');
         const form = document.querySelector('.search-form');
+        const results = document.getElementById('search-results');
         let timeoutId = null;
 
-        if (!input || !form) {
+        if (!input || !form || !results) {
             return;
         }
 
         input.addEventListener('input', function() {
             clearTimeout(timeoutId);
             timeoutId = setTimeout(function() {
-                form.submit();
-            }, 350);
+                const query = input.value.trim();
+                const url = new URL(window.location.href);
+                url.searchParams.set('search', query);
+
+                fetch(url, {
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest'
+                    }
+                })
+                    .then(function(response) {
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok');
+                        }
+                        return response.text();
+                    })
+                    .then(function(html) {
+                        const parser = new DOMParser();
+                        const doc = parser.parseFromString(html, 'text/html');
+                        const updated = doc.getElementById('search-results');
+                        if (updated) {
+                            document.getElementById('search-results').innerHTML = updated.innerHTML;
+                        }
+                        history.replaceState(null, '', url);
+                    })
+                    .catch(function(error) {
+                        console.error('Fetch error:', error);
+                    });
+            }, 1200);
         });
     })();
 </script>

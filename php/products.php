@@ -181,6 +181,7 @@ body {
 }
 
 
+
 .sr-only {
     position: absolute;
     width: 1px;
@@ -439,12 +440,11 @@ h1 {
 
 <div class="search-wrapper">
     <form class="search-form" method="get" action="products.php">
-  
-        <input id="search-input" name="search" type="search" class="search-input" placeholder="Cerca per nom o categoria" value="<?= htmlspecialchars($search) ?>">
-    </form>
-</div>
+            <label class="sr-only" for="search-input">Cerca productes</label>
+            <input id="search-input" name="search" type="search" class="search-input" placeholder="Cerca per nom o categoria" value="<?= htmlspecialchars($search) ?>" autofocus>        </form>
+    </div>
 
-<?php if ($result && $result->num_rows > 0): ?>
+<div id="search-results"><?php if ($result && $result->num_rows > 0): ?>
 <div class="grid">
     <?php $currentCategory = null; ?>
     <?php while($row = $result->fetch_assoc()): ?>
@@ -474,6 +474,7 @@ h1 {
 <?php else: ?>
     <div class="empty">Cap producte trobat. Prova amb una altra cerca o afegeix productes.</div>
 <?php endif; ?>
+</div>
 <footer class="footer">
 
     <div class="footer-container">
@@ -519,17 +520,44 @@ h1 {
     (function() {
         const input = document.getElementById('search-input');
         const form = document.querySelector('.search-form');
+        const results = document.getElementById('search-results');
         let timeoutId = null;
 
-        if (!input || !form) {
+        if (!input || !form || !results) {
             return;
         }
 
         input.addEventListener('input', function() {
             clearTimeout(timeoutId);
             timeoutId = setTimeout(function() {
-                form.submit();
-            }, 350);
+                const query = input.value.trim();
+                const url = new URL(window.location.href);
+                url.searchParams.set('search', query);
+
+                fetch(url, {
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest'
+                    }
+                })
+                    .then(function(response) {
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok');
+                        }
+                        return response.text();
+                    })
+                    .then(function(html) {
+                        const parser = new DOMParser();
+                        const doc = parser.parseFromString(html, 'text/html');
+                        const updated = doc.getElementById('search-results');
+                        if (updated) {
+                            document.getElementById('search-results').innerHTML = updated.innerHTML;
+                        }
+                        history.replaceState(null, '', url);
+                    })
+                    .catch(function(error) {
+                        console.error('Fetch error:', error);
+                    });
+            }, 1200);
         });
     })();
 </script>
