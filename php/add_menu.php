@@ -10,7 +10,6 @@ if (!isset($_SESSION['user'])) {
 $image = '';
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
-
     $week  = $_POST['week'] ?? '';
     $day   = $_POST['day'] ?? '';
     $name  = $_POST['name'] ?? '';

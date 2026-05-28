@@ -60,7 +60,7 @@ body{
     color:#222;
 }
 
-/* NAV (IGUAL AO TEU PADRÃO) */
+/* NAVBAR (EXATAMENTE IGUAL AO TEU PADRÃO) */
 
 .nav{
     background: var(--primary);
@@ -77,6 +77,14 @@ body{
 .logo img{
     height:45px;
     border-radius:8px;
+}
+
+/* IMPORTANT: NÃO MEXER NO LINK DO LOGO */
+.logo a{
+    display:inline-block;
+    padding:0 !important;
+    background:transparent !important;
+    text-decoration:none !important;
 }
 
 .nav-links{
@@ -116,10 +124,9 @@ body{
 }
 
 /* HERO */
-
 .hero{
     height:240px;
-    background:url('images/cantina.jpeg') center/cover;
+    background:url('images/cantina.jpeg')center/cover;
     display:flex;
     justify-content:center;
     align-items:center;
@@ -135,13 +142,13 @@ body{
 
 .hero h1{
     position:relative;
+    z-index:2;
     color:white;
     font-size:42px;
     text-align:center;
 }
 
 /* SEARCH */
-
 .search-wrapper{
     max-width:1200px;
     margin:20px auto;
@@ -153,7 +160,6 @@ body{
     padding:12px 16px;
     border-radius:12px;
     border:1px solid #ccc;
-    transition:0.2s;
 }
 
 .search-input:focus{
@@ -163,7 +169,6 @@ body{
 }
 
 /* GRID */
-
 .admin-container{
     max-width:1200px;
     margin:30px auto;
@@ -176,8 +181,7 @@ body{
     gap:24px;
 }
 
-/* CARD (ANIMAÇÃO SÓ AQUI) */
-
+/* CARD (SÓ AQUI TEM ANIMAÇÃO) */
 .card{
     background:white;
     border-radius:16px;
@@ -210,16 +214,7 @@ body{
     margin-bottom:10px;
 }
 
-.category-heading{
-    grid-column:1 / -1;
-    font-size:1.3rem;
-    font-weight:700;
-    color:var(--primary);
-    margin-top:10px;
-}
-
 /* EMPTY */
-
 .empty{
     background:white;
     padding:40px;
@@ -227,8 +222,7 @@ body{
     text-align:center;
 }
 
-/* ANIMAÇÃO */
-
+/* ANIMAÇÃO SÓ DOS CARDS */
 @keyframes fadeInUp{
     from{
         opacity:0;
@@ -269,28 +263,15 @@ body{
 </div>
 
 <div class="search-wrapper">
-    <input id="search-input" class="search-input"
-           type="search"
-           placeholder="Cerca..."
-           value="<?= htmlspecialchars($search) ?>">
+    <input class="search-input" type="search" value="<?= htmlspecialchars($search) ?>" placeholder="Cerca...">
 </div>
 
 <div class="admin-container">
-<div id="search-results">
 
 <?php if ($result && $result->num_rows > 0): ?>
 <div class="grid">
 
-<?php $currentCategory = null; ?>
-
 <?php while($row = $result->fetch_assoc()): ?>
-
-<?php $categoryLabel = !empty($row['category']) ? htmlspecialchars($row['category']) : 'Sense categoria'; ?>
-
-<?php if ($currentCategory !== $categoryLabel): ?>
-    <?php $currentCategory = $categoryLabel; ?>
-    <div class="category-heading"><?= $currentCategory ?></div>
-<?php endif; ?>
 
 <div class="card">
 
@@ -308,41 +289,11 @@ body{
 <?php endwhile; ?>
 
 </div>
-
 <?php else: ?>
 <div class="empty">Cap producte trobat.</div>
 <?php endif; ?>
 
 </div>
-</div>
-
-<script>
-const input = document.getElementById('search-input');
-const results = document.getElementById('search-results');
-
-let timeout;
-
-input.addEventListener('input', () => {
-
-    clearTimeout(timeout);
-
-    timeout = setTimeout(() => {
-
-        const url = new URL(window.location.href);
-        url.searchParams.set('search', input.value.trim());
-
-        fetch(url, {headers:{'X-Requested-With':'XMLHttpRequest'}})
-        .then(r => r.text())
-        .then(html => {
-            const doc = new DOMParser().parseFromString(html,'text/html');
-            const newResults = doc.getElementById('search-results');
-            if(newResults) results.innerHTML = newResults.innerHTML;
-        });
-
-    }, 300);
-
-});
-</script>
 
 </body>
 </html>
