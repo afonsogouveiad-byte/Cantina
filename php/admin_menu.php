@@ -38,7 +38,7 @@ body{background:#eef4fc;color:#222;}
 .nav a:hover,.nav a.active{background:var(--accent);color:white;transform:translateY(-1px);}
 .nav-right{display:flex;justify-content:flex-end;}
 .logout a{background:linear-gradient(135deg,#e74c3c,#c0392b);color:white;padding:10px 16px;border-radius:10px;text-decoration:none;font-weight:600;}
-.hero{height:240px;background:url('images/cantina.png')center/cover;display:flex;justify-content:center;align-items:center;position:relative;}
+.hero{height:240px;background:url('images/cantina.jpeg')center/cover;display:flex;justify-content:center;align-items:center;position:relative;}
 .hero::before{content:"";position:absolute;inset:0;background:rgba(13,76,157,0.55);}
 .hero h1{position:relative;z-index:2;color:white;font-size:42px;text-align:center;letter-spacing:1px;}
 .admin-container{max-width:1200px;margin:40px auto;padding:20px;}

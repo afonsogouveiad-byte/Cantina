@@ -118,7 +118,7 @@ body{
 }
 .hero{
     height:240px;
-    background:url('images/cantina.png') center/cover;
+    background:url('images/cantina.jpeg') center/cover;
     display:flex;
     justify-content:center;
     align-items:center;
