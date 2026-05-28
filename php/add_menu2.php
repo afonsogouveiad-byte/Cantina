@@ -29,13 +29,13 @@ if ($_SERVER["REQUEST_METHOD"] === 'POST') {
         $check = getimagesize($_FILES['image']['tmp_name']);
 
         if ($check === false) {
-            die('Erro: ficheiro não é uma imagem válida.');
+            die('Error: el fitxer no és una imatge vàlida.');
         }
 
         $allowed = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
 
         if (!in_array($check['mime'], $allowed, true)) {
-            die('Erro: tipo de imagem não permitido.');
+            die('Error: tipus d’imatge no permès.');
         }
 
         $uploadDir = __DIR__ . '/uploads/';
@@ -53,7 +53,7 @@ if ($_SERVER["REQUEST_METHOD"] === 'POST') {
         $uploadPath = $uploadDir . $image;
 
         if (!move_uploaded_file($_FILES['image']['tmp_name'], $uploadPath)) {
-            die('Erro: não foi possível guardar a imagem.');
+            die('Error: No es pot desar la imatge.');
         }
     }
 
@@ -71,7 +71,7 @@ if ($_SERVER["REQUEST_METHOD"] === 'POST') {
     ");
 
     if (!$stmt) {
-        die("Erro SQL: " . $conn->error);
+        die("Error SQL: " . $conn->error);
     }
 
     $stmt->bind_param("issds", $week, $day, $name, $price, $image);
@@ -210,19 +210,19 @@ button:hover{
             <option value="divendres">DIVENDRES</option>
         </select>
 
-        <label>Nome do prato</label>
+        <label>Nom del plat</label>
         <input type="text" name="name" required>
 
-        <label>Preço</label>
+        <label>Preu</label>
         <input type="number" step="0.01" name="price" required>
 
-        <label>Imagem</label>
+        <label>Imatge</label>
         <input type="file" name="image" accept="image/*">
 
-        <button type="submit">Guardar</button>
+        <button type="submit">Desar canvis</button>
     </form>
 
-    <a class="back" href="admin_menu2.php">← Voltar</a>
+    <a class="back" href="admin_menu2.php">← Tornar al panell</a>
 </div>
 
 </body>

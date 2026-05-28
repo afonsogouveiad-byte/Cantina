@@ -27,7 +27,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <!DOCTYPE html>
 <html>
 <head>
-<title>inici de sessió</title>
+<title>Inici de sessió</title>
 <link rel="icon" href="images/inspedr.jpg" type="image/jpeg">
 <style>
 :root {
@@ -151,7 +151,7 @@ button:hover {
 <body>
 
 <div class="box">
-<h2>inici de sessió</h2>
+<h2>Inici de sessió</h2>
 
 <form method="POST">
 <input name="username" placeholder="User">

@@ -142,17 +142,17 @@ button{width:100%;padding:14px;background:linear-gradient(135deg,var(--accent),v
             <?php endforeach; ?>
         </select>
 
-        <label>Nome do prato</label>
+        <label>Nom del plat</label>
         <input type="text" name="name" value="<?= htmlspecialchars($menu['name']) ?>" required>
 
-        <label>Preço</label>
+        <label>Preu</label>
         <input type="number" step="0.01" name="price" value="<?= htmlspecialchars($menu['price']) ?>" required>
 
-        <label>Imagem</label>
+        <label>Imatge</label>
         <input type="file" name="image" accept="image/*">
 
         <?php if (!empty($menu['image'])): ?>
-            <p>Imagem atual:</p>
+            <p>Imatge Actual:</p>
             <img src="uploads/<?= htmlspecialchars($menu['image']) ?>" style="max-width:120px;">
         <?php endif; ?>
 

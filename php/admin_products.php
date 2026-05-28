@@ -35,7 +35,7 @@ if ($search !== '') {
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Admin Productes - Cantina</title>
+<title>Admin Productes</title>
 <link rel="icon" href="images/inspedr.jpg" type="image/jpeg">
 <style>
 :root {

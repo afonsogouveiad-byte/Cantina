@@ -28,7 +28,7 @@ if ($search !== '') {
 <html lang="ca">
 <head>
 <meta charset="UTF-8">
-<title>Productes de menjador</title>
+<title>Productes</title>
 <link rel="icon" href="images/inspedr.jpg" type="image/jpeg">
 
 <style>

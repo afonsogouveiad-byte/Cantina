@@ -29,21 +29,18 @@ if ($_SERVER["REQUEST_METHOD"] === 'POST') {
     $name = $_POST['name'];
     $price = (float)$_POST['price'];
 
-    $image = $menu['image'];
+    $image = $menu['image']; // mantém imagem antiga
 
-    /* ---------------- UPLOAD ---------------- */
+    // -------------------------
+    // UPLOAD IMATGE
+    // -------------------------
     if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
 
         $check = getimagesize($_FILES['image']['tmp_name']);
+        $allowedTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
 
-        if ($check === false) {
-            die('Erro: não é imagem válida.');
-        }
-
-        $allowed = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
-
-        if (!in_array($check['mime'], $allowed, true)) {
-            die('Erro: tipo inválido.');
+        if ($check === false || !in_array($check['mime'], $allowedTypes, true)) {
+            die('Error: el fitxer no és una imatge vàlida.');
         }
 
         $uploadDir = __DIR__ . '/uploads/';
@@ -61,11 +58,11 @@ if ($_SERVER["REQUEST_METHOD"] === 'POST') {
         $uploadPath = $uploadDir . $newImage;
 
         if (!move_uploaded_file($_FILES['image']['tmp_name'], $uploadPath)) {
-            die('Erro upload.');
+            die('Error: no s\'ha pogut carregar la imatge.');
         }
 
-        /* apagar antigo */
-        if (!empty($menu['image']) && file_exists($uploadDir . $menu['image'])) {
+        // eliminar antiga
+        if ($menu['image'] && file_exists($uploadDir . $menu['image'])) {
             unlink($uploadDir . $menu['image']);
         }
 
@@ -94,134 +91,74 @@ if ($_SERVER["REQUEST_METHOD"] === 'POST') {
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Editar menú infantil</title>
 
+<link rel="icon" href="images/inspedr.jpg" type="image/jpeg">
+
 <style>
-:root {
-    --primary:#0d4c9d;
-    --accent:#00a2ff;
-    --primary-soft:#3f7be6;
-    --text:#172c45;
-    --surface:#ffffff;
-    --border:rgba(13,76,157,0.14);
-    --shadow:0 24px 60px rgba(15,41,78,0.08);
-}
-
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-    font-family:Arial,sans-serif;
-}
-
-body{
-    min-height:100vh;
-    background:#eef4fc;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    padding:20px;
-}
-
-.box{
-    background:#fff;
-    padding:36px;
-    border-radius:20px;
-    max-width:460px;
-    width:100%;
-    box-shadow:var(--shadow);
-    border:1px solid var(--border);
-}
-
-h2{
-    text-align:center;
-    margin-bottom:24px;
-    color:#111;
-}
-
-label{
-    display:block;
-    margin:12px 0 6px;
-    font-weight:600;
-    color:#444;
-}
-
-input, select{
-    width:100%;
-    padding:14px;
-    border:2px solid var(--border);
-    border-radius:12px;
-}
-
-button{
-    width:100%;
-    margin-top:20px;
-    padding:14px;
-    border:none;
-    border-radius:12px;
-    font-weight:700;
-    color:#fff;
-    background:linear-gradient(135deg,var(--accent),var(--primary-soft));
-    cursor:pointer;
-}
-
-img{
-    margin-top:10px;
-    border-radius:10px;
-}
+:root {--primary:#0d4c9d;--accent:#00a2ff;--primary-soft:#3f7be6;--text:#172c45;--surface:#ffffff;--border:rgba(13,76,157,0.14);--shadow:0 24px 60px rgba(15,41,78,0.08);}
+*{margin:0;padding:0;box-sizing:border-box;font-family:Arial,sans-serif;}
+body{min-height:100vh;background:#eef4fc;color:#222;display:flex;justify-content:center;align-items:center;padding:20px;}
+.box{background:#fff;padding:36px;border-radius:20px;max-width:460px;width:100%;box-shadow:var(--shadow);border:1px solid var(--border);}
+h2{text-align:center;margin-bottom:24px;font-size:1.9rem;color:#111;}
+label{display:block;margin:14px 0 6px;color:#444;font-weight:600;}
+input, select{width:100%;padding:14px 16px;border:2px solid var(--border);border-radius:12px;background:#fff;color:#172c45;font-size:1rem;}
+button{width:100%;padding:14px;background:linear-gradient(135deg,var(--accent),var(--primary-soft));color:#fff;border:none;border-radius:12px;font-weight:700;cursor:pointer;margin-top:20px;}
+.back{display:block;text-align:center;margin-top:18px;color:#444;text-decoration:none;}
+.back:hover{color:var(--accent);}
 </style>
-</head>
 
+</head>
 <body>
 
 <div class="box">
+    <h2>Editar menú infantil</h2>
 
-<h2>Editar menú infantil</h2>
+    <form method="POST" enctype="multipart/form-data">
 
-<form method="POST" enctype="multipart/form-data">
+        <label>Setmana</label>
+        <select name="week" required>
+            <?php for ($i = 1; $i <= 4; $i++): ?>
+                <option value="<?= $i ?>" <?= $menu['week'] == $i ? 'selected' : '' ?>>
+                    <?= $i ?>
+                </option>
+            <?php endfor; ?>
+        </select>
 
-    <label>Setmana</label>
-    <select name="week" required>
-        <?php for ($i=1;$i<=4;$i++): ?>
-            <option value="<?= $i ?>" <?= $menu['week']==$i?'selected':'' ?>>
-                <?= $i ?>
-            </option>
-        <?php endfor; ?>
-    </select>
+        <label>Dia</label>
+        <select name="day" required>
+            <?php
+            $days = [
+                'dilluns' => 'DILLUNS',
+                'dimarts' => 'DIMARTS',
+                'dimecres' => 'DIMECRES',
+                'dijous' => 'DIJOUS',
+                'divendres' => 'DIVENDRES'
+            ];
+            foreach ($days as $value => $label):
+            ?>
+                <option value="<?= $value ?>" <?= $menu['day'] === $value ? 'selected' : '' ?>>
+                    <?= $label ?>
+                </option>
+            <?php endforeach; ?>
+        </select>
 
-    <label>Dia</label>
-    <select name="day" required>
-        <?php
-        $days = [
-            'dilluns'=>'DILLUNS',
-            'dimarts'=>'DIMARTS',
-            'dimecres'=>'DIMECRES',
-            'dijous'=>'DIJOUS',
-            'divendres'=>'DIVENDRES'
-        ];
-        foreach ($days as $v=>$l): ?>
-            <option value="<?= $v ?>" <?= $menu['day']===$v?'selected':'' ?>>
-                <?= $l ?>
-            </option>
-        <?php endforeach; ?>
-    </select>
+        <label>Nom del plat</label>
+        <input type="text" name="name" value="<?= htmlspecialchars($menu['name']) ?>" required>
 
-    <label>Nome</label>
-    <input type="text" name="name" value="<?= htmlspecialchars($menu['name']) ?>" required>
+        <label>Preu</label>
+        <input type="number" step="0.01" name="price" value="<?= htmlspecialchars($menu['price']) ?>" required>
 
-    <label>Preço</label>
-    <input type="number" step="0.01" name="price" value="<?= htmlspecialchars($menu['price']) ?>" required>
+        <label>Imatge</label>
+        <input type="file" name="image" accept="image/*">
 
-    <label>Imagem</label>
-    <input type="file" name="image" accept="image/*">
+        <?php if (!empty($menu['image'])): ?>
+            <p>Imatge actual:</p>
+            <img src="uploads/<?= htmlspecialchars($menu['image']) ?>" style="max-width:120px;">
+        <?php endif; ?>
 
-    <?php if (!empty($menu['image'])): ?>
-        <p>Atual:</p>
-        <img src="uploads/<?= htmlspecialchars($menu['image']) ?>" width="120">
-    <?php endif; ?>
+        <button type="submit">Desar canvis</button>
+    </form>
 
-    <button type="submit">Guardar</button>
-
-</form>
-
+    <a class="back" href="admin_menu.php">← Tornar al panell</a>
 </div>
 
 </body>

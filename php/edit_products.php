@@ -28,20 +28,21 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $price = (float)($_POST['price'] ?? 0);
     $category = $_POST['category'] ?? '';
 
-    $image = $product['image']; // mantém imagem antiga
+    $image = $product['image'];
 
-    /* ---------------- UPLOAD ---------------- */
+    /* UPLOAD */
     if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
 
         $check = getimagesize($_FILES['image']['tmp_name']);
+
         if ($check === false) {
-            die("Erro: ficheiro não é imagem válida.");
+            die("Error: el fitxer no és una imatge vàlida.");
         }
 
         $allowed = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
 
         if (!in_array($check['mime'], $allowed, true)) {
-            die("Erro: tipo de imagem inválido.");
+            die("Error: tipus d’imatge no permès.");
         }
 
         $uploadDir = __DIR__ . '/uploads/';
@@ -50,24 +51,23 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             mkdir($uploadDir, 0777, true);
         }
 
-        $newName = uniqid('img_', true) . '_' . preg_replace(
+        $newImage = uniqid('img_', true) . '_' . preg_replace(
             '/[^A-Za-z0-9._-]/',
             '_',
             basename($_FILES['image']['name'])
         );
 
-        $uploadPath = $uploadDir . $newName;
+        $uploadPath = $uploadDir . $newImage;
 
         if (!move_uploaded_file($_FILES['image']['tmp_name'], $uploadPath)) {
-            die("Erro: falha ao guardar imagem.");
+            die("Error: no s'ha pogut guardar la imatge.");
         }
 
-        /* apagar antiga */
         if (!empty($product['image']) && file_exists($uploadDir . $product['image'])) {
             unlink($uploadDir . $product['image']);
         }
 
-        $image = $newName;
+        $image = $newImage;
     }
 
     /* UPDATE */
@@ -89,97 +89,104 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 <html lang="ca">
 <head>
 <meta charset="UTF-8">
-<title>Editar Producte</title>
+<title>Editar producte</title>
 
 <link rel="icon" href="images/inspedr.jpg" type="image/jpeg">
 
 <style>
 :root {
-    --bg: #f4f8fd;
-    --surface: #ffffff;
-    --primary: #0d4c9d;
-    --primary-soft: #3f7be6;
-    --accent: #00a2ff;
-    --text: #172c45;
-    --border: rgba(13, 76, 157, 0.14);
-    --shadow: 0 24px 60px rgba(15, 41, 78, 0.08);
+    --bg:#eef4fc;
+    --surface:#fff;
+    --primary:#0d4c9d;
+    --primary-soft:#3f7be6;
+    --accent:#00a2ff;
+    --text:#172c45;
+    --border:rgba(13,76,157,0.14);
+    --shadow:0 24px 60px rgba(15,41,78,0.08);
 }
 
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: Arial, sans-serif;
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial,sans-serif;
 }
 
 body {
-    min-height: 100vh;
-    background: #eef4fc;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 20px;
+    min-height:100vh;
+    background:var(--bg);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    padding:20px;
 }
 
 .box {
-    background: var(--surface);
-    padding: 40px;
-    border-radius: 20px;
-    box-shadow: var(--shadow);
-    width: 100%;
-    max-width: 420px;
+    background:var(--surface);
+    padding:40px;
+    border-radius:20px;
+    box-shadow:var(--shadow);
+    width:100%;
+    max-width:420px;
 }
 
 h2 {
-    text-align: center;
-    margin-bottom: 20px;
+    text-align:center;
+    margin-bottom:20px;
+}
+
+label {
+    display:block;
+    margin:10px 0 5px;
+    font-weight:600;
+    color:#333;
 }
 
 input {
-    width: 100%;
-    padding: 14px;
-    margin: 8px 0 16px 0;
-    border: 2px solid var(--border);
-    border-radius: 12px;
+    width:100%;
+    padding:14px;
+    margin-bottom:12px;
+    border:2px solid var(--border);
+    border-radius:12px;
 }
 
 input:focus {
-    border-color: var(--accent);
-    box-shadow: 0 0 5px rgba(0,162,255,0.3);
-    outline: none;
+    border-color:var(--accent);
+    outline:none;
+    box-shadow:0 0 5px rgba(0,162,255,0.3);
 }
 
 button {
-    width: 100%;
-    padding: 14px;
-    background: var(--accent);
-    color: white;
-    border: none;
-    border-radius: 12px;
-    font-weight: bold;
-    cursor: pointer;
+    width:100%;
+    padding:14px;
+    background:var(--accent);
+    color:#fff;
+    border:none;
+    border-radius:12px;
+    font-weight:bold;
+    cursor:pointer;
 }
 
 button:hover {
-    background: var(--primary-soft);
-    transform: translateY(-2px);
+    background:var(--primary-soft);
+    transform:translateY(-2px);
 }
 
 .back {
-    display: block;
-    text-align: center;
-    margin-top: 15px;
-    color: #555;
-    text-decoration: none;
+    display:block;
+    text-align:center;
+    margin-top:15px;
+    color:#555;
+    text-decoration:none;
 }
 
 .back:hover {
-    color: var(--accent);
+    color:var(--accent);
 }
 
 img {
-    margin-top: 10px;
-    border-radius: 8px;
+    margin-top:10px;
+    border-radius:8px;
 }
 </style>
 </head>
@@ -188,28 +195,32 @@ img {
 
 <div class="box">
 
-<h2>Editar Producte</h2>
+<h2>Editar producte</h2>
 
 <form method="POST" enctype="multipart/form-data">
 
+    <label>Nom</label>
     <input type="text" name="name" value="<?= htmlspecialchars($product['name']) ?>" required>
 
+    <label>Preu</label>
     <input type="number" step="0.01" name="price" value="<?= htmlspecialchars($product['price']) ?>" required>
 
+    <label>Categoria</label>
     <input type="text" name="category" value="<?= htmlspecialchars($product['category']) ?>" required>
 
+    <label>Imatge</label>
     <input type="file" name="image" accept="image/*">
 
     <?php if (!empty($product['image'])): ?>
-        <p>Imagem atual:</p>
+        <p style="margin-top:10px;">Imatge actual:</p>
         <img src="uploads/<?= htmlspecialchars($product['image']) ?>" width="120">
     <?php endif; ?>
 
-    <button type="submit">Atualizar</button>
+    <button type="submit">Guardar canvis</button>
 
 </form>
 
-<a class="back" href="admin.php">← Voltar</a>
+<a class="back" href="admin.php">← Tornar al panell</a>
 
 </div>
 

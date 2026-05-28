@@ -16,7 +16,7 @@ $result = $conn->query("SELECT * FROM menus ORDER BY week, day, id");
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Menú Infantil</title>
+<title>Admin menú Infantil</title>
 <link rel="icon" href="images/inspedr.jpg" type="image/jpeg">
 <style>
 :root {
