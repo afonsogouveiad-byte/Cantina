@@ -20,7 +20,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     }
 
     // -------------------------
-    // UPLOAD IMAGEM (CONSISTENTE COM OS OUTROS FICHEIROS)
+    //CARREGA LA IMATGE (COMPONENT AMB ALTRES FITXERS)
     // -------------------------
     if (!empty($_FILES['image']['name']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
 

@@ -22,7 +22,7 @@ if ($_SERVER["REQUEST_METHOD"] === 'POST') {
     $price = floatval($_POST['price'] ?? 0);
 
     // -------------------------
-    // UPLOAD IMAGEM
+    // CARREGA LA IMATGE
     // -------------------------
     if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
 

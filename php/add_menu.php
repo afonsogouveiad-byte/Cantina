@@ -24,7 +24,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $price = (float)$price;
 
     // -------------------------
-    // UPLOAD (ALINHADO COM O OUTRO FICHEIRO)
+    // CARREGA (ALINEAT COM UN ALTRE FITXER)
     // -------------------------
     if (!empty($_FILES['image']['name']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
 
@@ -62,7 +62,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         }
     }
 
-    // garante string mesmo sem imagem
+    // Garanteix la cadena fins i tot sense imatge
     if ($image === '') {
         $image = '';
     }

@@ -29,7 +29,7 @@ if ($_SERVER["REQUEST_METHOD"] === 'POST') {
     $name = $_POST['name'];
     $price = (float)$_POST['price'];
 
-    $image = $menu['image']; // mantém imagem antiga
+    $image = $menu['image']; //mantenir la imatge antiga
 
     // -------------------------
     // UPLOAD IMAGEM
@@ -43,7 +43,7 @@ if ($_SERVER["REQUEST_METHOD"] === 'POST') {
             die('Error: el fitxer no és una imatge vàlida.');
         }
 
-        // 🔥 FIX: usar uploads (não images)
+        //  FIX: utilitzar càrregues (no imatges)
         $uploadDir = __DIR__ . '/uploads/';
 
         if (!is_dir($uploadDir)) {
@@ -62,7 +62,7 @@ if ($_SERVER["REQUEST_METHOD"] === 'POST') {
             die('Error: no s\'ha pogut carregar la imatge.');
         }
 
-        // apagar antiga (se existir)
+        // suprimir l'antic (si existeix)
         if ($menu['image'] && file_exists($uploadDir . $menu['image'])) {
             unlink($uploadDir . $menu['image']);
         }
@@ -70,7 +70,7 @@ if ($_SERVER["REQUEST_METHOD"] === 'POST') {
         $image = $newImage;
     }
 
-    /* UPDATE seguro */
+    /* UPDATE segura*/
     $stmt = $conn->prepare("
         UPDATE menus2 
         SET week = ?, day = ?, name = ?, price = ?, image = ?
