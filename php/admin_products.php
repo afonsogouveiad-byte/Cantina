@@ -81,7 +81,6 @@ body{
 
 /* IMPORTANT: NÃO MEXER NO LINK DO LOGO */
 .logo a{
-    display:inline-block;
     padding:0 !important;
     background:transparent !important;
     text-decoration:none !important;
