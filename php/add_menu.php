@@ -40,7 +40,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             die('Error: tipus d’imatge no permès.');
         }
 
-        // 👇 IMPORTANTE: igual ao outro ficheiro
+        // IMPORTANT: igual que l'altre fitxer
         $uploadDir = __DIR__ . '/uploads/';
 
         if (!is_dir($uploadDir)) {
