@@ -15,10 +15,18 @@ if ($search !== '') {
 
     if (is_numeric($searchNormalized)) {
         $price = (float) $searchNormalized;
-        $stmt = $conn->prepare("SELECT * FROM products WHERE name LIKE ? OR category LIKE ? OR price = ? ORDER BY category ASC, name ASC");
+        $stmt = $conn->prepare("
+            SELECT * FROM products 
+            WHERE name LIKE ? OR category LIKE ? OR price = ? 
+            ORDER BY category ASC, name ASC
+        ");
         $stmt->bind_param("ssd", $searchLike, $searchLike, $price);
     } else {
-        $stmt = $conn->prepare("SELECT * FROM products WHERE name LIKE ? OR category LIKE ? ORDER BY category ASC, name ASC");
+        $stmt = $conn->prepare("
+            SELECT * FROM products 
+            WHERE name LIKE ? OR category LIKE ? 
+            ORDER BY category ASC, name ASC
+        ");
         $stmt->bind_param("ss", $searchLike, $searchLike);
     }
 
@@ -33,37 +41,35 @@ if ($search !== '') {
 <html lang="ca">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Admin Productes</title>
 <link rel="icon" href="images/inspedr.jpg" type="image/jpeg">
 
 <style>
 
-:root {
-    --primary: #0d4c9d;
-    --accent: #00a2ff;
-    --primary-soft: #3f7be6;
-    --text: #172c45;
-    --muted: #5f6f86;
-    --shadow: 0 24px 60px rgba(15, 41, 78, 0.08);
+:root{
+    --primary:#0d4c9d;
+    --accent:#00a2ff;
+    --primary-soft:#3f7be6;
+    --text:#172c45;
+    --muted:#5f6f86;
+    --shadow:0 24px 60px rgba(15,41,78,0.08);
 }
 
 *{
     margin:0;
     padding:0;
     box-sizing:border-box;
-    font-family:Arial, sans-serif;
+    font-family:Arial,sans-serif;
 }
 
 body{
     background:#eef4fc;
-    color:#222;
+    color:var(--text);
 }
 
-/* NAVBAR (EXATAMENTE IGUAL AO TEU PADRÃO) */
-
+/* NAVBAR (IGUAL AO admin_menu2.php) */
 .nav{
-    background: var(--primary);
+    background:var(--primary);
     display:grid;
     grid-template-columns:1fr auto 1fr;
     align-items:center;
@@ -79,11 +85,17 @@ body{
     border-radius:8px;
 }
 
-/* IMPORTANT: NÃO MEXER NO LINK DO LOGO */
 .logo a{
+    display:inline-block;
     padding:0 !important;
     background:transparent !important;
     text-decoration:none !important;
+    transition:none !important;
+}
+
+.logo a:hover{
+    transform:none !important;
+    background:transparent !important;
 }
 
 .nav-links{
@@ -124,8 +136,8 @@ body{
 
 /* HERO */
 .hero{
-    height:240px;
-    background:url('images/cantina.jpeg')center/cover;
+    height:320px;
+    background:url('images/cantina.jpeg') center/cover;
     display:flex;
     justify-content:center;
     align-items:center;
@@ -136,192 +148,172 @@ body{
     content:"";
     position:absolute;
     inset:0;
-    background:rgba(13,76,157,0.55);
+    background:rgba(13,76,157,0.5);
 }
 
 .hero h1{
     position:relative;
-    z-index:2;
     color:white;
-    font-size:42px;
-    text-align:center;
+    font-size:52px;
 }
 
 /* SEARCH */
 .search-wrapper{
-    max-width:1200px;
-    margin:20px auto;
-    padding:0 20px;
+    max-width:1180px;
+    margin:0 auto;
+    padding:24px;
 }
 
-.search-input{
-    width:100%;
-    padding:12px 16px;
-    border-radius:12px;
-    border:1px solid #ccc;
+.search-input {
+    width: 100%;
+    padding: 12px 16px;
+    border-radius: 12px;
+    border: 1px solid #d3dce6;
+    transition: 0.2s;
 }
 
-.search-input:focus{
-    outline:none;
-    border-color:var(--accent);
-    box-shadow:0 0 0 3px rgba(0,162,255,0.25);
+.search-input:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(0,162,255,0.25);
 }
 
 /* GRID */
-.admin-container{
-    max-width:1200px;
-    margin:30px auto;
-    padding:20px;
-}
-
 .grid{
+    max-width:1180px;
+    margin:0 auto;
     display:grid;
     grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
     gap:24px;
+    padding:28px 24px;
 }
 
-/* CARD (SÓ AQUI TEM ANIMAÇÃO) */
+/* CARD */
 .card{
     background:white;
     border-radius:16px;
+    box-shadow:var(--shadow);
     overflow:hidden;
-    box-shadow:0 8px 25px rgba(0,0,0,0.08);
-    transition:0.25s;
+    transition:0.3s;
     animation:fadeInUp 0.6s ease both;
 }
 
 .card:hover{
-    transform:translateY(-5px);
-    box-shadow:0 16px 32px rgba(0,0,0,0.1);
+    transform:translateY(-6px);
 }
 
-.card img{
-    width: calc(100% - 24px);
-    height: 200px;
-    object-fit: cover;
-    display:block;
+.product-img{
+    width:calc(100% - 24px);
+    height:200px;
+    object-fit:cover;
     margin:12px auto 0 auto;
     border-radius:12px;
+    display:block;
 }
 
-.card-body{
-    padding:18px;
+/* INFO */
+.info{
+    padding:20px;
 }
 
-.meta{
-    color:#5f6f86;
-    margin-bottom:10px;
+.name{
+    font-weight:600;
 }
 
-/* EMPTY */
-.empty{
-    background:white;
-    padding:40px;
-    border-radius:16px;
-    text-align:center;
+.price{
+    color:var(--accent);
+    font-weight:bold;
 }
 
-/* ANIMAÇÃO SÓ DOS CARDS */
-footer {
-    background: var(--primary);
-    color: white;
-    margin-top: 60px;
-    position: relative;
+.category{
+    color:var(--muted);
 }
 
-.footer::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 4px;
-    background: linear-gradient(90deg, var(--accent), var(--primary-soft));
+/* BOTÕES (pequenos, iguais ao teu estilo) */
+.actions{
+    display:flex;
+    gap:8px;
+    margin-top:10px;
 }
 
-.footer-container {
-    max-width: 1180px;
-    margin: 0 auto;
-    padding: 40px 24px;
+.actions a{
+    display:inline-block;
+    text-decoration:none;
+    padding:7px 12px;
+    border-radius:8px;
+    font-size:13px;
+    font-weight:bold;
+    color:white;
+}
 
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-    gap: 32px;
+.actions .edit{
+    background:var(--primary-soft);
+}
+
+.actions .delete{
+    background:#e74c3c;
+}
+
+/* FOOTER IGUAL AO admin_menu2.php */
+footer{
+    background:var(--primary);
+    color:white;
+    margin-top:40px;
+    position:relative;
+}
+
+.footer::before{
+    content:"";
+    position:absolute;
+    top:0;
+    left:0;
+    right:0;
+    height:4px;
+    background:linear-gradient(90deg,var(--accent),var(--primary-soft));
+}
+
+.footer-container{
+    max-width:1180px;
+    margin:0 auto;
+    padding:40px 24px;
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+    gap:32px;
 }
 
 .footer-section h3,
-.footer-section h4 {
-    margin-bottom: 16px;
-    font-weight: 600;
-    color: white;
+.footer-section h4{
+    margin-bottom:16px;
+    font-weight:600;
+    color:white;
 }
 
 .footer-section p,
-.footer-section a {
-    font-size: 0.95rem;
-    line-height: 1.7;
-    color: rgba(255,255,255,0.9);
+.footer-section a{
+    font-size:0.95rem;
+    line-height:1.7;
+    color:rgba(255,255,255,0.9);
 }
 
-.footer-section a {
-    color: var(--accent);
-    text-decoration: none;
-    transition: all 0.25s ease;
+.footer-section a{
+    color:var(--accent);
+    text-decoration:none;
 }
 
-.footer-section a:hover {
-    color: white;
-    text-decoration: none;
-    transform: translateX(2px);
+.footer-bottom{
+    text-align:center;
+    padding:20px 24px;
+    border-top:1px solid rgba(255,255,255,0.1);
+    font-size:0.9rem;
+    color:rgba(255,255,255,0.7);
 }
 
-.footer-bottom {
-    text-align: center;
-    padding: 20px 24px;
-    border-top: 1px solid rgba(255,255,255,0.1);
-    font-size: 0.9rem;
-    color: rgba(255,255,255,0.7);
+/* ANIMAÇÃO */
+@keyframes fadeInUp{
+    from{opacity:0;transform:translateY(30px);}
+    to{opacity:1;transform:translateY(0);}
 }
 
-/* RESPONSIVE */
-
-@media(max-width:1000px){
-
-    .footer-container{
-        grid-template-columns:1fr 1fr;
-    }
-}
-
-@media(max-width:700px){
-
-    .nav{
-        grid-template-columns:1fr;
-        gap:15px;
-    }
-
-    .nav-links{
-        flex-wrap:wrap;
-    }
-
-    .hero h1{
-        font-size:36px;
-    }
-
-    .footer-container{
-        grid-template-columns:1fr;
-    }
-}
-
-@keyframes fadeInUp {
-    from {
-        opacity: 0;
-        transform: translateY(30px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
 </style>
 </head>
 
@@ -330,7 +322,9 @@ footer {
 <div class="nav">
 
     <div class="logo">
-        <a href="admin.php"><img src="images/inspedr.jpg"></a>
+        <a href="admin.php">
+            <img src="images/inspedr.jpg">
+        </a>
     </div>
 
     <div class="nav-links">
@@ -354,9 +348,6 @@ footer {
     <input class="search-input" type="search" value="<?= htmlspecialchars($search) ?>" placeholder="Cerca...">
 </div>
 
-<div class="admin-container">
-
-<?php if ($result && $result->num_rows > 0): ?>
 <div class="grid">
 
 <?php while($row = $result->fetch_assoc()): ?>
@@ -364,12 +355,20 @@ footer {
 <div class="card">
 
     <?php if (!empty($row['image'])): ?>
-        <img src="uploads/<?= htmlspecialchars($row['image']) ?>">
+        <img class="product-img" src="uploads/<?= htmlspecialchars($row['image']) ?>">
     <?php endif; ?>
 
-    <div class="card-body">
-        <h3><?= htmlspecialchars($row['name']) ?></h3>
-        <p class="meta"><?= number_format($row['price'], 2) ?> €</p>
+    <div class="info">
+        <div class="name"><?= htmlspecialchars($row['name']) ?></div>
+        <div class="price"><?= number_format($row['price'], 2) ?> €</div>
+        <div class="category"><?= htmlspecialchars($row['category']) ?></div>
+
+        <div class="actions">
+            <a class="edit" href="edit_products.php?id=<?= $row['id'] ?>">Editar</a>
+            <a class="delete" href="delete_products.php?id=<?= $row['id'] ?>"
+               onclick="return confirm('Tens a certeza?')">Eliminar</a>
+        </div>
+
     </div>
 
 </div>
@@ -377,56 +376,33 @@ footer {
 <?php endwhile; ?>
 
 </div>
-<?php else: ?>
-<div class="empty">Cap producte trobat.</div>
-<?php endif; ?>
 
-</div>
 <footer class="footer">
 
     <div class="footer-container">
 
         <div class="footer-section">
-
             <h3>El centre</h3>
-
-            <p>
-                Institut públic del districte de Les Corts,
-                amb oferta d’ESO, Batxillerat,
-                CFGM i CFGS d’Informàtica,
-                Imatge i So, i PFI.
-            </p>
-
+            <p>Institut públic del districte de Les Corts...</p>
         </div>
 
         <div class="footer-section">
-
             <h4>Contacte</h4>
-
             <p>93 203 33 32</p>
             <p>inspedralbes@xtec.cat</p>
-
         </div>
 
         <div class="footer-section">
-
             <h4>Adreça</h4>
-
             <p>Av. Esplugues, 36-42</p>
             <p>08034 Barcelona</p>
-
         </div>
 
         <div class="footer-section">
-
             <h4>Legal</h4>
-
-            <a href="cookies.php">Cookies</a>
-            <br>
-            <a href="legal.php">Avís legal</a>
-            <br>
+            <a href="cookies.php">Cookies</a><br>
+            <a href="legal.php">Avís legal</a><br>
             <a href="privacy.php">Protecció de dades</a>
-
         </div>
 
     </div>
@@ -436,5 +412,6 @@ footer {
     </div>
 
 </footer>
+
 </body>
 </html>

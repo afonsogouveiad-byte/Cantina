@@ -220,7 +220,7 @@ img {
 
 </form>
 
-<a class="back" href="admin.php">← Tornar al panell</a>
+<a class="back" onclick="history.back()">← Tornar al panell</a>
 
 </div>
 
