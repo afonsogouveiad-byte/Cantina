@@ -80,9 +80,24 @@ body{
     box-shadow:0 4px 20px rgba(13,76,157,0.15);
 }
 
-.logo img{
-    height:45px;
-    border-radius:8px;
+.logo a {
+    display: inline-block;
+    padding: 0 !important;
+    margin: 0 !important;
+    background: transparent !important;
+    transition: none !important;
+    transform: none !important;
+}
+
+.logo a:hover {
+    background: transparent !important;
+    transform: none !important;
+    box-shadow: none !important;
+}
+
+.logo img {
+    height: 45px;
+    border-radius: 8px;
 }
 
 .nav-links{
