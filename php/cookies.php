@@ -33,63 +33,6 @@ body{
     color:#222;
 }
 
-/* NAVBAR */
-
-.nav{
-    background: var(--primary);
-    display:grid;
-    grid-template-columns:1fr auto 1fr;
-    align-items:center;
-    padding:12px 24px;
-    position:sticky;
-    top:0;
-    z-index:1000;
-    box-shadow:0 4px 20px rgba(13,76,157,0.15);
-}
-
-.logo img{
-    height:45px;
-    border-radius:8px;
-}
-
-.logo a{
-    display:inline-block;
-    padding:0 !important;
-    border-radius:0 !important;
-    background:transparent !important;
-    color:inherit !important;
-    text-decoration:none !important;
-    transition:none !important;
-}
-
-.logo a:hover{
-    background:transparent !important;
-    transform:none !important;
-}
-
-.nav-links{
-    display:flex;
-    gap:8px;
-    justify-content:center;
-}
-
-.nav a{
-    color:white;
-    text-decoration:none;
-    padding:10px 18px;
-    border-radius:10px;
-    font-weight:600;
-    transition:all 0.25s cubic-bezier(0.4,0,0.2,1);
-    font-size:0.95rem;
-}
-
-.nav a:hover,
-.nav a.active{
-    background:var(--accent);
-    color:white;
-    transform:translateY(-1px);
-}
-
 /* HERO */
 
 .hero{
@@ -143,6 +86,25 @@ body{
     line-height:1.9;
     color:#333;
     font-size:1rem;
+}
+
+/* BOTÃO */
+
+.back-button{
+    background:var(--primary);
+    color:white;
+    border:none;
+    padding:12px 24px;
+    border-radius:12px;
+    font-size:1rem;
+    font-weight:600;
+    cursor:pointer;
+    transition:all 0.25s cubic-bezier(0.4,0,0.2,1);
+}
+
+.back-button:hover{
+    background:var(--accent);
+    transform:translateY(-2px);
 }
 
 /* FOOTER */
@@ -210,15 +172,6 @@ footer{
 
 @media(max-width:700px){
 
-    .nav{
-        grid-template-columns:1fr;
-        gap:15px;
-    }
-
-    .nav-links{
-        flex-wrap:wrap;
-    }
-
     .hero h1{
         font-size:36px;
     }
@@ -249,28 +202,6 @@ footer{
 </head>
 
 <body>
-
-<!-- NAVBAR -->
-
-<div class="nav">
-
-    <div class="logo">
-        <a href="index.php">
-            <img src="images/inspedr.jpg" alt="Institut Pedralbes">
-        </a>
-    </div>
-
-    <div class="nav-links">
-        <a href="index.php">Inici</a>
-        <a href="products.php">Productes</a>
-        <a href="menu.php">Menú Infantil</a>
-        <a href="menu2.php">Menú General</a>
-        <a class="active" href="cookies.php">Cookies</a>
-    </div>
-
-    <div></div>
-
-</div>
 
 <!-- HERO -->
 
@@ -316,6 +247,12 @@ footer{
             de manera que l’Institut Pedralbes pugui ajustar els serveis oferts.
         </p>
 
+    </div>
+
+    <div style="text-align:center; margin-top:30px;">
+        <button onclick="history.back()" class="back-button">
+            Tornar
+        </button>
     </div>
 
 </div>
