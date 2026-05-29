@@ -5,7 +5,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Avís Legal</title>
+<title>Protecció de Dades</title>
 
 <link rel="icon" href="images/inspedr.jpg" type="image/jpeg">
 
@@ -14,9 +14,7 @@
 :root {
     --primary: #0d4c9d;
     --accent: #00a2ff;
-    --primary-soft: #3f7be6;
     --text: #172c45;
-    --muted: #5f6f86;
 }
 
 *{
@@ -200,33 +198,36 @@ footer{
 
 <body>
 
+<!-- HERO -->
 <div class="hero">
-    <h1>Avís Legal</h1>
+    <h1>Protecció de Dades</h1>
 </div>
 
+<!-- CONTENT -->
 <div class="container">
 
     <div class="card">
 
-        <h2>Informació legal</h2>
+        <h2>Tractament de dades personals</h2>
 
         <p>
-            Aquest lloc web és gestionat per l’Institut Pedralbes de Barcelona.
-            L’ús d’aquest portal implica l’acceptació de les condicions aquí establertes.
+            L’Institut Pedralbes de Barcelona garanteix la protecció i confidencialitat
+            de les dades personals proporcionades pels usuaris/àries del lloc web.
         </p>
 
         <p>
-            Els continguts, disseny, imatges i estructura del web estan protegits
-            per la legislació vigent en matèria de propietat intel·lectual.
+            Les dades recollides s’utilitzen exclusivament per a finalitats administratives,
+            de gestió del servei i comunicació amb els usuaris/àries.
         </p>
 
         <p>
-            Queda prohibit l’ús indegut, còpia o distribució dels continguts sense autorització prèvia.
+            En cap cas les dades seran cedides a tercers sense consentiment previ,
+            excepte obligació legal.
         </p>
 
         <p>
-            L’Institut Pedralbes no es fa responsable de l’ús incorrecte del contingut
-            ni de possibles errors tècnics temporals.
+            Els usuaris poden exercir els seus drets d’accés, rectificació, cancel·lació
+            i oposició contactant amb el centre.
         </p>
 
     </div>
@@ -237,6 +238,7 @@ footer{
 
 </div>
 
+<!-- FOOTER -->
 <footer class="footer">
 
     <div class="footer-container">
