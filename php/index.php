@@ -314,7 +314,7 @@ footer {
 
         <div class="footer-section">
             <h4>Legal</h4>
-            <a href="#">Cookies</a>
+            <a href="cookies.php">Cookies</a>
             <br>
             <a href="#">Avís legal</a>
             <br>

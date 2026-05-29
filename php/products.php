@@ -205,18 +205,109 @@ body {
     font-size: 0.9rem;
 }
 
-/* ANIMAÇÃO */
+/* FOOTER */
+
+footer {
+    background: var(--primary);
+    color: white;
+    margin-top: 60px;
+    position: relative;
+}
+
+.footer::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--accent), var(--primary-soft));
+}
+
+.footer-container {
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 40px 24px;
+
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 32px;
+}
+
+.footer-section h3,
+.footer-section h4 {
+    margin-bottom: 16px;
+    font-weight: 600;
+    color: white;
+}
+
+.footer-section p,
+.footer-section a {
+    font-size: 0.95rem;
+    line-height: 1.7;
+    color: rgba(255,255,255,0.9);
+}
+
+.footer-section a {
+    color: var(--accent);
+    text-decoration: none;
+    transition: all 0.25s ease;
+}
+
+.footer-section a:hover {
+    color: white;
+    text-decoration: none;
+    transform: translateX(2px);
+}
+
+.footer-bottom {
+    text-align: center;
+    padding: 20px 24px;
+    border-top: 1px solid rgba(255,255,255,0.1);
+    font-size: 0.9rem;
+    color: rgba(255,255,255,0.7);
+}
+
+/* RESPONSIVE */
+
+@media(max-width:1000px){
+
+    .footer-container{
+        grid-template-columns:1fr 1fr;
+    }
+}
+
+@media(max-width:700px){
+
+    .nav{
+        grid-template-columns:1fr;
+        gap:15px;
+    }
+
+    .nav-links{
+        flex-wrap:wrap;
+    }
+
+    .hero h1{
+        font-size:36px;
+    }
+
+    .footer-container{
+        grid-template-columns:1fr;
+    }
+}
 
 @keyframes fadeInUp {
     from {
         opacity: 0;
-        transform: translateY(25px);
+        transform: translateY(30px);
     }
     to {
         opacity: 1;
         transform: translateY(0);
     }
 }
+
 
 </style>
 </head>
@@ -276,6 +367,60 @@ body {
 <?php endwhile; ?>
 
 </div>
+<footer class="footer">
+
+    <div class="footer-container">
+
+        <div class="footer-section">
+
+            <h3>El centre</h3>
+
+            <p>
+                Institut públic del districte de Les Corts,
+                amb oferta d’ESO, Batxillerat,
+                CFGM i CFGS d’Informàtica,
+                Imatge i So, i PFI.
+            </p>
+
+        </div>
+
+        <div class="footer-section">
+
+            <h4>Contacte</h4>
+
+            <p>93 203 33 32</p>
+            <p>inspedralbes@xtec.cat</p>
+
+        </div>
+
+        <div class="footer-section">
+
+            <h4>Adreça</h4>
+
+            <p>Av. Esplugues, 36-42</p>
+            <p>08034 Barcelona</p>
+
+        </div>
+
+        <div class="footer-section">
+
+            <h4>Legal</h4>
+
+            <a href="cookies.php">Cookies</a>
+            <br>
+            <a href="legal.php">Avís legal</a>
+            <br>
+            <a href="privacy.php">Protecció de dades</a>
+
+        </div>
+
+    </div>
+
+    <div class="footer-bottom">
+        &copy; <?= date("Y") ?> Institut Pedralbes - Cantina
+    </div>
+
+</footer>
 
 </body>
 </html>
