@@ -316,9 +316,9 @@ footer {
             <h4>Legal</h4>
             <a href="cookies.php">Cookies</a>
             <br>
-            <a href="#">Avís legal</a>
+            <a href="legal.php">Avís legal</a>
             <br>
-            <a href="#">Protecció de dades</a>
+            <a href="privacy.php">Protecció de dades</a>
         </div>
 
     </div>

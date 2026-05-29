@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="ca">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Avís Legal</title>
+
+<link rel="icon" href="images/inspedr.jpg" type="image/jpeg">
+
+<style>
+
+:root {
+    --primary: #0d4c9d;
+    --accent: #00a2ff;
+    --primary-soft: #3f7be6;
+    --text: #172c45;
+    --muted: #5f6f86;
+}
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial, sans-serif;
+}
+
+body{
+    background:#eef4fc;
+    color:var(--text);
+}
+
+/* HERO */
+.hero{
+    height:260px;
+    background:url('images/cantina.jpeg') center/cover;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    position:relative;
+}
+
+.hero::before{
+    content:"";
+    position:absolute;
+    inset:0;
+    background:rgba(13,76,157,0.55);
+}
+
+.hero h1{
+    position:relative;
+    color:white;
+    font-size:48px;
+    text-align:center;
+}
+
+/* CONTENT */
+.container{
+    max-width:1000px;
+    margin:50px auto;
+    padding:0 20px;
+}
+
+.card{
+    background:white;
+    border-radius:18px;
+    padding:40px;
+    box-shadow:0 8px 25px rgba(0,0,0,0.08);
+    animation:fadeInUp 0.6s ease both;
+}
+
+.card h2{
+    color:var(--primary);
+    margin-bottom:20px;
+    font-size:28px;
+}
+
+.card p{
+    line-height:1.8;
+    margin-bottom:14px;
+    color:#333;
+}
+
+/* BOTÃO VOLTAR */
+.back{
+    display:flex;
+    justify-content:center;
+    margin-top:30px;
+}
+
+.back button{
+    background:var(--primary);
+    color:white;
+    border:none;
+    padding:12px 24px;
+    border-radius:12px;
+    font-weight:600;
+    cursor:pointer;
+    transition:0.25s;
+}
+
+.back button:hover{
+    background:var(--accent);
+    transform:translateY(-2px);
+}
+
+/* FOOTER */
+footer{
+    background:var(--primary);
+    color:white;
+    margin-top:60px;
+    position:relative;
+}
+
+.footer::before{
+    content:"";
+    position:absolute;
+    top:0;
+    left:0;
+    right:0;
+    height:4px;
+    background:linear-gradient(90deg,var(--accent),var(--primary-soft));
+}
+
+.footer-container{
+    max-width:1180px;
+    margin:0 auto;
+    padding:40px 24px;
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+    gap:32px;
+}
+
+.footer-section h3,
+.footer-section h4{
+    margin-bottom:16px;
+    font-weight:600;
+    color:white;
+}
+
+.footer-section p,
+.footer-section a{
+    font-size:0.95rem;
+    line-height:1.7;
+    color:rgba(255,255,255,0.9);
+}
+
+.footer-section a{
+    color:var(--accent);
+    text-decoration:none;
+    transition:all 0.25s ease;
+}
+
+.footer-section a:hover{
+    color:white;
+    transform:translateX(2px);
+}
+
+.footer-bottom{
+    text-align:center;
+    padding:20px 24px;
+    border-top:1px solid rgba(255,255,255,0.1);
+    font-size:0.9rem;
+    color:rgba(255,255,255,0.7);
+}
+
+/* RESPONSIVE */
+
+@media(max-width:700px){
+
+    .hero h1{
+        font-size:36px;
+    }
+
+    .card{
+        padding:25px;
+    }
+
+    .footer-container{
+        grid-template-columns:1fr;
+    }
+}
+
+/* ANIMAÇÃO */
+
+@keyframes fadeInUp{
+    from{
+        opacity:0;
+        transform:translateY(25px);
+    }
+    to{
+        opacity:1;
+        transform:translateY(0);
+    }
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="hero">
+    <h1>Avís Legal</h1>
+</div>
+
+<div class="container">
+
+    <div class="card">
+
+        <h2>Informació legal</h2>
+
+        <p>
+            Aquest lloc web és gestionat per l’Institut Pedralbes de Barcelona.
+            L’ús d’aquest portal implica l’acceptació de les condicions aquí establertes.
+        </p>
+
+        <p>
+            Els continguts, disseny, imatges i estructura del web estan protegits
+            per la legislació vigent en matèria de propietat intel·lectual.
+        </p>
+
+        <p>
+            Queda prohibit l’ús indegut, còpia o distribució dels continguts sense autorització prèvia.
+        </p>
+
+        <p>
+            L’Institut Pedralbes no es fa responsable de l’ús incorrecte del contingut
+            ni de possibles errors tècnics temporals.
+        </p>
+
+    </div>
+
+    <div class="back">
+        <button onclick="history.back()">Tornar</button>
+    </div>
+
+</div>
+
+<footer class="footer">
+
+    <div class="footer-container">
+
+        <div class="footer-section">
+
+            <h3>El centre</h3>
+
+            <p>
+                Institut públic del districte de Les Corts,
+                amb oferta d’ESO, Batxillerat,
+                CFGM i CFGS d’Informàtica,
+                Imatge i So, i PFI.
+            </p>
+
+        </div>
+
+        <div class="footer-section">
+
+            <h4>Contacte</h4>
+
+            <p>93 203 33 32</p>
+            <p>inspedralbes@xtec.cat</p>
+
+        </div>
+
+        <div class="footer-section">
+
+            <h4>Adreça</h4>
+
+            <p>Av. Esplugues, 36-42</p>
+            <p>08034 Barcelona</p>
+
+        </div>
+
+        <div class="footer-section">
+
+            <h4>Legal</h4>
+
+            <a href="cookies.php">Cookies</a>
+            <br>
+            <a href="#">Avís legal</a>
+            <br>
+            <a href="#">Protecció de dades</a>
+
+        </div>
+
+    </div>
+
+    <div class="footer-bottom">
+        &copy; <?= date("Y") ?> Institut Pedralbes - Cantina
+    </div>
+
+</footer>
+
+</body>
+</html>
