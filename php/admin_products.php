@@ -67,7 +67,7 @@ body{
     color:var(--text);
 }
 
-/* NAVBAR (IGUAL AO admin_menu2.php) */
+/* NAVBAR */
 .nav{
     background:var(--primary);
     display:grid;
@@ -83,19 +83,6 @@ body{
 .logo img{
     height:45px;
     border-radius:8px;
-}
-
-.logo a{
-    display:inline-block;
-    padding:0 !important;
-    background:transparent !important;
-    text-decoration:none !important;
-    transition:none !important;
-}
-
-.logo a:hover{
-    transform:none !important;
-    background:transparent !important;
 }
 
 .nav-links{
@@ -118,20 +105,6 @@ body{
 .nav a.active{
     background:var(--accent);
     transform:translateY(-1px);
-}
-
-.nav-right{
-    display:flex;
-    justify-content:flex-end;
-}
-
-.logout a{
-    background:linear-gradient(135deg,#e74c3c,#c0392b);
-    color:white;
-    padding:10px 16px;
-    border-radius:10px;
-    text-decoration:none;
-    font-weight:600;
 }
 
 /* HERO */
@@ -188,7 +161,16 @@ body{
     padding:28px 24px;
 }
 
-/* CARD */
+/* CATEGORY TITLE (SÓ ADIÇÃO) */
+.category-title{
+    grid-column:1 / -1;
+    font-size:20px;
+    font-weight:700;
+    color:var(--primary);
+    margin-top:10px;
+}
+
+/* CARD (INTACTO) */
 .card{
     background:white;
     border-radius:16px;
@@ -202,6 +184,7 @@ body{
     transform:translateY(-6px);
 }
 
+/* IMAGEM */
 .product-img{
     width:calc(100% - 24px);
     height:200px;
@@ -229,7 +212,7 @@ body{
     color:var(--muted);
 }
 
-/* BOTÕES (pequenos, iguais ao teu estilo) */
+/* BOTÕES (INTACTOS) */
 .actions{
     display:flex;
     gap:8px;
@@ -254,22 +237,12 @@ body{
     background:#e74c3c;
 }
 
-/* FOOTER IGUAL AO admin_menu2.php */
+/* FOOTER */
 footer{
     background:var(--primary);
     color:white;
     margin-top:40px;
     position:relative;
-}
-
-.footer::before{
-    content:"";
-    position:absolute;
-    top:0;
-    left:0;
-    right:0;
-    height:4px;
-    background:linear-gradient(90deg,var(--accent),var(--primary-soft));
 }
 
 .footer-container{
@@ -281,25 +254,6 @@ footer{
     gap:32px;
 }
 
-.footer-section h3,
-.footer-section h4{
-    margin-bottom:16px;
-    font-weight:600;
-    color:white;
-}
-
-.footer-section p,
-.footer-section a{
-    font-size:0.95rem;
-    line-height:1.7;
-    color:rgba(255,255,255,0.9);
-}
-
-.footer-section a{
-    color:var(--accent);
-    text-decoration:none;
-}
-
 .footer-bottom{
     text-align:center;
     padding:20px 24px;
@@ -308,7 +262,7 @@ footer{
     color:rgba(255,255,255,0.7);
 }
 
-/* ANIMAÇÃO */
+/* ANIMAÇÃO (INTACTA) */
 @keyframes fadeInUp{
     from{opacity:0;transform:translateY(30px);}
     to{opacity:1;transform:translateY(0);}
@@ -320,11 +274,8 @@ footer{
 <body>
 
 <div class="nav">
-
     <div class="logo">
-        <a href="admin.php">
-            <img src="images/inspedr.jpg">
-        </a>
+        <a href="admin.php"><img src="images/inspedr.jpg"></a>
     </div>
 
     <div class="nav-links">
@@ -334,10 +285,7 @@ footer{
         <a href="admin_menu2.php">Menú General</a>
     </div>
 
-    <div class="nav-right">
-        <a class="logout" href="logout.php">Tanca sessió</a>
-    </div>
-
+    <div></div>
 </div>
 
 <div class="hero">
@@ -345,17 +293,34 @@ footer{
 </div>
 
 <div class="search-wrapper">
-    <input class="search-input" type="search" value="<?= htmlspecialchars($search) ?>" placeholder="Cerca...">
+    <form method="get">
+        <input class="search-input"
+       name="search"
+       id="search"
+       value="<?= htmlspecialchars($search) ?>"
+       placeholder="Cerca...">
+    </form>
+    </form>
 </div>
 
 <div class="grid">
 
-<?php while($row = $result->fetch_assoc()): ?>
+<?php
+$currentCategory = null;
+
+while($row = $result->fetch_assoc()):
+
+    if ($currentCategory !== $row['category']) {
+        $currentCategory = $row['category'];
+        echo '<div class="category-title">'.htmlspecialchars($currentCategory).'</div>';
+    }
+?>
 
 <div class="card">
 
     <?php if (!empty($row['image'])): ?>
-        <img class="product-img" src="uploads/<?= htmlspecialchars($row['image']) ?>">
+        <img class="product-img"
+             src="uploads/<?= htmlspecialchars($row['image']) ?>">
     <?php endif; ?>
 
     <div class="info">
@@ -376,42 +341,30 @@ footer{
 <?php endwhile; ?>
 
 </div>
+<script>
+const input = document.querySelector('.search-input');
+const grid = document.querySelector('.grid');
 
-<footer class="footer">
+let timeout = null;
 
-    <div class="footer-container">
+input.addEventListener('input', function () {
+    clearTimeout(timeout);
 
-        <div class="footer-section">
-            <h3>El centre</h3>
-            <p>Institut públic del districte de Les Corts...</p>
-        </div>
+    timeout = setTimeout(() => {
+        fetch("?search=" + encodeURIComponent(input.value))
+            .then(res => res.text())
+            .then(html => {
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(html, "text/html");
 
-        <div class="footer-section">
-            <h4>Contacte</h4>
-            <p>93 203 33 32</p>
-            <p>inspedralbes@xtec.cat</p>
-        </div>
+                const newGrid = doc.querySelector(".grid");
 
-        <div class="footer-section">
-            <h4>Adreça</h4>
-            <p>Av. Esplugues, 36-42</p>
-            <p>08034 Barcelona</p>
-        </div>
-
-        <div class="footer-section">
-            <h4>Legal</h4>
-            <a href="cookies.php">Cookies</a><br>
-            <a href="legal.php">Avís legal</a><br>
-            <a href="privacy.php">Protecció de dades</a>
-        </div>
-
-    </div>
-
-    <div class="footer-bottom">
-        &copy; <?= date("Y") ?> Institut Pedralbes - Cantina
-    </div>
-
-</footer>
-
+                if (newGrid) {
+                    grid.innerHTML = newGrid.innerHTML;
+                }
+            });
+    }, 300); // delay para não spammar o servidor
+});
+</script>
 </body>
 </html>
