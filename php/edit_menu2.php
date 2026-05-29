@@ -24,16 +24,47 @@ if (!$menu) {
 
 if ($_SERVER["REQUEST_METHOD"] === 'POST') {
 
-    $week = (int)$_POST['week'];
-    $day  = $_POST['day'];
-    $name = $_POST['name'];
-    $price = (float)$_POST['price'];
+    $week = $_POST['week'] ?? '';
+    $day  = $_POST['day'] ?? '';
+    $name = trim($_POST['name'] ?? '');
+    $price = $_POST['price'] ?? '';
+
+    $allowedDays = ['dilluns', 'dimarts', 'dimecres', 'dijous', 'divendres'];
+    $error = '';
+
+    if ($week === '' || $day === '' || $name === '' || $price === '') {
+        $error = 'Error: falta informació del formulari.';
+    }
+
+    if ($error === '' && !preg_match('/^[1-4]$/', $week)) {
+        $error = 'Error: setmana invàlida.';
+    }
+
+    if ($error === '' && !in_array($day, $allowedDays, true)) {
+        $error = 'Error: dia invàlid.';
+    }
+
+    if ($error === '' && !preg_match('/^[\p{L}\d\s\-\'\.]+$/u', $name)) {
+        $error = 'Error: nom del plat invàlid.';
+    }
+
+    if ($error === '' && !preg_match('/^\d+(\.\d{1,2})?$/', $price)) {
+        $error = 'Error: preu invàlid.';
+    }
+
+    if ($error === '') {
+        $price = (float)$price;
+        if ($price <= 0) {
+            $error = 'Error: preu invàlid.';
+        }
+    }
 
     $image = $menu['image']; //mantenir la imatge antiga
 
-    // -------------------------
-    // UPLOAD IMAGEM
-    // -------------------------
+    if ($error === '') {
+        // -------------------------
+        // UPLOAD IMAGEM
+        // -------------------------
     if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
 
         $check = getimagesize($_FILES['image']['tmp_name']);
@@ -82,6 +113,7 @@ if ($_SERVER["REQUEST_METHOD"] === 'POST') {
 
     header("Location: admin_menu2.php");
     exit();
+    }
 }
 ?>
 
@@ -115,10 +147,16 @@ button{width:100%;padding:14px;background:linear-gradient(135deg,var(--accent),v
 
     <form method="POST" enctype="multipart/form-data">
 
+    <?php if (isset($error) && $error !== ''): ?>
+        <div style="margin-bottom:16px;padding:14px;background:#ffe5e5;color:#900;border:1px solid #f5c2c2;border-radius:12px;">
+            <?= htmlspecialchars($error) ?>
+        </div>
+    <?php endif; ?>
+
         <label>Setmana</label>
         <select name="week" required>
             <?php for ($i = 1; $i <= 4; $i++): ?>
-                <option value="<?= $i ?>" <?= $menu['week'] == $i ? 'selected' : '' ?>>
+                <option value="<?= $i ?>" <?= (isset($week) && $week == $i) || $menu['week'] == $i ? 'selected' : '' ?>>
                     <?= $i ?>
                 </option>
             <?php endfor; ?>
@@ -136,17 +174,17 @@ button{width:100%;padding:14px;background:linear-gradient(135deg,var(--accent),v
             ];
             foreach ($days as $value => $label):
             ?>
-                <option value="<?= $value ?>" <?= $menu['day'] === $value ? 'selected' : '' ?>>
+                <option value="<?= $value ?>" <?= (isset($day) && $day === $value) || $menu['day'] === $value ? 'selected' : '' ?>>
                     <?= $label ?>
                 </option>
             <?php endforeach; ?>
         </select>
 
         <label>Nom del plat</label>
-        <input type="text" name="name" value="<?= htmlspecialchars($menu['name']) ?>" required>
+        <input type="text" name="name" value="<?= htmlspecialchars(isset($name) && $name !== '' ? $name : $menu['name']) ?>" required>
 
         <label>Preu</label>
-        <input type="number" step="0.01" name="price" value="<?= htmlspecialchars($menu['price']) ?>" required>
+        <input type="number" step="0.01" name="price" value="<?= htmlspecialchars(isset($price) && $price !== '' ? $price : $menu['price']) ?>" required>
 
         <label>Imatge</label>
         <input type="file" name="image" accept="image/*">

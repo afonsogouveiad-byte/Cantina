@@ -8,20 +8,44 @@ if (!isset($_SESSION['user'])) {
 }
 
 $image = '';
+$error = '';
+$name = '';
+$price = '';
+$category = '';
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
-    $name = $_POST['name'] ?? '';
-    $price = floatval($_POST['price'] ?? 0);
-    $category = $_POST['category'] ?? '';
+    $name = trim($_POST['name'] ?? '');
+    $price = $_POST['price'] ?? '';
+    $category = trim($_POST['category'] ?? '');
 
-    if ($name === '' || $category === '' || $price <= 0) {
-        die("Error: campos inválidos.");
+    if ($name === '' || $category === '' || $price === '') {
+        $error = "Error: campos inválidos.";
     }
 
-    // -------------------------
-    //CARREGA LA IMATGE (COMPONENT AMB ALTRES FITXERS)
-    // -------------------------
+    if ($error === '' && !preg_match('/^[\p{L}\d\s\-\'\.]+$/u', $name)) {
+        $error = "Error: nom del producte invàlid.";
+    }
+
+    if ($error === '' && !preg_match('/^[\p{L}\d\s\-\'\.]+$/u', $category)) {
+        $error = "Error: categoria invàlida.";
+    }
+
+    if ($error === '' && !preg_match('/^\d+(\.\d{1,2})?$/', $price)) {
+        $error = "Error: preu invàlid.";
+    }
+
+    if ($error === '') {
+        $price = (float)$price;
+        if ($price <= 0) {
+            $error = "Error: preu invàlid.";
+        }
+    }
+
+    if ($error === '') {
+        // -------------------------
+        //CARREGA LA IMATGE (COMPONENT AMB ALTRES FITXERS)
+        // -------------------------
     if (!empty($_FILES['image']['name']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
 
         $check = getimagesize($_FILES['image']['tmp_name']);
@@ -72,6 +96,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     header("Location: admin.php");
     exit();
+    }
 }
 ?>
 
@@ -177,13 +202,19 @@ button:hover {
 <div class="box">
     <h2>Afegir producte</h2>
 
+    <?php if ($error !== ''): ?>
+        <div style="margin-bottom:16px;padding:14px;background:#ffe5e5;color:#900;border:1px solid #f5c2c2;border-radius:12px;">
+            <?= htmlspecialchars($error) ?>
+        </div>
+    <?php endif; ?>
+
     <form method="POST" enctype="multipart/form-data">
 
-        <input type="text" name="name" placeholder="Nom del producte" required>
+        <input type="text" name="name" placeholder="Nom del producte" value="<?= htmlspecialchars($name) ?>" required>
 
-        <input type="number" step="0.01" name="price" placeholder="Preu" required>
+        <input type="number" step="0.01" name="price" placeholder="Preu" value="<?= htmlspecialchars($price) ?>" required>
 
-        <input type="text" name="category" placeholder="Categoria" required>
+        <input type="text" name="category" placeholder="Categoria" value="<?= htmlspecialchars($category) ?>" required>
 
         <input type="file" name="image" accept="image/*">
 

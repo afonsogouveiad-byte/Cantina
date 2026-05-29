@@ -22,15 +22,44 @@ if (!$product) {
     exit();
 }
 
+$error = '';
+$name = '';
+$price = '';
+$category = '';
+
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
-    $name = $_POST['name'] ?? '';
-    $price = (float)($_POST['price'] ?? 0);
-    $category = $_POST['category'] ?? '';
+    $name = trim($_POST['name'] ?? '');
+    $price = $_POST['price'] ?? '';
+    $category = trim($_POST['category'] ?? '');
+
+    if ($name === '' || $category === '' || $price === '') {
+        $error = "Error: campos inválidos.";
+    }
+
+    if ($error === '' && !preg_match('/^[\p{L}\d\s\-\'\.]+$/u', $name)) {
+        $error = "Error: nom del producte invàlid.";
+    }
+
+    if ($error === '' && !preg_match('/^[\p{L}\d\s\-\'\.]+$/u', $category)) {
+        $error = "Error: categoria invàlida.";
+    }
+
+    if ($error === '' && !preg_match('/^\d+(\.\d{1,2})?$/', $price)) {
+        $error = "Error: preu invàlid.";
+    }
+
+    if ($error === '') {
+        $price = (float)$price;
+        if ($price <= 0) {
+            $error = "Error: preu invàlid.";
+        }
+    }
 
     $image = $product['image'];
 
-    /* UPLOAD */
+    if ($error === '') {
+        /* UPLOAD */
     if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
 
         $check = getimagesize($_FILES['image']['tmp_name']);
@@ -82,6 +111,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     header("Location: admin_products.php");
     exit();
+    }
 }
 ?>
 
@@ -199,14 +229,20 @@ img {
 
 <form method="POST" enctype="multipart/form-data">
 
+    <?php if ($error !== ''): ?>
+        <div style="margin-top:0;margin-bottom:16px;padding:14px;background:#ffe5e5;color:#900;border:1px solid #f5c2c2;border-radius:12px;">
+            <?= htmlspecialchars($error) ?>
+        </div>
+    <?php endif; ?>
+
     <label>Nom</label>
-    <input type="text" name="name" value="<?= htmlspecialchars($product['name']) ?>" required>
+    <input type="text" name="name" value="<?= htmlspecialchars($name !== '' ? $name : $product['name']) ?>" required>
 
     <label>Preu</label>
-    <input type="number" step="0.01" name="price" value="<?= htmlspecialchars($product['price']) ?>" required>
+    <input type="number" step="0.01" name="price" value="<?= htmlspecialchars($price !== '' ? $price : $product['price']) ?>" required>
 
     <label>Categoria</label>
-    <input type="text" name="category" value="<?= htmlspecialchars($product['category']) ?>" required>
+    <input type="text" name="category" value="<?= htmlspecialchars($category !== '' ? $category : $product['category']) ?>" required>
 
     <label>Imatge</label>
     <input type="file" name="image" accept="image/*">

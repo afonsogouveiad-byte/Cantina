@@ -13,17 +13,52 @@ if (!isset($_SESSION['user'])) {
 }
 
 $image = null;
+$error = '';
+$week = '';
+$day = '';
+$name = '';
+$price = '';
 
 if ($_SERVER["REQUEST_METHOD"] === 'POST') {
 
-    $week = intval($_POST['week'] ?? 0);
+    $week = $_POST['week'] ?? '';
     $day  = $_POST['day'] ?? '';
-    $name = $_POST['name'] ?? '';
-    $price = floatval($_POST['price'] ?? 0);
+    $name = trim($_POST['name'] ?? '');
+    $price = $_POST['price'] ?? '';
 
-    // -------------------------
-    // CARREGA LA IMATGE
-    // -------------------------
+    $allowedDays = ['dilluns', 'dimarts', 'dimecres', 'dijous', 'divendres'];
+
+    if ($week === '' || $day === '' || $name === '' || $price === '') {
+        $error = 'Error: falta informació del formulari.';
+    }
+
+    if ($error === '' && !preg_match('/^[1-4]$/', $week)) {
+        $error = 'Error: setmana invàlida.';
+    }
+
+    if ($error === '' && !in_array($day, $allowedDays, true)) {
+        $error = 'Error: dia invàlid.';
+    }
+
+    if ($error === '' && !preg_match('/^[\p{L}\d\s\-\'\.]+$/u', $name)) {
+        $error = 'Error: nom del plat invàlid.';
+    }
+
+    if ($error === '' && !preg_match('/^\d+(\.\d{1,2})?$/', $price)) {
+        $error = 'Error: preu invàlid.';
+    }
+
+    if ($error === '') {
+        $price = (float)$price;
+        if ($price <= 0) {
+            $error = 'Error: preu invàlid.';
+        }
+    }
+
+    if ($error === '') {
+        // -------------------------
+        // CARREGA LA IMATGE
+        // -------------------------
     if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
 
         $check = getimagesize($_FILES['image']['tmp_name']);
@@ -79,6 +114,7 @@ if ($_SERVER["REQUEST_METHOD"] === 'POST') {
 
     header("Location: admin_menu2.php");
     exit();
+    }
 }
 ?>
 
@@ -193,28 +229,36 @@ button:hover{
 
     <form method="POST" enctype="multipart/form-data">
 
+    <?php if ($error !== ''): ?>
+        <div style="margin-bottom:16px;padding:14px;background:#ffe5e5;color:#900;border:1px solid #f5c2c2;border-radius:12px;">
+            <?= htmlspecialchars($error) ?>
+        </div>
+    <?php endif; ?>
+
         <label>Setmana</label>
         <select name="week" required>
-            <option value="1">1</option>
-            <option value="2">2</option>
-            <option value="3">3</option>
-            <option value="4">4</option>
+            <option value="" disabled <?= $week === '' ? 'selected' : '' ?>>Selecciona setmana</option>
+            <option value="1" <?= $week == '1' ? 'selected' : '' ?>>1</option>
+            <option value="2" <?= $week == '2' ? 'selected' : '' ?>>2</option>
+            <option value="3" <?= $week == '3' ? 'selected' : '' ?>>3</option>
+            <option value="4" <?= $week == '4' ? 'selected' : '' ?>>4</option>
         </select>
 
         <label>Dia</label>
         <select name="day" required>
-            <option value="dilluns">DILLUNS</option>
-            <option value="dimarts">DIMARTS</option>
-            <option value="dimecres">DIMECRES</option>
-            <option value="dijous">DIJOUS</option>
-            <option value="divendres">DIVENDRES</option>
+            <option value="" disabled <?= $day === '' ? 'selected' : '' ?>>Selecciona dia</option>
+            <option value="dilluns" <?= $day === 'dilluns' ? 'selected' : '' ?>>DILLUNS</option>
+            <option value="dimarts" <?= $day === 'dimarts' ? 'selected' : '' ?>>DIMARTS</option>
+            <option value="dimecres" <?= $day === 'dimecres' ? 'selected' : '' ?>>DIMECRES</option>
+            <option value="dijous" <?= $day === 'dijous' ? 'selected' : '' ?>>DIJOUS</option>
+            <option value="divendres" <?= $day === 'divendres' ? 'selected' : '' ?>>DIVENDRES</option>
         </select>
 
         <label>Nom del plat</label>
-        <input type="text" name="name" required>
+        <input type="text" name="name" value="<?= htmlspecialchars($name) ?>" required>
 
         <label>Preu</label>
-        <input type="number" step="0.01" name="price" required>
+        <input type="number" step="0.01" name="price" value="<?= htmlspecialchars($price) ?>" required>
 
         <label>Imatge</label>
         <input type="file" name="image" accept="image/*">
