@@ -64,10 +64,9 @@ if ($search !== '') {
 
 body{
     background:#eef4fc;
-    color:var(--text);
+    color:#222;
 }
 
-/* NAVBAR */
 .nav{
     background:var(--primary);
     display:grid;
@@ -80,24 +79,24 @@ body{
     box-shadow:0 4px 20px rgba(13,76,157,0.15);
 }
 
-.logo a {
-    display: inline-block;
-    padding: 0 !important;
-    margin: 0 !important;
-    background: transparent !important;
-    transition: none !important;
-    transform: none !important;
+.logo img{
+    height:45px;
+    border-radius:8px;
 }
 
-.logo a:hover {
-    background: transparent !important;
-    transform: none !important;
-    box-shadow: none !important;
+.logo a{
+    display:inline-block;
+    padding:0 !important;
+    border-radius:0 !important;
+    background:transparent !important;
+    color:inherit !important;
+    text-decoration:none !important;
+    transition:none !important;
 }
 
-.logo img {
-    height: 45px;
-    border-radius: 8px;
+.logo a:hover{
+    background:transparent !important;
+    transform:none !important;
 }
 
 .nav-links{
@@ -112,20 +111,34 @@ body{
     padding:10px 18px;
     border-radius:10px;
     font-weight:600;
-    font-size:0.95rem;
     transition:all 0.25s cubic-bezier(0.4,0,0.2,1);
+    font-size:0.95rem;
 }
 
-.nav a:hover,
-.nav a.active{
+.nav a:hover,.nav a.active{
     background:var(--accent);
+    color:white;
     transform:translateY(-1px);
+}
+
+.nav-right{
+    display:flex;
+    justify-content:flex-end;
+}
+
+.logout a{
+    background:linear-gradient(135deg,#e74c3c,#c0392b);
+    color:white;
+    padding:10px 16px;
+    border-radius:10px;
+    text-decoration:none;
+    font-weight:600;
 }
 
 /* HERO */
 .hero{
-    height:320px;
-    background:url('images/cantina.jpeg') center/cover;
+    height:240px;
+    background:url('images/cantina.jpeg')center/cover;
     display:flex;
     justify-content:center;
     align-items:center;
@@ -136,13 +149,50 @@ body{
     content:"";
     position:absolute;
     inset:0;
-    background:rgba(13,76,157,0.5);
+    background:rgba(13,76,157,0.55);
 }
 
 .hero h1{
     position:relative;
+    z-index:2;
     color:white;
-    font-size:52px;
+    font-size:42px;
+    text-align:center;
+    letter-spacing:1px;
+}
+
+/* ACTION BAR */
+.action-bar{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    flex-wrap:wrap;
+    gap:16px;
+    margin-bottom:24px;
+    max-width:1180px;
+    margin-left:auto;
+    margin-right:auto;
+    padding:24px 24px 0 24px;
+}
+
+.action-bar h2{
+    font-size:28px;
+    color:#111;
+}
+
+.action-bar a.button{
+    background:var(--accent);
+    color:white;
+    padding:12px 20px;
+    border-radius:12px;
+    text-decoration:none;
+    font-weight:700;
+    transition:transform 0.2s ease,box-shadow 0.2s ease;
+}
+
+.action-bar a.button:hover{
+    transform:translateY(-2px);
+    box-shadow:0 12px 20px rgba(0,162,255,0.2);
 }
 
 /* SEARCH */
@@ -315,15 +365,21 @@ footer{
 /* RESPONSIVE */
 
 @media(max-width:700px){
-
+    .nav{
+        grid-template-columns:1fr;
+        gap:15px;
+    }
+    .nav-links{
+        flex-wrap:wrap;
+        justify-content:center;
+    }
     .hero h1{
-        font-size:36px;
+        font-size:32px;
     }
-
-    .card{
-        padding:25px;
+    .action-bar{
+        flex-direction:column;
+        align-items:flex-start;
     }
-
     .footer-container{
         grid-template-columns:1fr;
     }
@@ -331,12 +387,12 @@ footer{
 
 /* ANIMAÇÃO */
 
-@keyframes fadeInUp{
-    from{
+@keyframes fadeInUp {
+    from {
         opacity:0;
-        transform:translateY(25px);
+        transform:translateY(30px);
     }
-    to{
+    to {
         opacity:1;
         transform:translateY(0);
     }
@@ -348,22 +404,23 @@ footer{
 <body>
 
 <div class="nav">
-    <div class="logo">
-        <a href="admin.php"><img src="images/inspedr.jpg"></a>
-    </div>
-
+    <div class="logo"><a href="admin.php"><img src="images/inspedr.jpg" alt="Institut Pedralbes"></a></div>
     <div class="nav-links">
         <a href="admin.php">Panell</a>
         <a class="active" href="admin_products.php">Productes</a>
         <a href="admin_menu.php">Menú Infantil</a>
         <a href="admin_menu2.php">Menú General</a>
     </div>
-
-    <div></div>
+    <div class="nav-right"><a class="logout" href="logout.php">Tanca sessió</a></div>
 </div>
 
 <div class="hero">
     <h1>Productes Admin</h1>
+</div>
+
+<div class="action-bar">
+    <h2>Productes</h2>
+    <a href="add_products.php" class="button">Afegir producte</a>
 </div>
 
 <div class="search-wrapper">
@@ -373,7 +430,6 @@ footer{
        id="search"
        value="<?= htmlspecialchars($search) ?>"
        placeholder="Cerca...">
-    </form>
     </form>
 </div>
 

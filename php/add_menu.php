@@ -55,6 +55,11 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         // -------------------------
     if (!empty($_FILES['image']['name']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
 
+        $maxSize = 100 * 1024 * 1024; // 100 MB
+        if ($_FILES['image']['size'] > $maxSize) {
+            $error = "Error: la imatge és massa gran (màxim 100 MB).";
+        } else {
+
         $check = getimagesize($_FILES['image']['tmp_name']);
 
         if ($check === false) {
@@ -86,6 +91,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             die('Error: No es pot desar la imatge.
 
 ');
+        }
         }
     }
 
