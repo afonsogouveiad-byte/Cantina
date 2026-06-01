@@ -30,7 +30,7 @@ if ($search !== '') {
         $stmt->bind_param("ss", $searchLike, $searchLike);
     }
 
-    $stmt->execute();
+    $stmt->execute();   
     $result = $stmt->get_result();
 } else {
     $result = $conn->query("SELECT * FROM products ORDER BY category ASC, name ASC");
@@ -510,11 +510,11 @@ while($row = $result->fetch_assoc()):
 
             <h4>Legal</h4>
 
-            <a href="cookies.php">Cookies</a>
+            <a href="cookies.php" target="_blank" rel="noopener noreferrer">Cookies</a>
             <br>
-            <a href="legal.php">Avís legal</a>
+            <a href="legal.php" target="_blank" rel="noopener noreferrer">Avís legal</a>
             <br>
-            <a href="privacy.php">Protecció de dades</a>
+            <a href="privacy.php" target="_blank" rel="noopener noreferrer">Protecció de dades</a>
 
         </div>
 

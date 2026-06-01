@@ -129,7 +129,7 @@ $result = $conn->query("SELECT * FROM menus2 ORDER BY week, day, id");
         <div class="footer-section"><h3>El centre</h3><p>Institut públic del districte de Les Corts, amb oferta d’ESO, Batxillerat, CFGM i CFGS d’Informàtica, Imatge i So, i PFI.</p></div>
         <div class="footer-section"><h4>Contacte</h4><p>93 203 33 32</p><p>inspedralbes@xtec.cat</p></div>
         <div class="footer-section"><h4>Adreça</h4><p>Av. Esplugues, 36-42</p><p>08034 Barcelona</p></div>
-        <div class="footer-section"><h4>Legal</h4><a href="cookies.php">Cookies</a><br><a href="legal.php">Avís legal</a><br><a href="privacy.php">Protecció de dades</a></div>
+        <div class="footer-section"><h4>Legal</h4><a href="cookies.php" target="_blank" rel="noopener noreferrer">Cookies</a><br><a href="legal.php" target="_blank" rel="noopener noreferrer">Avís legal</a><br><a href="privacy.php" target="_blank" rel="noopener noreferrer">Protecció de dades</a></div>
     </div>
     <div class="footer-bottom">&copy; <?= date("Y") ?> Institut Pedralbes - Cantina</div>
 </footer>
