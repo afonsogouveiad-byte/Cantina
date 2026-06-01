@@ -252,7 +252,7 @@ footer{
 
             <a href="cookies.php" target="_blank" rel="noopener noreferrer">Cookies</a>
             <br>
-            <a href="legal.php" target="_blank" rel="noopener noreferrer">Avís legal</a>
+            <a href="legal.php">Avís legal</a>
             <br>
             <a href="privacy.php" target="_blank" rel="noopener noreferrer">Protecció de dades</a>
 

@@ -5,7 +5,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Política de Cookies</title>
+<title>Cookies</title>
 
 <link rel="icon" href="images/inspedr.jpg" type="image/jpeg">
 
@@ -277,7 +277,7 @@ footer{
 
             <h4>Legal</h4>
 
-            <a href="cookies.php" target="_blank" rel="noopener noreferrer">Cookies</a>
+            <a href="cookies.php" >Cookies</a>
             <br>
             <a href="legal.php" target="_blank" rel="noopener noreferrer">Avís legal</a>
             <br>

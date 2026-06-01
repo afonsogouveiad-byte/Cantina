@@ -257,7 +257,7 @@ footer{
             <br>
             <a href="legal.php" target="_blank" rel="noopener noreferrer">Avís legal</a>
             <br>
-            <a href="privacy.php" target="_blank" rel="noopener noreferrer">Protecció de dades</a>
+            <a href="privacy.php">Protecció de dades</a>
 
         </div>
 
