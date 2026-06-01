@@ -82,6 +82,7 @@
             display: grid;
             gap: 16px;
             align-content: start;
+            align-items: stretch;
         }
 
         .left::before {
@@ -106,6 +107,10 @@
             transition: transform 0.24s ease, box-shadow 0.24s ease, background 0.24s ease;
             box-shadow: 0 18px 30px rgba(0, 162, 255, 0.18);
             text-decoration: none;
+            min-width: 0;
+            width: 100%;
+            max-width: 100%;
+            box-sizing: border-box;
         }
 
         .btn:hover {
@@ -216,17 +221,11 @@ footer {
         }
 
         @media (max-width: 768px) {
-            .hero {
-                padding: 36px 18px;
-            }
-
-            .main {
-                padding: 0 18px 32px;
-            }
-
-            .footer-container {
-                grid-template-columns: 1fr;
-            }
+            .left a.btn { width: 100%; }
+            .main { padding: 0 18px 32px; }
+            .hero { padding: 36px 18px; }
+            .hero h1 { font-size: 36px; }
+            .footer-container { grid-template-columns: 1fr; }
         }
 
         @keyframes fadeInUp {
