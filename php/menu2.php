@@ -29,7 +29,7 @@ $dias = [
     'dijous'    => 'DIJOUS',
     'divendres' => 'DIVENDRES'
 ];
-
+ 
 $semanas = [
     1 => 'SETMANA 1',
     2 => 'SETMANA 2',
