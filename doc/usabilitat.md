@@ -8,4 +8,14 @@
   ## Consistency and Standards
    * A nossa página web na nossa opiniao tem os botoes, açoes e o design consistentes para uma melhor experiencia do utilizador.
   ## Error Prevention
-   * -   
+   * O utilizador consegue compreender sempre que acontece algum erro, exepto quando adiciona um produto e coloca um ficheiro que nao é uma imagem.
+  ## Recognition Rather than Recall
+   * O utilisador nao possui uma carga de memória grande, pois a nossa página web nao tem muita informacao para que o utilizador se esqueça.
+  ## Flexibility and Efficiency of Use
+   * No menu de navegaçao tem o logo do Institut Pedralbes que quando é clicado vai sempre para a página inicial, no caso de ser um admin, vai para o painel de admin. 
+  ## Aesthetic and Minimalist Design
+   * A nossa página web tem o design minimalista sem informaçao irrelevante ou raramente utilizada, assim o utilizador nao se perder.
+  ## Help Users Recognize, Diagnose, and Recover from Errors
+   * Sempre que existe um erro, o utilizador é informado através de linguagem simples e nao código.
+  ## Help and Documentation
+   * A nossa página web é muito interativa e simples de compreender, nao é necessário documentaçao para ajudares o utilizador a compreender como usar.
