@@ -228,7 +228,7 @@ button:hover {
 
     </form>
 
-    <a class="back" href="admin.php">← Tornar al panell</a>
+    <a class="back" href="admin_products.php">← Tornar al panell</a>
 </div>
 
 </body>
