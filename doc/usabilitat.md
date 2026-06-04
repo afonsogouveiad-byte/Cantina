@@ -18,4 +18,4 @@
   ## Help Users Recognize, Diagnose, and Recover from Errors
    * Sempre que existe um erro, o utilizador é informado através de linguagem simples e nao código.
   ## Help and Documentation
-   * A nossa página web é muito interativa e simples de compreender, nao é necessário documentaçao para ajudares o utilizador a compreender como usar.
+   * A nossa página web é muito interativa e simples de compreender, nao é necessário documentaçao para ajudar o utilizador a compreender como usar.
