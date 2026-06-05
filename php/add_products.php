@@ -236,7 +236,7 @@ button:hover {
         <input type="number" step="0.01" name="price" placeholder="Preu" value="<?= htmlspecialchars($price) ?>" required>
 
         <select name="category" required>
-            <option value="" disabled<?= $category === '' ? ' selected' : '' ?>>Categoria</option>
+            <option value="" disabled hidden<?= $category === '' ? ' selected' : '' ?>>Categoria</option>
             <?php foreach ($categoryOptions as $option): ?>
                 <option value="<?= htmlspecialchars($option) ?>"<?= $option === $category ? ' selected' : '' ?>><?= htmlspecialchars($option) ?></option>
             <?php endforeach; ?>
