@@ -28,6 +28,19 @@ $price = '';
 $category = '';
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
+    
+    $name = trim($_POST['name'] ?? '');
+    $price = $_POST['price'] ?? '';
+    $category = trim($_POST['category'] ?? '');
+
+    if ($name === '' || $category === '' || $price === '') {
+        $error = "Error: campos inválidos.";
+    }
+
+    if ($error === '' && !preg_match('/^[\p{L}\d\s\-\'\.]+$/u', $name)) {
+        $error = "Error: nom del producte invàlid.";
+    }
+
     if ($error === '' && !preg_match('/^[\p{L}\d\s\-\'\.]+$/u', $category)) {
         $error = "Error: categoria invàlida.";
     }
@@ -47,63 +60,54 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     if ($error === '') {
         /* UPLOAD */
-    if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
-
-        $maxSize = 100 * 1024 * 1024; // 100 MB
-        if ($_FILES['image']['size'] > $maxSize) {
-            $error = "Error: la imatge és massa gran (màxim 100 MB).";
-        } else {
-
-        $check = getimagesize($_FILES['image']['tmp_name']);
-
-        if ($check === false) {
-            die("Error: el fitxer no és una imatge vàlida.");
-        }
-
-        $allowed = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
-
-        if (!in_array($check['mime'], $allowed, true)) {
-            die("Error: tipus d’imatge no permès.");
-        }
-
-        $uploadDir = __DIR__ . '/uploads/';
-
-        if (!is_dir($uploadDir)) {
-            mkdir($uploadDir, 0777, true);
-        }
-
-        $newImage = uniqid('img_', true) . '_' . preg_replace(
-            '/[^A-Za-z0-9._-]/',
-            '_',
-            basename($_FILES['image']['name'])
-        );
-
-        $uploadPath = $uploadDir . $newImage;
-
-        if (!move_uploaded_file($_FILES['image']['tmp_name'], $uploadPath)) {
-            die("Error: no s'ha pogut guardar la imatge.");
-        }
-
-        if (!empty($product['image']) && file_exists($uploadDir . $product['image'])) {
-            unlink($uploadDir . $product['image']);
-        }
-
-        $image = $newImage;
+        if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
+            $maxSize = 100 * 1024 * 1024; // 100 MB
+            if ($_FILES['image']['size'] > $maxSize) {
+                $error = "Error: la imatge és massa gran (màxim 100 MB).";
+            } else {
+                $check = getimagesize($_FILES['image']['tmp_name']);
+                if ($check === false) {
+                    $error = "Error: el fitxer no és una imatge vàlida.";
+                } else {
+                    $allowed = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
+                    if (!in_array($check['mime'], $allowed, true)) {
+                        $error = "Error: tipus d'imatge no permès.";
+                    } else {
+                        $uploadDir = __DIR__ . '/uploads/';
+                        if (!is_dir($uploadDir)) {
+                            mkdir($uploadDir, 0777, true);
+                        }
+                        $newImage = uniqid('img_', true) . '_' . preg_replace(
+                            '/[^A-Za-z0-9._-]/',
+                            '_',
+                            basename($_FILES['image']['name'])
+                        );
+                        $uploadPath = $uploadDir . $newImage;
+                        if (!move_uploaded_file($_FILES['image']['tmp_name'], $uploadPath)) {
+                            $error = "Error: no s'ha pogut guardar la imatge.";
+                        } else {
+                            if (!empty($product['image']) && file_exists($uploadDir . $product['image'])) {
+                                unlink($uploadDir . $product['image']);
+                            }
+                            $image = $newImage;
+                        }
+                    }
+                }
+            }
         }
     }
 
-    /* UPDATE */
-    $stmt = $conn->prepare("
-        UPDATE products 
-        SET name = ?, price = ?, category = ?, image = ?
-        WHERE id = ?
-    ");
-
-    $stmt->bind_param("sdssi", $name, $price, $category, $image, $id);
-    $stmt->execute();
-
-    header("Location: admin_products.php");
-    exit();
+    if ($error === '') {
+        /* UPDATE */
+        $stmt = $conn->prepare("
+            UPDATE products 
+            SET name = ?, price = ?, category = ?, image = ?
+            WHERE id = ?
+        ");
+        $stmt->bind_param("sdssi", $name, $price, $category, $image, $id);
+        $stmt->execute();
+        header("Location: admin_products.php");
+        exit();
     }
 }
 
@@ -182,6 +186,21 @@ input {
 }
 
 input:focus {
+    border-color:var(--accent);
+    outline:none;
+    box-shadow:0 0 5px rgba(0,162,255,0.3);
+}
+
+select {
+    width:100%;
+    padding:14px;
+    margin-bottom:12px;
+    border:2px solid var(--border);
+    border-radius:12px;
+    background:white;
+}
+
+select:focus {
     border-color:var(--accent);
     outline:none;
     box-shadow:0 0 5px rgba(0,162,255,0.3);
