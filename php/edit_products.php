@@ -263,7 +263,7 @@ img {
 
     <label>Categoria</label>
     <select name="category" required>
-        <option value="" disabled<?= ($category === '' && $product['category'] === '') ? ' selected' : '' ?>>Categoria</option>
+        <option value="" disabled hidden<?= ($category === '' && $product['category'] === '') ? ' selected' : '' ?>>Categoria</option>
         <?php foreach ($categoryOptions as $option): ?>
             <option value="<?= htmlspecialchars($option) ?>"<?= $option === ($category !== '' ? $category : $product['category']) ? ' selected' : '' ?>><?= htmlspecialchars($option) ?></option>
         <?php endforeach; ?>
