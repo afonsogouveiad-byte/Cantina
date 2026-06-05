@@ -161,7 +161,7 @@ body {
     max-width: 1180px;
     margin: 0 auto;
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
     gap: 24px;
     padding: 28px 24px;
 }
@@ -183,6 +183,9 @@ body {
     box-shadow: var(--shadow);
     transition: 0.3s;
     animation: fadeInUp 0.6s ease both;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
 }
 
 .card:hover {
@@ -191,7 +194,6 @@ body {
 
 /* IMAGEM */
 .product-img {
-    width: calc(100% - 24px);
     height: 200px;
     object-fit: cover;
     display: block;
@@ -202,22 +204,25 @@ body {
 /* INFO */
 .info {
     padding: 20px;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
 }
 
 .name {
     font-weight: 600;
-    margin-bottom: 6px;
+    margin-bottom: 8px;
 }
 
 .price {
     color: var(--accent);
     font-weight: bold;
-    margin-bottom: 6px;
+    margin-bottom: 4px;
 }
 
 .category {
     color: var(--muted);
-    font-size: 0.9rem;
+    margin-bottom: 10px;
 }
 
 /* FOOTER (INTACTO) */
