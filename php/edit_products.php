@@ -28,19 +28,6 @@ $price = '';
 $category = '';
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
-
-    $name = trim($_POST['name'] ?? '');
-    $price = $_POST['price'] ?? '';
-    $category = trim($_POST['category'] ?? '');
-
-    if ($name === '' || $category === '' || $price === '') {
-        $error = "Error: campos inválidos.";
-    }
-
-    if ($error === '' && !preg_match('/^[\p{L}\d\s\-\'\.]+$/u', $name)) {
-        $error = "Error: nom del producte invàlid.";
-    }
-
     if ($error === '' && !preg_match('/^[\p{L}\d\s\-\'\.]+$/u', $category)) {
         $error = "Error: categoria invàlida.";
     }
@@ -117,6 +104,14 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     header("Location: admin_products.php");
     exit();
+    }
+}
+
+$categoryOptions = [];
+$categoryResult = $conn->query("SELECT DISTINCT category FROM products ORDER BY category ASC");
+if ($categoryResult) {
+    while ($row = $categoryResult->fetch_assoc()) {
+        $categoryOptions[] = $row['category'];
     }
 }
 ?>
@@ -248,7 +243,12 @@ img {
     <input type="number" step="0.01" name="price" value="<?= htmlspecialchars($price !== '' ? $price : $product['price']) ?>" required>
 
     <label>Categoria</label>
-    <input type="text" name="category" value="<?= htmlspecialchars($category !== '' ? $category : $product['category']) ?>" required>
+    <select name="category" required>
+        <option value="" disabled<?= ($category === '' && $product['category'] === '') ? ' selected' : '' ?>>Categoria</option>
+        <?php foreach ($categoryOptions as $option): ?>
+            <option value="<?= htmlspecialchars($option) ?>"<?= $option === ($category !== '' ? $category : $product['category']) ? ' selected' : '' ?>><?= htmlspecialchars($option) ?></option>
+        <?php endforeach; ?>
+    </select>
 
     <label>Imatge</label>
     <input type="file" name="image" accept="image/*">

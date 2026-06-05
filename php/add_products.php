@@ -46,45 +46,49 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         // -------------------------
         //CARREGA LA IMATGE (COMPONENT AMB ALTRES FITXERS)
         // -------------------------
-    if (!empty($_FILES['image']['name']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
+        if (!empty($_FILES['image']['name'])) {
+            if ($_FILES['image']['error'] !== UPLOAD_ERR_OK) {
+                $error = "Error: hi ha hagut un problema amb la càrrega de la imatge.";
+            } else {
+                $maxSize = 100 * 1024 * 1024; // 100 MB
+                if ($_FILES['image']['size'] > $maxSize) {
+                    $error = "Error: la imatge és massa gran (màxim 100 MB).";
+                } else {
+                    $check = getimagesize($_FILES['image']['tmp_name']);
 
-        $maxSize = 100 * 1024 * 1024; // 100 MB
-        if ($_FILES['image']['size'] > $maxSize) {
-            $error = "Error: la imatge és massa gran (màxim 100 MB).";
-        } else {
+                    if ($check === false) {
+                        $error = "Error: el fitxer no és una imatge vàlida.";
+                    } else {
+                        $allowed = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
 
-        $check = getimagesize($_FILES['image']['tmp_name']);
+                        if (!in_array($check['mime'], $allowed, true)) {
+                            $error = "Error: tipus d’imatge no permès.";
+                        } else {
+                            $uploadDir = __DIR__ . '/uploads/';
 
-        if ($check === false) {
-            die("Error: el fitxer no és una imatge vàlida.");
-        }
+                            if (!is_dir($uploadDir)) {
+                                mkdir($uploadDir, 0777, true);
+                            }
 
-        $allowed = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
+                            $image = uniqid('img_', true) . '_' . preg_replace(
+                                '/[^A-Za-z0-9._-]/',
+                                '_',
+                                basename($_FILES['image']['name'])
+                            );
 
-        if (!in_array($check['mime'], $allowed, true)) {
-            die("Error: tipus d’imatge no permès.");
-        }
+                            $uploadPath = $uploadDir . $image;
 
-        $uploadDir = __DIR__ . '/uploads/';
-
-        if (!is_dir($uploadDir)) {
-            mkdir($uploadDir, 0777, true);
-        }
-
-        $image = uniqid('img_', true) . '_' . preg_replace(
-            '/[^A-Za-z0-9._-]/',
-            '_',
-            basename($_FILES['image']['name'])
-        );
-
-        $uploadPath = $uploadDir . $image;
-
-        if (!move_uploaded_file($_FILES['image']['tmp_name'], $uploadPath)) {
-            die("Error: No es pot desar la imatge.");
-        }
+                            if (!move_uploaded_file($_FILES['image']['tmp_name'], $uploadPath)) {
+                                $error = "Error: No es pot desar la imatge.";
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
 
+    if ($error === '') {
     // -------------------------
     // INSERT BD
     // -------------------------
@@ -102,6 +106,14 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     header("Location: admin.php");
     exit();
+    }
+}
+
+$categoryOptions = [];
+$result = $conn->query("SELECT DISTINCT category FROM products ORDER BY category ASC");
+if ($result) {
+    while ($row = $result->fetch_assoc()) {
+        $categoryOptions[] = $row['category'];
     }
 }
 ?>
@@ -157,16 +169,19 @@ h2 {
     margin-bottom: 20px;
 }
 
-input {
+input,
+select {
     width: 100%;
     padding: 14px;
     margin: 8px 0 16px 0;
     border: 2px solid var(--border);
     border-radius: 12px;
     font-size: 1rem;
+    background: white;
 }
 
-input:focus {
+input:focus,
+select:focus {
     outline: none;
     border-color: var(--accent);
     box-shadow: 0 0 0 3px rgba(0, 162, 255, 0.1);
@@ -220,7 +235,12 @@ button:hover {
 
         <input type="number" step="0.01" name="price" placeholder="Preu" value="<?= htmlspecialchars($price) ?>" required>
 
-        <input type="text" name="category" placeholder="Categoria" value="<?= htmlspecialchars($category) ?>" required>
+        <select name="category" required>
+            <option value="" disabled<?= $category === '' ? ' selected' : '' ?>>Categoria</option>
+            <?php foreach ($categoryOptions as $option): ?>
+                <option value="<?= htmlspecialchars($option) ?>"<?= $option === $category ? ' selected' : '' ?>><?= htmlspecialchars($option) ?></option>
+            <?php endforeach; ?>
+        </select>
 
         <input type="file" name="image" accept="image/*">
 
