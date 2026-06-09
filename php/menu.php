@@ -539,11 +539,11 @@ footer {
 
             <h4>Legal</h4>
 
-            <a href="cookies.php" target="_blank" rel="noopener noreferrer">Cookies</a>
+            <a href="cookies.php">Cookies</a>
             <br>
-            <a href="legal.php" target="_blank" rel="noopener noreferrer">Avís legal</a>
+            <a href="legal.php">Avís legal</a>
             <br>
-            <a href="privacy.php" target="_blank" rel="noopener noreferrer">Protecció de dades</a>
+            <a href="privacy.php">Protecció de dades</a>
 
         </div>
 
