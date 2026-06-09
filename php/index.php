@@ -69,24 +69,75 @@
     letter-spacing:1px;
 }
 
+        .nav {
+            background: var(--primary);
+            display: grid;
+            grid-template-columns: 1fr auto 1fr;
+            align-items: center;
+            padding: 12px 24px;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 4px 20px rgba(13, 76, 157, 0.15);
+        }
+
+        .logo img {
+            height: 45px;
+            border-radius: 8px;
+        }
+
+        .logo a {
+            display: inline-block;
+            padding: 0 !important;
+            border-radius: 0 !important;
+            background: transparent !important;
+            color: inherit !important;
+            text-decoration: none !important;
+            transition: none !important;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 8px;
+            justify-content: center;
+        }
+
+        .nav a {
+            color: white;
+            text-decoration: none;
+            padding: 10px 18px;
+            border-radius: 10px;
+            font-weight: 600;
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            font-size: 0.95rem;
+        }
+
+        .nav a:hover {
+            background: var(--accent);
+            color: white;
+            transform: translateY(-1px);
+        }
+
+        .nav a.active {
+            background: var(--accent);
+            color: white;
+            box-shadow: 0 4px 12px rgba(0, 162, 255, 0.3);
+        }
+
+        .nav-right {
+            display: flex;
+        }
+
         .main {
             display: grid;
-            grid-template-columns: 280px 1fr;
+            grid-template-columns: 1fr;
             gap: 26px;
             max-width: 1180px;
             margin: 0 auto;
             padding: 28px 24px 40px;
         }
 
-        .left {
-            display: grid;
-            gap: 16px;
-            align-content: start;
-            align-items: stretch;
-        }
-
         .left::before {
-            
             display: block;
             margin-bottom: 10px;
             font-size: 0.95rem;
@@ -243,6 +294,21 @@ footer {
 
 <body>
 
+<div class="nav">
+    <div class="logo">
+        <a href="index.php"><img src="images/inspedr.jpg" alt="Institut Pedralbes"></a>
+    </div>
+
+    <div class="nav-links">
+        <a class="active" href="index.php">Inici</a>
+        <a href="products.php">Productes</a>
+        <a href="menu.php">Menú Infantil</a>
+        <a href="menu2.php">Menú General</a>
+    </div>
+
+    <div class="nav-right"></div>
+</div>
+
 <div class="hero">
     <div class="hero-content">
         <h1>Cantina</h1>
@@ -250,13 +316,6 @@ footer {
 </div>
 
 <div class="main">
-
-    <div class="left">
-        <a class="btn" href="products.php">Productes</a>
-        <a class="btn" href="menu.php">Menú Infantil</a>
-        <a class="btn" href="menu2.php">Menú General</a>
-        <a class="btn" href="login.php">Admin</a>
-    </div>
 
     <div>
 
