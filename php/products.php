@@ -54,7 +54,7 @@ body {
     color: var(--text);
 }
 
-/* NAVBAR (IGUAL) */
+/* NAVBAR */
 .nav {
     background: var(--primary);
     display: grid;
@@ -65,6 +65,11 @@ body {
     top: 0;
     z-index: 1000;
     box-shadow: 0 4px 20px rgba(13, 76, 157, 0.15);
+}
+
+.logo img {
+    height: 45px;
+    border-radius: 8px;
 }
 
 .logo a {
@@ -79,12 +84,6 @@ body {
 .logo a:hover {
     background: transparent !important;
     transform: none !important;
-    box-shadow: none !important;
-}
-
-.logo img {
-    height: 45px;
-    border-radius: 8px;
 }
 
 .nav-links {
@@ -100,16 +99,23 @@ body {
     border-radius: 10px;
     font-weight: 600;
     font-size: 0.95rem;
-    transition: all 0.25s ease;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .nav a:hover {
     background: var(--accent);
+    color: white;
     transform: translateY(-1px);
 }
 
 .nav a.active {
     background: var(--accent);
+    color: white;
+    box-shadow: 0 4px 12px rgba(0, 162, 255, 0.3);
+}
+
+.nav-right {
+    display: flex;
 }
 
 /* HERO */
@@ -131,8 +137,11 @@ body {
 
 .hero h1 {
     position: relative;
+    z-index: 2;
     color: white;
     font-size: 52px;
+    text-align: center;
+    letter-spacing: 1px;
 }
 
 /* SEARCH */
@@ -289,6 +298,15 @@ footer{
 
 @media(max-width:700px){
 
+    .nav{
+        grid-template-columns:1fr;
+        gap:15px;
+    }
+
+    .nav-links{
+        flex-wrap:wrap;
+    }
+
     .hero h1{
         font-size:36px;
     }
@@ -327,6 +345,7 @@ footer{
         <a class="active" href="products.php">Productes</a>
         <a href="menu.php">Menú Infantil</a>
         <a href="menu2.php">Menú General</a>
+        <a href="login.php">Admin</a>
     </div>
     <div></div>
 </div>

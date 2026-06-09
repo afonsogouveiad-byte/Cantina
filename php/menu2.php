@@ -414,6 +414,7 @@ footer {
         <a href="products.php">Productes</a>
         <a href="menu.php">Menú Infantil</a>
         <a class="active" href="menu2.php">Menú General</a>
+        <a href="login.php">Admin</a>
     </div>
 
     <div></div>
