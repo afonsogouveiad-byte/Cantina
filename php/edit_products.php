@@ -281,7 +281,7 @@ img {
 
 </form>
 
-<a class="back" onclick="history.back()">← Tornar al panell</a>
+<a class="back" href="admin_products.php">← Tornar al panell</a>
 
 </div>
 

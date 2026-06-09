@@ -202,7 +202,7 @@ button{width:100%;padding:14px;background:linear-gradient(135deg,var(--accent),v
         <button type="submit">Desar canvis</button>
     </form>
 
-    <a class="back" onclick="history.back()">← Tornar al panell</a>
+    <a class="back" href="admin_menu.php">← Tornar al panell</a>
 </div>
 
 </body>
