@@ -159,7 +159,7 @@ button:hover {
 <button>Entrar</button>
 </form>
 
-<p style="text-align:center; margin-bottom: 24px;"><a class="back" href="javascript:history.back()"; text-decoration:none; font-weight:700;">Tornar</a></p>
+<p style="text-align:center; margin-bottom: 24px;"><a class="back" href="javascript:history.back()" style="color:#0d4c9d; text-decoration:none; font-weight:700;">Tornar</a></p>
 
 <p style="color:red"><?= $error ?></p>
 </div>
