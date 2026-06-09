@@ -32,6 +32,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $name = trim($_POST['name'] ?? '');
     $price = $_POST['price'] ?? '';
     $category = trim($_POST['category'] ?? '');
+    if ($category === '__new__') {
+        $category = trim($_POST['new_category'] ?? '');
+    }
 
     if ($name === '' || $category === '' || $price === '') {
         $error = "Error: campos inválidos.";
@@ -117,6 +120,10 @@ if ($categoryResult) {
     while ($row = $categoryResult->fetch_assoc()) {
         $categoryOptions[] = $row['category'];
     }
+}
+// Ensure current product category appears in the options
+if (!empty($product['category']) && !in_array($product['category'], $categoryOptions, true)) {
+    array_unshift($categoryOptions, $product['category']);
 }
 ?>
 
@@ -262,12 +269,27 @@ img {
     <input type="number" step="0.01" name="price" value="<?= htmlspecialchars($price !== '' ? $price : $product['price']) ?>" required>
 
     <label>Categoria</label>
-    <select name="category" required>
+    <select name="category" id="category_select" required>
         <option value="" disabled hidden<?= ($category === '' && $product['category'] === '') ? ' selected' : '' ?>>Categoria</option>
         <?php foreach ($categoryOptions as $option): ?>
             <option value="<?= htmlspecialchars($option) ?>"<?= $option === ($category !== '' ? $category : $product['category']) ? ' selected' : '' ?>><?= htmlspecialchars($option) ?></option>
         <?php endforeach; ?>
+        <option value="__new__"<?= (isset($_POST['new_category']) && ($category === '' || $category === '__new__')) ? ' selected' : '' ?>>+ Afegir nova categoria...</option>
     </select>
+
+    <input type="text" name="new_category" id="new_category_input" placeholder="Nova categoria" style="display:<?= (isset($_POST['new_category']) || $category === '__new__') ? 'block' : 'none' ?>; margin-top:8px;" value="<?= htmlspecialchars($_POST['new_category'] ?? '') ?>">
+
+    <script>
+        (function(){
+            var sel = document.getElementById('category_select');
+            var input = document.getElementById('new_category_input');
+            function toggle(){
+                if(sel.value === '__new__') input.style.display = 'block'; else input.style.display = 'none';
+            }
+            sel.addEventListener('change', toggle);
+            toggle();
+        })();
+    </script>
 
     <label>Imatge</label>
     <input type="file" name="image" accept="image/*">

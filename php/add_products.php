@@ -18,6 +18,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $name = trim($_POST['name'] ?? '');
     $price = $_POST['price'] ?? '';
     $category = trim($_POST['category'] ?? '');
+    if ($category === '__new__') {
+        $category = trim($_POST['new_category'] ?? '');
+    }
 
     if ($name === '' || $category === '' || $price === '') {
         $error = "Error: campos inválidos.";
@@ -235,12 +238,27 @@ button:hover {
 
         <input type="number" step="0.01" name="price" placeholder="Preu" value="<?= htmlspecialchars($price) ?>" required>
 
-        <select name="category" required>
+        <select name="category" id="category_select" required>
             <option value="" disabled hidden<?= $category === '' ? ' selected' : '' ?>>Categoria</option>
             <?php foreach ($categoryOptions as $option): ?>
                 <option value="<?= htmlspecialchars($option) ?>"<?= $option === $category ? ' selected' : '' ?>><?= htmlspecialchars($option) ?></option>
             <?php endforeach; ?>
+            <option value="__new__"<?= (isset($_POST['new_category']) && $category === '') || $category === '__new__' ? ' selected' : '' ?>>+ Afegir nova categoria...</option>
         </select>
+
+        <input type="text" name="new_category" id="new_category_input" placeholder="Nova categoria" style="display:<?= (isset($_POST['new_category']) || $category === '__new__') ? 'block' : 'none' ?>; margin-top:8px;" value="<?= htmlspecialchars($_POST['new_category'] ?? '') ?>">
+
+        <script>
+            (function(){
+                var sel = document.getElementById('category_select');
+                var input = document.getElementById('new_category_input');
+                function toggle(){
+                    if(sel.value === '__new__') input.style.display = 'block'; else input.style.display = 'none';
+                }
+                sel.addEventListener('change', toggle);
+                toggle();
+            })();
+        </script>
 
         <input type="file" name="image" accept="image/*">
 
