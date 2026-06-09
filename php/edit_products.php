@@ -37,7 +37,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     }
 
     if ($name === '' || $category === '' || $price === '') {
-        $error = "Error: campos inválidos.";
+        $error = "Error: camps no vàlids.";
     }
 
     if ($error === '' && !preg_match('/^[\p{L}\d\s\-\'\.]+$/u', $name)) {
