@@ -31,6 +31,76 @@ body{
     color:var(--text);
 }
 
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+.nav {
+    background: var(--primary);
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    padding: 12px 24px;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    box-shadow: 0 4px 20px rgba(13, 76, 157, 0.15);
+}
+
+.logo img {
+    height: 45px;
+    border-radius: 8px;
+}
+
+.logo a {
+    display: inline-block;
+    padding: 0 !important;
+    margin: 0 !important;
+    border-radius: 0 !important;
+    background: transparent !important;
+    color: inherit !important;
+    text-decoration: none !important;
+    transition: none !important;
+}
+
+.logo a:hover {
+    background: transparent !important;
+    transform: none !important;
+}
+
+.nav-links {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+}
+
+.nav a {
+    color: white;
+    text-decoration: none;
+    padding: 10px 18px;
+    border-radius: 10px;
+    font-weight: 600;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    font-size: 0.95rem;
+}
+
+.nav a:hover {
+    background: var(--accent);
+    color: white;
+    transform: translateY(-1px);
+}
+
+.nav a.active {
+    background: var(--accent);
+    color: white;
+    box-shadow: 0 4px 12px rgba(0, 162, 255, 0.3);
+}
+
+.nav-right {
+    display: flex;
+}
+
 /* HERO */
 .hero{
     height:260px;
@@ -70,23 +140,7 @@ body{
     animation:fadeInUp 0.6s ease both;
 }
 
-.back{
-    display:block;
-    width:max-content;
-    margin:24px auto 0;
-    padding:12px 20px;
-    background:var(--primary);
-    color:white;
-    border-radius:12px;
-    text-decoration:none;
-    box-shadow:0 12px 25px rgba(13,76,157,0.14);
-    transition:background 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
-}
-.back:hover{
-    background:var(--primary-soft);
-    transform:translateY(-1px);
-    box-shadow:0 14px 28px rgba(13,76,157,0.18);
-}
+
 
 .card h2{
     color:var(--primary);
@@ -195,6 +249,15 @@ footer{
 
 <body>
 
+<!-- NAV -->
+<div class="nav">
+    <div class="logo"><a class="back" href="javascript:history.back()"><img src="images/inspedr.jpg" alt="Institut Pedralbes"></a></div>
+    <div class="nav-links">
+        <a class="active" href="legal.php">Avís Legal</a>
+    </div>
+    <div class="nav-right"></div>
+</div>
+
 <div class="hero">
     <h1>Avís Legal</h1>
 </div>
@@ -229,9 +292,6 @@ footer{
 
 </div>
 
-    <div style="max-width:1000px;margin:0 auto;padding:0 20px;">
-        <a class="back" href="javascript:history.back()">← Tornar enrere</a>
-    </div>
 
 <footer class="footer">
 
