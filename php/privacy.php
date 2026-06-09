@@ -68,6 +68,24 @@ body{
     animation:fadeInUp 0.6s ease both;
 }
 
+.back{
+    display:block;
+    width:max-content;
+    margin:24px auto 0;
+    padding:12px 20px;
+    background:var(--primary);
+    color:white;
+    border-radius:12px;
+    text-decoration:none;
+    box-shadow:0 12px 25px rgba(13,76,157,0.14);
+    transition:background 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+}
+.back:hover{
+    background:var(--primary-soft);
+    transform:translateY(-1px);
+    box-shadow:0 14px 28px rgba(13,76,157,0.18);
+}
+
 .card h2{
     color:var(--primary);
     margin-bottom:20px;
@@ -212,6 +230,10 @@ footer{
 
 
 </div>
+
+    <div style="max-width:1000px;margin:0 auto;padding:0 20px;">
+        <a class="back" href="javascript:history.back()">← Tornar enrere</a>
+    </div>
 
 <!-- FOOTER -->
 <footer class="footer">
